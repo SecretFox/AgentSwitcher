@@ -171,7 +171,7 @@ class com.fox.AgentSwitcher.Main {
 				species =  "Unassigned";
 				break;
 			default:
-				species =  "Uknown " + species;
+				species =  "Uknown (" + stat+")";
 				break;
 		}
 		return {Name:name, Species:species, Stat:stat, Agent:agent}
