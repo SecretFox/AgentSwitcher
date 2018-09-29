@@ -22,7 +22,7 @@ class com.fox.AgentSwitcher.Main {
 	static var SpecialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
 	private var DestinationSlot:Number;
 	private var DefaultTimeout;
-	private var LastSelected:ID32;
+	private var LastSelected:String;
 
 	public static function main(swfRoot:MovieClip):Void {
 		var s_app = new Main(swfRoot);
