@@ -1,9 +1,11 @@
 import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.DistributedValue;
+import com.GameInterface.DistributedValueBase;
 import com.GameInterface.Game.Character;
 import com.Utils.Archive;
 import com.Utils.ID32;
+import mx.utils.Delegate;
 /**
  * ...
  * @author fox
@@ -12,11 +14,16 @@ import com.Utils.ID32;
 class com.fox.AgentSwitcher.Main {
 	private var DebugDval:DistributedValue;
 	private var SlotDval:DistributedValue;
+	private var SwitchDval:DistributedValue;
+	private var DefaultDelayDval:DistributedValue;
+	
 	private var DefaultAgent:Number;
 	private var m_Player:Character;
 	static var SpecialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
-	private var passsive;
-	
+	private var DestinationSlot:Number;
+	private var RestoreTimeout;
+	private var AudioVolume;
+	private var DefaultTimeout;
 	private var LastSelected:ID32;
 
 	public static function main(swfRoot:MovieClip):Void {
@@ -30,42 +37,61 @@ class com.fox.AgentSwitcher.Main {
 	public function Main() {
 		DebugDval = DistributedValue.Create("AgentSwitcher_Debug");
 		SlotDval = DistributedValue.Create("AgentSwitcher_Slot");
+		SwitchDval = DistributedValue.Create("AgentSwitcher_DefaultOnCombatEnd");
+		DefaultDelayDval = DistributedValue.Create("AgentSwitcher_DefaultDelay");
+
+		SlotDval.SetValue(false);
 		DebugDval.SetValue(false);
+		SwitchDval.SetValue(false);
+		DefaultDelayDval.SetValue(2000);
 	}
-	
+
 	public function LoadSettings(config: Archive):Void {
 		SlotDval.SetValue(config.FindEntry("Slot", 1));
 		DebugDval.SetValue(config.FindEntry("Debug", false));
+		SwitchDval.SetValue(config.FindEntry("Switch", false));
+		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
+		
 		DefaultAgent = config.FindEntry("Default", 0);
-		if (DefaultAgent == 0){
-			DefaultAgent = GetCurrentAgent().m_AgentId;
-		}
+		if (DefaultAgent == 0) DefaultAgent = GetCurrentAgent().m_AgentId;
+		var vol = DistributedValueBase.GetDValue("AudioVolumeInterface");
+		if (vol > 0.05) AudioVolume = vol;
 	}
 
 	public function SaveSettings():Archive {
 		var config:Archive = new Archive();
 		config.AddEntry("Slot", SlotDval.GetValue());
 		config.AddEntry("Debug", DebugDval.GetValue());
+		config.AddEntry("Switch", SwitchDval.GetValue());
+		config.AddEntry("Delay", DefaultDelayDval.GetValue());
 		config.AddEntry("Default", DefaultAgent);
 		return config
 	}
-	
+
 	public function Load() {
 		m_Player = Character.GetClientCharacter();
 		m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
+		m_Player.SignalToggleCombat.Connect(SwitchToDefault, this);
+		SlotDval.SignalChanged.Connect(SlotDestionationChanged, this);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 	}
 
 	public function Unload() {
+		m_Player.SignalToggleCombat.Disconnect(SwitchToDefault, this);
 		m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
+		SlotDval.SignalChanged.Disconnect(SlotDestionationChanged, this);
+	}
+
+	private function SlotDestionationChanged(dv:DistributedValue) {
+		DestinationSlot = dv.GetValue() - 1;
 	}
 
 	private function GetSpecies(id:ID32) {
 		var mob:Character = new Character(id);
 		var stat = mob.GetStat(89);
 		var species = "";
-		var name = mob.GetName();
+		var name = string(mob.GetName());
 		var agent = 0;
 
 		switch (stat) {
@@ -164,7 +190,7 @@ class com.fox.AgentSwitcher.Main {
 			case 53:
 			case 54:
 			case 55:
-			// No agent with vampire passive yet
+				// No agent with vampire passive yet
 				species =  "Vampire";
 				break;
 			case 0:
@@ -176,46 +202,74 @@ class com.fox.AgentSwitcher.Main {
 		}
 		return {Name:name, Species:species, Stat:stat, Agent:agent}
 	}
-	
-	private function GetCurrentAgent():AgentSystemAgent{
-		var DestinationSlot = SlotDval.GetValue() - 1;
+
+	private function GetCurrentAgent():AgentSystemAgent {
 		var currentAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
 		return currentAgent;
 	}
-	
-	private function IsSpecialAgent(id){
-		for (var i = 0; i < SpecialAgents.length; i++){
-			if (SpecialAgents[i] == id){
+
+	private function IsSpecialAgent(id) {
+		for (var i = 0; i < SpecialAgents.length; i++) {
+			if (SpecialAgents[i] == id) {
 				return true
 			}
 		}
 		return false
 	}
-	
+
+	private function SwitchToDefault(combatState:Boolean) {
+		if (!combatState && SwitchDval.GetValue()) {
+			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);
+			if (spellId != 0) {
+				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
+				if (SlotAgent.m_AgentId != DefaultAgent) {
+					DistributedValueBase.SetDValue("AudioVolumeInterface", 0.0000);
+					DefaultTimeout = setTimeout(Delegate.create(this, SwitchToAgent), DefaultDelayDval.GetValue(), DefaultAgent);
+				}
+			}
+		}
+	}
+
+	// There's delay when changing audio, otherwise i would mute inteface sounds here.
+	private function SwitchToAgent(agentID:Number) {
+		AgentSystem.EquipPassive(agentID, this.DestinationSlot);
+		clearTimeout(RestoreTimeout);
+		RestoreTimeout = setTimeout(Delegate.create(this, function(){
+			DistributedValueBase.SetDValue("AudioVolumeInterface", this.AudioVolume);
+		}), 500);
+	}
 	// Passive Changed, make this the new default agent
 	// Works with boobuilds, default gear manager or manual switching
-	private function SlotPassiveChanged(slotID:Number){
-		if (slotID + 1 == SlotDval.GetValue()){
-			var spellId:Number = AgentSystem.GetPassiveInSlot(slotID);
-			if (spellId != 0){
-				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(slotID);
-				if (DefaultAgent != SlotAgent.m_AgentId && !IsSpecialAgent(SlotAgent.m_AgentId)){
+	private function SlotPassiveChanged(slotID:Number) {
+		if (slotID == DestinationSlot) {
+			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);
+			if (spellId != 0) {
+				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
+				if (DefaultAgent != SlotAgent.m_AgentId && !IsSpecialAgent(SlotAgent.m_AgentId)) {
 					DefaultAgent = SlotAgent.m_AgentId;
 				}
 			}
 		}
 	}
-	
+
 	// Gets agent best suited for the mob.
 	// If agent is not owned or mob category is unkown should return default agent.
 	// returns 0 if already correct agent
-	private function GetSwitchAgent(pref){
-		var DestinationSlot = SlotDval.GetValue()-1;
+	private function GetSwitchAgent(pref) {
 		var currentAgent:AgentSystemAgent = GetCurrentAgent();
-		if (currentAgent.m_AgentId != pref){
-			if (AgentSystem.HasAgent(pref)) return pref;
-			else{
-				if (currentAgent.m_AgentId != DefaultAgent){
+		if (currentAgent.m_AgentId != pref) {
+			if (AgentSystem.HasAgent(pref)) {
+				// Trying to get agent by invalid agentID crashes the game
+				// If HasAgent returns true it should be safe to get the agent level
+				if (AgentSystem.GetAgentById(pref).m_Level == 50) {
+					return pref;
+				} else {
+					if (currentAgent.m_AgentId != DefaultAgent) {
+						return DefaultAgent;
+					}
+				}
+			} else {
+				if (currentAgent.m_AgentId != DefaultAgent) {
 					return DefaultAgent;
 				}
 			}
@@ -224,19 +278,20 @@ class com.fox.AgentSwitcher.Main {
 	}
 
 	private function TargetChanged(id:ID32) {
-		if (id.IsNull()) return
-		var data:Object = GetSpecies(id);
-		if (string(data.Name) == LastSelected) return
-		else{
-			LastSelected = data.Name;
-			if (DebugDval.GetValue()){
-				com.GameInterface.UtilsBase.PrintChatText(string(data.Name) +" is " + string(data.Species));
+		clearTimeout(DefaultTimeout);
+		if (!id.IsNull()) {
+			var data:Object = GetSpecies(id);
+			if (DebugDval.GetValue() && data.Name != LastSelected ) {
+				LastSelected = data.Name;
+				com.GameInterface.UtilsBase.PrintChatText(data.Name +" is " + string(data.Species));
 			}
 			var agent = GetSwitchAgent(data.Agent);
-			if (agent != 0){
-				var DestinationSlot = SlotDval.GetValue() - 1;
-				AgentSystem.EquipPassive(agent, DestinationSlot);
+			if (agent != 0) {
+				SwitchToAgent(agent);
 			}
+		} else if (SwitchDval.GetValue()){
+			// Delay switching to default by 500ms, to make sure it doesn't default while running to target
+			SwitchToDefault(false);
 		}
 	}
 }
