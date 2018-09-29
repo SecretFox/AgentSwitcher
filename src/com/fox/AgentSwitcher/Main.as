@@ -21,8 +21,6 @@ class com.fox.AgentSwitcher.Main {
 	private var m_Player:Character;
 	static var SpecialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
 	private var DestinationSlot:Number;
-	private var RestoreTimeout;
-	private var AudioVolume;
 	private var DefaultTimeout;
 	private var LastSelected:ID32;
 
@@ -39,11 +37,6 @@ class com.fox.AgentSwitcher.Main {
 		SlotDval = DistributedValue.Create("AgentSwitcher_Slot");
 		SwitchDval = DistributedValue.Create("AgentSwitcher_DefaultOnCombatEnd");
 		DefaultDelayDval = DistributedValue.Create("AgentSwitcher_DefaultDelay");
-
-		SlotDval.SetValue(false);
-		DebugDval.SetValue(false);
-		SwitchDval.SetValue(false);
-		DefaultDelayDval.SetValue(2000);
 	}
 
 	public function LoadSettings(config: Archive):Void {
@@ -51,11 +44,8 @@ class com.fox.AgentSwitcher.Main {
 		DebugDval.SetValue(config.FindEntry("Debug", false));
 		SwitchDval.SetValue(config.FindEntry("Switch", false));
 		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
-		
 		DefaultAgent = config.FindEntry("Default", 0);
 		if (DefaultAgent == 0) DefaultAgent = GetCurrentAgent().m_AgentId;
-		var vol = DistributedValueBase.GetDValue("AudioVolumeInterface");
-		if (vol > 0.05) AudioVolume = vol;
 	}
 
 	public function SaveSettings():Archive {
@@ -218,14 +208,11 @@ class com.fox.AgentSwitcher.Main {
 	}
 
 	private function SwitchToDefault(combatState:Boolean) {
-		if (!combatState && SwitchDval.GetValue()) {
+		if (SwitchDval.GetValue() && !combatState) {
 			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);
 			if (spellId != 0) {
 				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
-				if (SlotAgent.m_AgentId != DefaultAgent) {
-					DistributedValueBase.SetDValue("AudioVolumeInterface", 0.0000);
-					DefaultTimeout = setTimeout(Delegate.create(this, SwitchToAgent), DefaultDelayDval.GetValue(), DefaultAgent);
-				}
+				DefaultTimeout = setTimeout(Delegate.create(this, SwitchToAgent), DefaultDelayDval.GetValue(), DefaultAgent);
 			}
 		}
 	}
@@ -233,10 +220,6 @@ class com.fox.AgentSwitcher.Main {
 	// There's delay when changing audio, otherwise i would mute inteface sounds here.
 	private function SwitchToAgent(agentID:Number) {
 		AgentSystem.EquipPassive(agentID, this.DestinationSlot);
-		clearTimeout(RestoreTimeout);
-		RestoreTimeout = setTimeout(Delegate.create(this, function(){
-			DistributedValueBase.SetDValue("AudioVolumeInterface", this.AudioVolume);
-		}), 500);
 	}
 	// Passive Changed, make this the new default agent
 	// Works with boobuilds, default gear manager or manual switching
@@ -279,7 +262,6 @@ class com.fox.AgentSwitcher.Main {
 
 	private function TargetChanged(id:ID32) {
 		clearTimeout(DefaultTimeout);
-		DistributedValueBase.SetDValue("AudioVolumeInterface", AudioVolume);
 		if (!id.IsNull()) {
 			var data:Object = GetSpecies(id);
 			if (DebugDval.GetValue() && data.Name != LastSelected ) {
