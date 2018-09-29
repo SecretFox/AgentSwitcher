@@ -279,6 +279,7 @@ class com.fox.AgentSwitcher.Main {
 
 	private function TargetChanged(id:ID32) {
 		clearTimeout(DefaultTimeout);
+		DistributedValueBase.SetDValue("AudioVolumeInterface", AudioVolume);
 		if (!id.IsNull()) {
 			var data:Object = GetSpecies(id);
 			if (DebugDval.GetValue() && data.Name != LastSelected ) {
@@ -289,7 +290,7 @@ class com.fox.AgentSwitcher.Main {
 			if (agent != 0) {
 				SwitchToAgent(agent);
 			}
-		} else if (SwitchDval.GetValue()){
+		} else if (SwitchDval.GetValue() && !m_Player.IsInCombat()){
 			// Delay switching to default by 500ms, to make sure it doesn't default while running to target
 			SwitchToDefault(false);
 		}
