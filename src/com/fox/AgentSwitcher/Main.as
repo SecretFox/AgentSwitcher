@@ -15,13 +15,14 @@ class com.fox.AgentSwitcher.Main {
 	private var SlotDval:DistributedValue;
 	private var SwitchDval:DistributedValue;
 	private var DefaultDelayDval:DistributedValue;
-	
+
 	private var DefaultAgent:Number;
 	private var m_Player:Character;
-	static var SpecialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
+	static var RacialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
 	private var DestinationSlot:Number;
 	private var DefaultTimeout;
-	private var LastSelected:String;
+	private var LastSelectedName:String;
+	private var LastSelectedRace:String;
 
 	public static function main(swfRoot:MovieClip):Void {
 		var s_app = new Main(swfRoot);
@@ -40,6 +41,7 @@ class com.fox.AgentSwitcher.Main {
 
 	public function LoadSettings(config: Archive):Void {
 		SlotDval.SetValue(config.FindEntry("Slot", 1));
+		SlotDestionationChanged(SlotDval);
 		DebugDval.SetValue(config.FindEntry("Debug", false));
 		SwitchDval.SetValue(config.FindEntry("Switch", false));
 		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
@@ -57,7 +59,7 @@ class com.fox.AgentSwitcher.Main {
 		return config
 	}
 
-	public function Load() {
+	public function Load():Void {
 		m_Player = Character.GetClientCharacter();
 		m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
 		m_Player.SignalToggleCombat.Connect(SwitchToDefault, this);
@@ -65,7 +67,7 @@ class com.fox.AgentSwitcher.Main {
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 	}
 
-	public function Unload() {
+	public function Unload():Void {
 		m_Player.SignalToggleCombat.Disconnect(SwitchToDefault, this);
 		m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
@@ -76,10 +78,10 @@ class com.fox.AgentSwitcher.Main {
 		DestinationSlot = dv.GetValue() - 1;
 	}
 
-	private function GetSpecies(id:ID32) {
+	private function GetRace(id:ID32) {
 		var mob:Character = new Character(id);
 		var stat = mob.GetStat(89);
-		var species = "";
+		var race = "";
 		var name = string(mob.GetName());
 		var agent = 0;
 
@@ -87,14 +89,14 @@ class com.fox.AgentSwitcher.Main {
 			case 6:
 			case 12:
 			case 34:
-				species = "Construct";
+				race = "Construct";
 				agent = 2746;
 				break;
 			case 3:
 			case 15:
 			case 52:
 			case 60:
-				species =  "Cybernetic";
+				race =  "Cybernetic";
 				agent = 2749;
 				break;
 			case 4:
@@ -104,13 +106,13 @@ class com.fox.AgentSwitcher.Main {
 			case 57:
 			case 61:
 			case 67:
-				species =  "Demon";
+				race =  "Demon";
 				agent = 2743;
 				break;
 			case 18:
 			case 36:
 			case 46:
-				species =  "Aquatic";
+				race =  "Aquatic";
 				agent = 2748;
 				break;
 			case 13:
@@ -123,7 +125,7 @@ class com.fox.AgentSwitcher.Main {
 			case 64:
 			case 65:
 			case 66:
-				species =  "Filth";
+				race =  "Filth";
 				agent = 2744;
 				break;
 			case 1:
@@ -132,7 +134,7 @@ class com.fox.AgentSwitcher.Main {
 			case 48:
 			case 56:
 			case 71:
-				species =  "Human";
+				race =  "Human";
 				agent = 2750;
 				break;
 			case 5:
@@ -142,7 +144,7 @@ class com.fox.AgentSwitcher.Main {
 			case 39:
 			case 62:
 			case 69:
-				species =  "Spirit";
+				race =  "Spirit";
 				agent = 2745;
 				break;
 			case 7:
@@ -155,7 +157,7 @@ class com.fox.AgentSwitcher.Main {
 			case 58:
 			case 69:
 			case 70:
-				species =  "Supernatural";
+				race =  "Supernatural";
 				agent = 2741;
 				break;
 			case 16:
@@ -163,7 +165,7 @@ class com.fox.AgentSwitcher.Main {
 			case 24:
 			case 31:
 			case 63:
-				species =  "Undead";
+				race =  "Undead";
 				agent = 2747;
 				break;
 			case 28:
@@ -171,7 +173,7 @@ class com.fox.AgentSwitcher.Main {
 			case 35:
 			case 41:
 			case 43:
-				species =  "Animal";
+				race =  "Animal";
 				agent = 2742;
 				break;
 			case 20:
@@ -180,16 +182,19 @@ class com.fox.AgentSwitcher.Main {
 			case 54:
 			case 55:
 				// No agent with vampire passive yet
-				species =  "Vampire";
+				race =  "Vampire";
 				break;
 			case 0:
-				species =  "Unassigned";
+				race =  "Unassigned";
 				break;
+			case 999:
+				race = "None";
+				break
 			default:
-				species =  "Uknown (" + stat+")";
+				race =  "Uknown (" + stat+")";
 				break;
 		}
-		return {Name:name, Species:species, Stat:stat, Agent:agent}
+		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
 
 	private function GetCurrentAgent():AgentSystemAgent {
@@ -197,9 +202,9 @@ class com.fox.AgentSwitcher.Main {
 		return currentAgent;
 	}
 
-	private function IsSpecialAgent(id) {
-		for (var i = 0; i < SpecialAgents.length; i++) {
-			if (SpecialAgents[i] == id) {
+	private function isRacialAgent(id) {
+		for (var i = 0; i < RacialAgents.length; i++) {
+			if (RacialAgents[i] == id) {
 				return true
 			}
 		}
@@ -211,6 +216,8 @@ class com.fox.AgentSwitcher.Main {
 			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);
 			if (spellId != 0) {
 				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
+				// Delay switching to default by x ms, to make sure it doesn't default while running to target
+				// timeout is cancelled when target changes
 				DefaultTimeout = setTimeout(Delegate.create(this, SwitchToAgent), DefaultDelayDval.GetValue(), DefaultAgent);
 			}
 		}
@@ -218,17 +225,32 @@ class com.fox.AgentSwitcher.Main {
 
 	// There's delay when changing audio, otherwise i would mute inteface sounds here.
 	private function SwitchToAgent(agentID:Number) {
-		AgentSystem.EquipPassive(agentID, this.DestinationSlot);
+		AgentSystem.EquipPassive(agentID, DestinationSlot);
+		/*
+		 * Debug
+		if (DebugDval.GetValue()) {
+			if (AgentSystem.HasAgent(agentID)) {
+				if (agentID == DefaultAgent) {
+					com.GameInterface.UtilsBase.PrintChatText("Switching to Default(" + AgentSystem.GetAgentById(agentID).m_Name+"[" + agentID + "])");
+				} else {
+					com.GameInterface.UtilsBase.PrintChatText("Switching to " + AgentSystem.GetAgentById(agentID).m_Name+"["+agentID+"]");
+				}
+			} else {
+				com.GameInterface.UtilsBase.PrintChatText("Invalid agent " + agentID);
+			}
+		}
+		*/
 	}
 	// Passive Changed, make this the new default agent
 	// Works with boobuilds, default gear manager or manual switching
 	private function SlotPassiveChanged(slotID:Number) {
 		if (slotID == DestinationSlot) {
-			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);
+			var spellId:Number = AgentSystem.GetPassiveInSlot(DestinationSlot);// 0 if invalid slot
 			if (spellId != 0) {
-				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);
-				if (DefaultAgent != SlotAgent.m_AgentId && !IsSpecialAgent(SlotAgent.m_AgentId)) {
+				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);//Crashes if invalid slot
+				if (DefaultAgent != SlotAgent.m_AgentId && !isRacialAgent(SlotAgent.m_AgentId)) {
 					DefaultAgent = SlotAgent.m_AgentId;
+					//com.GameInterface.UtilsBase.PrintChatText("New default " + SlotAgent.m_Name + "(" + SlotAgent.m_AgentId +")");
 				}
 			}
 		}
@@ -245,15 +267,10 @@ class com.fox.AgentSwitcher.Main {
 				// If HasAgent returns true it should be safe to get the agent level
 				if (AgentSystem.GetAgentById(pref).m_Level == 50) {
 					return pref;
-				} else {
-					if (currentAgent.m_AgentId != DefaultAgent) {
-						return DefaultAgent;
-					}
 				}
-			} else {
-				if (currentAgent.m_AgentId != DefaultAgent) {
-					return DefaultAgent;
-				}
+			}
+			if (currentAgent.m_AgentId != DefaultAgent) {
+				return DefaultAgent;
 			}
 		}
 		return 0
@@ -262,17 +279,17 @@ class com.fox.AgentSwitcher.Main {
 	private function TargetChanged(id:ID32) {
 		clearTimeout(DefaultTimeout);
 		if (!id.IsNull()) {
-			var data:Object = GetSpecies(id);
-			if (DebugDval.GetValue() && data.Name != LastSelected ) {
-				LastSelected = data.Name;
-				com.GameInterface.UtilsBase.PrintChatText(data.Name +" is " + string(data.Species));
-			}
+			var data:Object = GetRace(id);
 			var agent = GetSwitchAgent(data.Agent);
-			if (agent != 0) {
+			if (DebugDval.GetValue() && data.Name + data.Race != string(LastSelectedName) + string(LastSelectedRace)) {
+				com.GameInterface.UtilsBase.PrintChatText(data.Name +" : " + data.Race);
+			} 
+			if (agent != 0 && !m_Player.IsInCombat()) {
 				SwitchToAgent(agent);
 			}
-		} else if (SwitchDval.GetValue() && !m_Player.IsInCombat()){
-			// Delay switching to default by 500ms, to make sure it doesn't default while running to target
+			LastSelectedName = data.Name;
+			LastSelectedRace = data.Race;//melotath has no race for ankh 5, but is undead for 6
+		} else if (SwitchDval.GetValue() && !m_Player.IsInCombat()) {
 			SwitchToDefault(false);
 		}
 	}
