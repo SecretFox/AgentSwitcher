@@ -1,5 +1,5 @@
 # AgentSwitcher
-Automatically switches agent based on enemy race.  
+Automatically switches agent based on enemy type.  
 Agent used:  
 * Vampires : Default  
 * Construct : Nuala Magorian  
@@ -15,7 +15,7 @@ Agent used:
 * Others : Default  
 	
 Use `/option AgentSwitcher_Slot x` command to set which passive slot is used.  
-When player targets race which they don't have levelled agent for, default agent will be used.  
+When player targets enemy, which they don't have levelled agent for, default agent will be used.  
 Default agent is automatically set when changing builds(works with boobuilds too) or manually switching agents.  
 
 Use `AgentSwitcher_DefaultOnCombatEnd true`(default false) to enable agent defaulting when combat ends, and you are not targeting anything.  
@@ -25,5 +25,4 @@ Unfortunately each time agent gets changed a sounds will be played, so if you us
 Too low values and your agent might get changed between attacking mobs.
 
 
-Use `/option AgentSwitcher_Debug true` to enable debug mode, when debug is enabled targets race will get printed on system chat channel.
-
+Use `/option AgentSwitcher_Debug true` to enable debug mode, when debug is enabled targets name and type will be printed on system chat channel.
