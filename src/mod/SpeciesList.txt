@@ -20,7 +20,7 @@ Spirit:
   Spectre, Ghost, Wraith, Revenant, Spirit, Tokyo Spectre, Kishi
   agent : Amelia Bindings
 Supernatural:
-  Ghoul, Werewolf, Troll, Wendigo, Wisp, Fata Paduri, Jack'o'lantern, Faun, Komainu, Kongamato,   Supernatural
+  Ghoul, Werewolf, Troll, Wendigo, Wisp, Fata Paduri, Jack'o'lantern, Faun, Komainu, Kongamato
   agent : Sif Minervudottir
 Undead:
   Mummy, Draug, Zombie, Jiang-Shi
