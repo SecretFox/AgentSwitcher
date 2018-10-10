@@ -155,7 +155,7 @@ class com.fox.AgentSwitcher.Main {
 			case 44:
 			case 49:
 			case 58:
-			case 69:
+			case 68:
 			case 70:
 				race =  "Supernatural";
 				agent = 2741;
