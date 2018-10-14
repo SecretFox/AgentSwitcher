@@ -37,7 +37,7 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		settingsPanel.append(GetDebug());
 		settingsPanel.append(GetDefault());
 		
-		var tf1:JTextField = new JTextField("Delay", 10);
+		var tf1:JTextField = new JTextField("Default Delay", 10);
 		tf1.setBorder(null);
 		tf1.setEnabled(false);
 		tf1.setEditable(false);
