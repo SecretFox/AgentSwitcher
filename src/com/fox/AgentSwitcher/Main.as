@@ -3,7 +3,12 @@ import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
 import com.Utils.Archive;
+import com.Utils.Colors;
+import com.Utils.Draw;
+import com.Utils.GlobalSignal;
 import com.Utils.ID32;
+import flash.geom.Point;
+import com.fox.Utils.Common;
 import mx.utils.Delegate;
 /**
  * ...
@@ -23,6 +28,11 @@ class com.fox.AgentSwitcher.Main {
 	private var DefaultTimeout;
 	private var LastSelectedName:String;
 	private var LastSelectedRace:String;
+	
+	private var m_swfRoot:MovieClip;
+	private var m_Icon:MovieClip;
+	private var iconPos:Point;
+	private var Active:Boolean;
 
 	public static function main(swfRoot:MovieClip):Void {
 		var s_app = new Main(swfRoot);
@@ -32,7 +42,8 @@ class com.fox.AgentSwitcher.Main {
 		swfRoot.OnModuleDeactivated = function() {return s_app.SaveSettings()};
 	}
 
-	public function Main() {
+	public function Main(root) {
+		m_swfRoot = root;
 		DebugDval = DistributedValue.Create("AgentSwitcher_Debug");
 		SlotDval = DistributedValue.Create("AgentSwitcher_Slot");
 		SwitchDval = DistributedValue.Create("AgentSwitcher_DefaultOnCombatEnd");
@@ -46,7 +57,10 @@ class com.fox.AgentSwitcher.Main {
 		SwitchDval.SetValue(config.FindEntry("Switch", false));
 		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
 		DefaultAgent = config.FindEntry("Default", 0);
+		iconPos = config.FindEntry("iconPos", new Point(200, 50));
+		Active = config.FindEntry("Active", true);
 		if (DefaultAgent == 0) DefaultAgent = GetCurrentAgent().m_AgentId;
+		CreateTopIcon();
 	}
 
 	public function SaveSettings():Archive {
@@ -56,6 +70,8 @@ class com.fox.AgentSwitcher.Main {
 		config.AddEntry("Switch", SwitchDval.GetValue());
 		config.AddEntry("Delay", DefaultDelayDval.GetValue());
 		config.AddEntry("Default", DefaultAgent);
+		config.AddEntry("iconPos", iconPos);
+		config.AddEntry("Active", Active);
 		return config
 	}
 
@@ -73,7 +89,53 @@ class com.fox.AgentSwitcher.Main {
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
 		SlotDval.SignalChanged.Disconnect(SlotDestionationChanged, this);
 	}
-
+	private function guiEdit(state) {
+		if (!state) {
+			m_Icon.stopDrag()
+			iconPos = Common.getOnScreen(m_Icon);
+			m_Icon._x = iconPos.x;
+			m_Icon._y = iconPos.y;
+			m_Icon.onPress = Delegate.create(this, StateChanged);
+			m_Icon.onRelease = undefined;
+			m_Icon.onReleaseOutside = undefined;
+		} else {
+			m_Icon.onPress = Delegate.create(this, function() {
+				this.m_Icon.startDrag();
+			});
+			m_Icon.onRelease = Delegate.create(this, function() {
+				this.m_Icon.stopDrag();
+			});
+			m_Icon.onReleaseOutside = Delegate.create(this, function() {
+				this.m_Icon.stopDrag();
+			});
+		}
+	}
+	private function StateChanged() {
+		Active = !Active;
+		if (Active) {
+			Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
+		} else {
+			Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
+		}
+	}
+	public function CreateTopIcon() {
+		if (!m_Icon) {
+			m_Icon = m_swfRoot.createEmptyMovieClip("m_TopIcon", m_swfRoot.getNextHighestDepth());
+			m_Icon._x = iconPos.x;
+			m_Icon._y = iconPos.y;
+			var m_Img = m_Icon.attachMovie("src.assets.AgentTopBar.png", "m_Img", m_Icon.getNextHighestDepth(), {_x:2, _y:2})
+			if (Active) {
+				Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
+			} else {
+				Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
+			}
+			//hitbox, should is use border?
+			Draw.DrawRectangle(m_Icon, 0, 0, 21, 21, 0x000000, 20, [3, 3, 3, 3], 2, 0xFFFFFF, 0, true);
+			guiEdit(false);
+			GlobalSignal.SignalSetGUIEditMode.Connect(guiEdit, this);
+		}
+	}
+	
 	private function SlotDestionationChanged(dv:DistributedValue) {
 		DestinationSlot = dv.GetValue() - 1;
 	}
@@ -277,20 +339,22 @@ class com.fox.AgentSwitcher.Main {
 	}
 
 	private function TargetChanged(id:ID32) {
-		clearTimeout(DefaultTimeout);
-		if (!id.IsNull()) {
-			var data:Object = GetRace(id);
-			var agent = GetSwitchAgent(data.Agent);
-			if (DebugDval.GetValue() && data.Name + data.Race != string(LastSelectedName) + string(LastSelectedRace)) {
-				com.GameInterface.UtilsBase.PrintChatText(data.Name +" : " + data.Race);
-			} 
-			if (agent != 0 && !m_Player.IsInCombat()) {
-				SwitchToAgent(agent);
+		if (Active){
+			clearTimeout(DefaultTimeout);
+			if (!id.IsNull()) {
+				var data:Object = GetRace(id);
+				var agent = GetSwitchAgent(data.Agent);
+				if (DebugDval.GetValue() && data.Name + data.Race != string(LastSelectedName) + string(LastSelectedRace)) {
+					com.GameInterface.UtilsBase.PrintChatText(data.Name +" : " + data.Race);
+				} 
+				if (agent != 0 && !m_Player.IsInCombat()) {
+					SwitchToAgent(agent);
+				}
+				LastSelectedName = data.Name;
+				LastSelectedRace = data.Race;//melotath has no race for ankh 5, but is undead for 6
+			} else if (SwitchDval.GetValue() && !m_Player.IsInCombat()) {
+				SwitchToDefault(false);
 			}
-			LastSelectedName = data.Name;
-			LastSelectedRace = data.Race;//melotath has no race for ankh 5, but is undead for 6
-		} else if (SwitchDval.GetValue() && !m_Player.IsInCombat()) {
-			SwitchToDefault(false);
 		}
 	}
 }
