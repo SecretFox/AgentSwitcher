@@ -43,7 +43,7 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		tf1.setEditable(false);
 		settingsPanel.append(tf1);
 		settingsPanel.append(GetDelay());
-		var tf2:JTextField = new JTextField("Slot", 10);
+		var tf2:JTextField = new JTextField("Agent Slot", 10);
 		tf2.setBorder(null);
 		tf2.setEnabled(false);
 		tf2.setEditable(false);
