@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.table.AbstractTableModel - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.table" rel="up"/><link href="../../../org/aswing/table/DefaultTableColumnModel.html" title="Class org.aswing.table.DefaultTableColumnModel" rel="prev"/><link href="../../../org/aswing/SoftBoxLayout.html" title="Class org.aswing.SoftBoxLayout" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.table.AbstractTableModel</h1><div class="type_hierachy"><ul><li><strong>org.aswing.table.AbstractTableModel</strong></li></ul></div><div class="interfaces"><h2>Implemented Interfaces</h2><code><a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">TableModel</a></code> </div><div class="type_description"><h2>Description</h2><p>
+  This abstract class provides default implementations for most of
+  the methods in the <code>TableModel</code> interface. It takes care of
+  the management of listeners and provides some conveniences for generating
+  <code>TableModelEvents</code> and dispatching them to the listeners.
+  To create a concrete <code>TableModel</code> as a subclass of
+  <code>AbstractTableModel</code> you need only provide implementations 
+  for the following three methods:
+
+  <pre>
+  public function getRowCount():Number;
+  public function getColumnCount():Number;
+  public function getValueAt(row:Number, column:Number);
+  </pre>
+  
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addTableModelListener" title="public function addTableModelListener(l:TableModelListener):Void">addTableModelListener()</a>, <a href="#findColumn" title="public function findColumn(columnName:String):Number">findColumn()</a>, <a href="#getColumnClass" title="public function getColumnClass(columnIndex:Number):String">getColumnClass()</a>, <a href="#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a>, <a href="#getColumnName" title="public function getColumnName(column:Number):String">getColumnName()</a>, <a href="#getRowCount" title="public function getRowCount():Number">getRowCount()</a>, <a href="#getTableModelListeners" title="public function getTableModelListeners():Array">getTableModelListeners()</a>, <a href="#getValueAt" title="public function getValueAt(rowIndex:Number, columnIndex:Number)">getValueAt()</a>, <a href="#isCellEditable" title="public function isCellEditable(rowIndex:Number, columnIndex:Number):Boolean">isCellEditable()</a>, <a href="#removeTableModelListener" title="public function removeTableModelListener(l:TableModelListener):Void">removeTableModelListener()</a>, <a href="#setColumnClass" title="public function setColumnClass(columnIndex:Number, className:String):Void">setColumnClass()</a>, <a href="#setValueAt" title="public function setValueAt(aValue, rowIndex:Number, columnIndex:Number):Void">setValueAt()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getRowCount"></a><h3>getRowCount</h3><code class="method_synopsis">public function <strong class="method_name">getRowCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Subclass must override this method.
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getRowCount" title="public function getRowCount():Number">getRowCount()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details"><a name="getColumnCount"></a><h3>getColumnCount</h3><code class="method_synopsis">public function <strong class="method_name">getColumnCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Subclass must override this method.
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details alt_row"><a name="getValueAt"></a><h3>getValueAt</h3><code class="method_synopsis">public function <strong class="method_name">getValueAt</strong>(rowIndex:<span class="unresolved_type_name">Number</span>, columnIndex:<span class="unresolved_type_name">Number</span>)</code><div class="method_info"><p>
+ Subclass must override this method.
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getValueAt" title="public function getValueAt(rowIndex:Number, columnIndex:Number)">getValueAt()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details"><a name="getColumnName"></a><h3>getColumnName</h3><code class="method_synopsis">public function <strong class="method_name">getColumnName</strong>(column:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+  Returns a default name for the column using spreadsheet conventions:
+  A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
+  returns an empty string.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>column</code></td><td>the column being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> a string containing the default name of <code>column</code>
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getColumnName" title="public function getColumnName(columnIndex:Number):String">getColumnName()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details alt_row"><a name="findColumn"></a><h3>findColumn</h3><code class="method_synopsis">public function <strong class="method_name">findColumn</strong>(columnName:<span class="unresolved_type_name">String</span>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns a column given its name.
+ Implementation is naive so this should be overridden if
+ this method is to be called often. This method is not
+ in the <code>TableModel</code> interface and is not used by the
+ <code>JTable</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnName</code></td><td>string containing name of column to be located
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the column with <code>columnName</code>, or -1 if not found
+     </p></div></div><div class="method_details"><a name="getColumnClass"></a><h3>getColumnClass</h3><code class="method_synopsis">public function <strong class="method_name">getColumnClass</strong>(columnIndex:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns class name regardless of <code>columnIndex</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnIndex</code></td><td>the column being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the class name, default is "Object"
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getColumnClass" title="public function getColumnClass(columnIndex:Number):String">getColumnClass()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details alt_row"><a name="setColumnClass"></a><h3>setColumnClass</h3><code class="method_synopsis">public function <strong class="method_name">setColumnClass</strong>(columnIndex:<span class="unresolved_type_name">Number</span>, className:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets class name regardless of <code>columnIndex</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnIndex</code></td><td>the column being queried
+ </td></tr><tr><td><code>className</code></td><td>the class name
+     </td></tr></table></div></div><div class="method_details"><a name="isCellEditable"></a><h3>isCellEditable</h3><code class="method_synopsis">public function <strong class="method_name">isCellEditable</strong>(rowIndex:<span class="unresolved_type_name">Number</span>, columnIndex:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+  Returns false.  This is the default implementation for all cells.
+
+  @param  rowIndex  the row being queried
+  @param  columnIndex the column being queried
+  @return false
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#isCellEditable" title="public function isCellEditable(rowIndex:Number, columnIndex:Number):Boolean">isCellEditable()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details alt_row"><a name="setValueAt"></a><h3>setValueAt</h3><code class="method_synopsis">public function <strong class="method_name">setValueAt</strong>(aValue, rowIndex:<span class="unresolved_type_name">Number</span>, columnIndex:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  This empty implementation is provided so users don't have to implement
+  this method if their data model is not editable.
+
+  @param  aValue   value to assign to cell
+  @param  rowIndex   row of cell
+  @param  columnIndex  column of cell
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#setValueAt" title="public function setValueAt(aValue, rowIndex:Number, columnIndex:Number):Void">setValueAt()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details"><a name="addTableModelListener"></a><h3>addTableModelListener</h3><code class="method_synopsis">public function <strong class="method_name">addTableModelListener</strong>(l:<a href="../../../org/aswing/event/TableModelListener.html" class="interface_name" title="Interface org.aswing.event.TableModelListener">TableModelListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds a listener to the list that's notified each time a change
+ to the data model occurs.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>l</code></td><td>the TableModelListener
+     </td></tr></table><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#addTableModelListener" title="public function addTableModelListener(l:TableModelListener):Void">addTableModelListener()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details alt_row"><a name="removeTableModelListener"></a><h3>removeTableModelListener</h3><code class="method_synopsis">public function <strong class="method_name">removeTableModelListener</strong>(l:<a href="../../../org/aswing/event/TableModelListener.html" class="interface_name" title="Interface org.aswing.event.TableModelListener">TableModelListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes a listener from the list that's notified each time a
+ change to the data model occurs.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>l</code></td><td>the TableModelListener
+     </td></tr></table><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#removeTableModelListener" title="public function removeTableModelListener(l:TableModelListener):Void">removeTableModelListener()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p></div></div><div class="method_details"><a name="getTableModelListeners"></a><h3>getTableModelListeners</h3><code class="method_synopsis">public function <strong class="method_name">getTableModelListeners</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns an array of all the table model listeners 
+ registered on this model.
+
+ </p><h4>Return</h4><p class="extra_info"> all of this model's <code>TableModelListener</code>s 
+         or an empty
+         array if no table model listeners are currently registered
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#addTableModelListener">addTableModelListener</a></li><li><a href="#removeTableModelListener">removeTableModelListener</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.table" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

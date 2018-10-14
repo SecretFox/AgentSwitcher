@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.FocusManager - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/FocusTraversalPolicy.html" title="Interface org.aswing.FocusTraversalPolicy" rel="prev"/><link href="../../org/aswing/FlowLayout.html" title="Class org.aswing.FlowLayout" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.FocusManager</h1><div class="type_hierachy"><ul><li><strong>org.aswing.FocusManager</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ FocusManager manages all the when a component should receive focus, i.e if it
+ can.
+ </p></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><a href="#ASWING_TAB_INDEX_END" title="static public ASWING_TAB_INDEX_END:Number">ASWING_TAB_INDEX_END</a>, <a href="#ASWING_TAB_INDEX_START" title="static public ASWING_TAB_INDEX_START:Number">ASWING_TAB_INDEX_START</a>, <a href="#BACKWARD_TRAVERSAL_KEYS" title="static public BACKWARD_TRAVERSAL_KEYS:Number">BACKWARD_TRAVERSAL_KEYS</a>, <a href="#DOWN_CYCLE_TRAVERSAL_KEYS" title="static public DOWN_CYCLE_TRAVERSAL_KEYS:Number">DOWN_CYCLE_TRAVERSAL_KEYS</a>, <a href="#FORWARD_TRAVERSAL_KEYS" title="static public FORWARD_TRAVERSAL_KEYS:Number">FORWARD_TRAVERSAL_KEYS</a>, <a href="#TRAVERSAL_KEY_LENGTH" title="static public TRAVERSAL_KEY_LENGTH:Number">TRAVERSAL_KEY_LENGTH</a>, <a href="#UP_CYCLE_TRAVERSAL_KEYS" title="static public UP_CYCLE_TRAVERSAL_KEYS:Number">UP_CYCLE_TRAVERSAL_KEYS</a></div><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#FocusManager" title="public function FocusManager()">FocusManager()</a></code></div><a href="#disableTraversal" title="static public function disableTraversal():Void">disableTraversal()</a>, <a href="#downFocusCycle" title="public function downFocusCycle():Void">downFocusCycle()</a>, <a href="#downFocusCycleOfContainer" title="public function downFocusCycleOfContainer(aContainer:Container):Void">downFocusCycleOfContainer()</a>, <a href="#enableTraversal" title="static public function enableTraversal():Void">enableTraversal()</a>, <a href="#focusNext" title="public function focusNext():Void">focusNext()</a>, <a href="#focusNextOfComponent" title="public function focusNextOfComponent(aComponent:Component):Void">focusNextOfComponent()</a>, <a href="#focusPrevious" title="public function focusPrevious():Void">focusPrevious()</a>, <a href="#focusPreviousOfComponent" title="public function focusPreviousOfComponent(aComponent:Component):Void">focusPreviousOfComponent()</a>, <a href="#getActiveWindow" title="public function getActiveWindow():JWindow">getActiveWindow()</a>, <a href="#getCurrentFocusCycleRoot" title="public function getCurrentFocusCycleRoot():Container">getCurrentFocusCycleRoot()</a>, <a href="#getCurrentManager" title="static public function getCurrentManager():FocusManager">getCurrentManager()</a>, <a href="#getDefaultFocusTraversalKeys" title="public function getDefaultFocusTraversalKeys(id:Number):Array">getDefaultFocusTraversalKeys()</a>, <a href="#getDefaultFocusTraversalPolicy" title="public function getDefaultFocusTraversalPolicy():FocusTraversalPolicy">getDefaultFocusTraversalPolicy()</a>, <a href="#getFocusedComponent" title="static public function getFocusedComponent():Component">getFocusedComponent()</a>, <a href="#getFocusOwner" title="public function getFocusOwner():Component">getFocusOwner()</a>, <a href="#getPreviousFocusedComponent" title="static public function getPreviousFocusedComponent():Component">getPreviousFocusedComponent()</a>, <a href="#isTraversalEnabled" title="static public function isTraversalEnabled():Boolean">isTraversalEnabled()</a>, <a href="#isTraversing" title="public function isTraversing():Boolean">isTraversing()</a>, <a href="#receiveFocus" title="public function receiveFocus(obj:Object):Number">receiveFocus()</a>, <a href="#setActiveWindow" title="public function setActiveWindow(newActiveWindow:JWindow):Void">setActiveWindow()</a>, <a href="#setCurrentFocusCycleRoot" title="public function setCurrentFocusCycleRoot(root:Container):Void">setCurrentFocusCycleRoot()</a>, <a href="#setCurrentManager" title="static public function setCurrentManager(newManager:FocusManager):Void">setCurrentManager()</a>, <a href="#setDefaultFocusTraversalKeys" title="public function setDefaultFocusTraversalKeys(id:Number, keys:Array):Void">setDefaultFocusTraversalKeys()</a>, <a href="#setDefaultFocusTraversalPolicy" title="public function setDefaultFocusTraversalPolicy(newDefaultPolicy:FocusTraversalPolicy):Void">setDefaultFocusTraversalPolicy()</a>, <a href="#setFocusOwner" title="public function setFocusOwner(newFocusOwner:Component):Void">setFocusOwner()</a>, <a href="#setTraversing" title="public function setTraversing(b:Boolean):Void">setTraversing()</a>, <a href="#upFocusCycle" title="public function upFocusCycle():Void">upFocusCycle()</a>, <a href="#upFocusCycleOfComponent" title="public function upFocusCycleOfComponent(aComponent:Component):Void">upFocusCycleOfComponent()</a></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="FocusManager"></a><h3>FocusManager</h3><code class="method_synopsis">public function <strong class="method_name">FocusManager</strong>()</code><div class="method_info"></div></div></div><div class="field_detail_list"><h2>Field Detail</h2><a name="FORWARD_TRAVERSAL_KEYS"></a><h3>FORWARD_TRAVERSAL_KEYS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">FORWARD_TRAVERSAL_KEYS</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The identifier for the Forward focus traversal keys.
+
+ <h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalKeys">setDefaultFocusTraversalKeys()</a></li><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><a name="BACKWARD_TRAVERSAL_KEYS"></a><h3>BACKWARD_TRAVERSAL_KEYS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">BACKWARD_TRAVERSAL_KEYS</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The identifier for the Backward focus traversal keys.
+
+ <h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalKeys">setDefaultFocusTraversalKeys()</a></li><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><a name="UP_CYCLE_TRAVERSAL_KEYS"></a><h3>UP_CYCLE_TRAVERSAL_KEYS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">UP_CYCLE_TRAVERSAL_KEYS</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The identifier for the Up Cycle focus traversal keys.
+
+ <h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalKeys">setDefaultFocusTraversalKeys()</a></li><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><a name="DOWN_CYCLE_TRAVERSAL_KEYS"></a><h3>DOWN_CYCLE_TRAVERSAL_KEYS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">DOWN_CYCLE_TRAVERSAL_KEYS</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The identifier for the Down Cycle focus traversal keys.
+
+ <h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalKeys">setDefaultFocusTraversalKeys()</a></li><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><a name="TRAVERSAL_KEY_LENGTH"></a><h3>TRAVERSAL_KEY_LENGTH</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">TRAVERSAL_KEY_LENGTH</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The identifiers length.
+     </div></div><a name="ASWING_TAB_INDEX_START"></a><h3>ASWING_TAB_INDEX_START</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ASWING_TAB_INDEX_START</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ Then tab index range(start index, inclusive) of AsWing component using
+	 </div></div><a name="ASWING_TAB_INDEX_END"></a><h3>ASWING_TAB_INDEX_END</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ASWING_TAB_INDEX_END</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ Then tab index range(end inde, inclusive) of AsWing component using
+	 </div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="receiveFocus"></a><h3>receiveFocus</h3><code class="method_synopsis">public function <strong class="method_name">receiveFocus</strong>(obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Makes specified component obj(a movie clip or a text field) to receive this flash internal focus.
+ </p><h4>Return</h4><p class="extra_info"> the flash system tab navigating direction, 0 if it is not navigated by system tab.
+	 </p></div></div><div class="method_details"><a name="isTraversing"></a><h3>isTraversing</h3><code class="method_synopsis">public function <strong class="method_name">isTraversing</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns if the focus is traversing by keys.
+ <p>
+ Once when focus traversed by FocusTraversalKeys this is turned on, 
+ true will be returned. Once when Mouse is down, this will be turned off, 
+ false will be returned.
+ </p><h4>Return</h4><p class="extra_info"> true if the focus is traversing by FocusTraversalKeys, otherwise returns false.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><div class="method_details alt_row"><a name="setTraversing"></a><h3>setTraversing</h3><code class="method_synopsis">public function <strong class="method_name">setTraversing</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets if the focus is traversing by keys.
+ <p>
+ By default, the traversing property will only be set true when TRAVERSAL_KEYS down.
+ If your component need view focus rect, you should set it to true when your component's 
+ managed key down. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true tag traversing to be true, false tag traversing to be false
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isTraversing">isTraversing()</a></li></ul></div></div><div class="method_details"><a name="disableTraversal"></a><h3>disableTraversal</h3><code class="method_synopsis">static public function <strong class="method_name">disableTraversal</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Disables the traversal by keys pressing.
+ If this method called, TAB... keys will not effect the focus traverse. And component will not fire 
+ any Key events when there are focused and key pressed.
+	 </p></div></div><div class="method_details alt_row"><a name="enableTraversal"></a><h3>enableTraversal</h3><code class="method_synopsis">static public function <strong class="method_name">enableTraversal</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Enables the traversal by keys pressing.
+ If this method called, TAB... keys will effect the focus traverse. And component will fire 
+ Key events when there are focused and key pressed.
+	 </p></div></div><div class="method_details"><a name="isTraversalEnabled"></a><h3>isTraversalEnabled</h3><code class="method_synopsis">static public function <strong class="method_name">isTraversalEnabled</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the traversal enabled.
+ </p><h4>Return</h4><p class="extra_info"> whether the traversal enabled.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#disableTraversal">disableTraversal()</a></li><li><a href="#enableTraversal">enableTraversal()</a></li></ul></div></div><div class="method_details alt_row"><a name="getCurrentManager"></a><h3>getCurrentManager</h3><code class="method_synopsis">static public function <strong class="method_name">getCurrentManager</strong>():<a href="../../org/aswing/FocusManager.html" class="class_name" title="Class org.aswing.FocusManager">FocusManager</a></code><div class="method_info"><p>
+ Returns the current FocusManager instance
+
+ </p><h4>Return</h4><p class="extra_info"> this the current FocusManager instance
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setCurrentManager">setCurrentManager</a></li></ul></div></div><div class="method_details"><a name="setCurrentManager"></a><h3>setCurrentManager</h3><code class="method_synopsis">static public function <strong class="method_name">setCurrentManager</strong>(newManager:<a href="../../org/aswing/FocusManager.html" class="class_name" title="Class org.aswing.FocusManager">FocusManager</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the current FocusManager instance. If null is specified, 
+ then the current FocusManager is replaced with a new instance of FocusManager.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newManager</code></td><td>the new FocusManager
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getCurrentManager">getCurrentManager</a></li><li><a href="../../org/aswing/FocusManager.html" class="class_name" title="Class org.aswing.FocusManager">FocusManager</a></li></ul></div></div><div class="method_details alt_row"><a name="getFocusedComponent"></a><h3>getFocusedComponent</h3><code class="method_synopsis">static public function <strong class="method_name">getFocusedComponent</strong>():<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Returns the focused component.
+
+ </p><h4>Return</h4><p class="extra_info"> the focused component.
+     </p></div></div><div class="method_details"><a name="getPreviousFocusedComponent"></a><h3>getPreviousFocusedComponent</h3><code class="method_synopsis">static public function <strong class="method_name">getPreviousFocusedComponent</strong>():<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Returns the previous focused component.
+
+ </p><h4>Return</h4><p class="extra_info"> the previous focused component.
+     </p></div></div><div class="method_details alt_row"><a name="getFocusOwner"></a><h3>getFocusOwner</h3><code class="method_synopsis">public function <strong class="method_name">getFocusOwner</strong>():<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Returns the focus owner.
+
+ </p><h4>Return</h4><p class="extra_info"> the focus owner.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setFocusOwner">setFocusOwner()</a></li></ul></div></div><div class="method_details"><a name="setFocusOwner"></a><h3>setFocusOwner</h3><code class="method_synopsis">public function <strong class="method_name">setFocusOwner</strong>(newFocusOwner:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the focus owner. The operation will be cancelled if the Component
+ is not focusable.
+ <p>
+ This method does not actually set the focus to the specified Component.
+ It merely stores the value to be subsequently returned by
+ <code>getFocusOwner()</code>. Use <code>Component.requestFocus()</code>
+ or <code>Component.requestFocusInWindow()</code> to change the focus
+ owner.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getFocusOwner">getFocusOwner</a></li><li><a href="../../org/aswing/Component.html#requestFocus">Component.requestFocus()</a></li><li><a href="../../org/aswing/Component.html#requestFocusInWindow">Component.requestFocusInWindow()</a></li><li><a href="../../org/aswing/Component.html#isFocusable">Component.isFocusable</a></li></ul></div></div><div class="method_details alt_row"><a name="getActiveWindow"></a><h3>getActiveWindow</h3><code class="method_synopsis">public function <strong class="method_name">getActiveWindow</strong>():<a href="../../org/aswing/JWindow.html" class="class_name" title="Class org.aswing.JWindow">JWindow</a></code><div class="method_info"><p>
+ Returns the active Window.
+ The active Window is always either the focused Window, or the first
+ Window that is an owner of the focused Window.
+
+ </p><h4>Return</h4><p class="extra_info"> the active Window
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setActiveWindow">setActiveWindow()</a></li></ul></div></div><div class="method_details"><a name="setActiveWindow"></a><h3>setActiveWindow</h3><code class="method_synopsis">public function <strong class="method_name">setActiveWindow</strong>(newActiveWindow:<a href="../../org/aswing/JWindow.html" class="class_name" title="Class org.aswing.JWindow">JWindow</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the active Window. The active Window is always either the 
+ focused Window, or the first Window that is an owner of the focused Window.
+ <p>
+ This method does not actually change the active Window . 
+ It merely stores the value to be
+ subsequently returned by <code>getActiveWindow()</code>. Use
+ <code>Component.requestFocus()</code> or
+ <code>Component.requestFocusInWindow()</code> or
+ <code>JWindow.setActive()</code>to change the active
+ Window.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getActiveWindow">getActiveWindow()</a></li><li><a href="../../org/aswing/Component.html#requestFocus">Component.requestFocus()</a></li><li><a href="../../org/aswing/Component.html#requestFocusInWindow">Component.requestFocusInWindow()</a></li><li><a href="../../org/aswing/JWindow.html#setActive">JWindow.setActive()</a></li></ul></div></div><div class="method_details alt_row"><a name="getCurrentFocusCycleRoot"></a><h3>getCurrentFocusCycleRoot</h3><code class="method_synopsis">public function <strong class="method_name">getCurrentFocusCycleRoot</strong>():<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a></code><div class="method_info"><p>
+ Returns the current focus cycle root. If the focus owner is itself
+ a focus cycle root, then it may be ambiguous as to which Components
+ represent the next and previous Components to focus during normal focus
+ traversal. In that case, the current focus cycle root is used to
+ differentiate among the possibilities.
+ <p>
+ This method is intended to be used only by FocusManagers and
+ focus implementations. It is not for general client use.
+
+ </p><h4>Return</h4><p class="extra_info"> the current focus cycle root.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setCurrentFocusCycleRoot">setCurrentFocusCycleRoot()</a></li></ul></div></div><div class="method_details"><a name="setCurrentFocusCycleRoot"></a><h3>setCurrentFocusCycleRoot</h3><code class="method_synopsis">public function <strong class="method_name">setCurrentFocusCycleRoot</strong>(root:<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the current focus cycle root. If the focus owner is itself a focus
+ cycle root, then it may be ambiguous as to which Components represent
+ the next and previous Components to focus during normal focus traversal.
+ In that case, the current focus cycle root is used to differentiate
+ among the possibilities.
+ <p>
+ This method is intended to be used only by FocusManagers and
+ focus implementations. It is not for general client use.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getCurrentFocusCycleRoot">getCurrentFocusCycleRoot()</a></li></ul></div></div><div class="method_details alt_row"><a name="focusNextOfComponent"></a><h3>focusNextOfComponent</h3><code class="method_synopsis">public function <strong class="method_name">focusNextOfComponent</strong>(aComponent:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Focuses the Component after aComponent, typically based on a
+ FocusTraversalPolicy.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aComponent</code></td><td>the Component that is the basis for the focus
+        traversal operation
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/FocusTraversalPolicy.html" class="interface_name" title="Interface org.aswing.FocusTraversalPolicy">FocusTraversalPolicy</a></li></ul></div></div><div class="method_details"><a name="focusPreviousOfComponent"></a><h3>focusPreviousOfComponent</h3><code class="method_synopsis">public function <strong class="method_name">focusPreviousOfComponent</strong>(aComponent:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Focuses the Component before aComponent, typically based on a
+ FocusTraversalPolicy.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aComponent</code></td><td>the Component that is the basis for the focus
+        traversal operation
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/FocusTraversalPolicy.html" class="interface_name" title="Interface org.aswing.FocusTraversalPolicy">FocusTraversalPolicy</a></li></ul></div></div><div class="method_details alt_row"><a name="upFocusCycleOfComponent"></a><h3>upFocusCycleOfComponent</h3><code class="method_synopsis">public function <strong class="method_name">upFocusCycleOfComponent</strong>(aComponent:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Moves the focus up one focus traversal cycle. Typically, the focus owner
+ is set to aComponent's focus cycle root, and the current focus cycle
+ root is set to the new focus owner's focus cycle root. If, however,
+ aComponent's focus cycle root is a Window, then typically the focus
+ owner is set to the Window's default Component to focus, and the current
+ focus cycle root is unchanged.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aComponent</code></td><td>the Component that is the basis for the focus
+        traversal operation
+     </td></tr></table></div></div><div class="method_details"><a name="downFocusCycleOfContainer"></a><h3>downFocusCycleOfContainer</h3><code class="method_synopsis">public function <strong class="method_name">downFocusCycleOfContainer</strong>(aContainer:<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Moves the focus down one focus traversal cycle. Typically, if
+ aContainer is a focus cycle root, then the focus owner is set to
+ aContainer's default Component to focus, and the current focus cycle
+ root is set to aContainer. If aContainer is not a focus cycle root, then
+ no focus traversal operation occurs.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aContainer</code></td><td>the Container that is the basis for the focus
+        traversal operation
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="focusNext"></a><h3>focusNext</h3><code class="method_synopsis">public function <strong class="method_name">focusNext</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Focuses the Component after the current focus owner.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#focusNextOfComponent">focusNextOfComponent()</a></li></ul></div></div><div class="method_details"><a name="focusPrevious"></a><h3>focusPrevious</h3><code class="method_synopsis">public function <strong class="method_name">focusPrevious</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Focuses the Component before the current focus owner.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#focusPreviousOfComponent">focusPreviousOfComponent()</a></li></ul></div></div><div class="method_details alt_row"><a name="upFocusCycle"></a><h3>upFocusCycle</h3><code class="method_synopsis">public function <strong class="method_name">upFocusCycle</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Moves the focus up one focus traversal cycle from the current focus
+ owner. Typically, the new focus owner is set to the current focus
+ owner's focus cycle root, and the current focus cycle root is set to the
+ new focus owner's focus cycle root. If, however, the current focus
+ owner's focus cycle root is a Window, then typically the focus owner is
+ set to the focus cycle root's default Component to focus, and the
+ current focus cycle root is unchanged.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#upFocusCycleOfComponent">upFocusCycleOfComponent()</a></li></ul></div></div><div class="method_details"><a name="downFocusCycle"></a><h3>downFocusCycle</h3><code class="method_synopsis">public function <strong class="method_name">downFocusCycle</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Moves the focus down one focus traversal cycle from the current focus
+ owner, if and only if the current focus owner is a Container that is a
+ focus cycle root. Typically, the focus owner is set to the current focus
+ owner's default Component to focus, and the current focus cycle root is
+ set to the current focus owner. If the current focus owner is not a
+ Container that is a focus cycle root, then no focus traversal operation
+ occurs.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#downFocusCycleOfComponent">downFocusCycleOfComponent()</a></li></ul></div></div><div class="method_details alt_row"><a name="getDefaultFocusTraversalPolicy"></a><h3>getDefaultFocusTraversalPolicy</h3><code class="method_synopsis">public function <strong class="method_name">getDefaultFocusTraversalPolicy</strong>():<a href="../../org/aswing/FocusTraversalPolicy.html" class="interface_name" title="Interface org.aswing.FocusTraversalPolicy">FocusTraversalPolicy</a></code><div class="method_info"><p>
+ Returns the default FocusTraversalPolicy. Top-level components 
+ use this value on their creation to initialize their own focus traversal
+ policy by explicit call to Container.setFocusTraversalPolicy.
+
+ </p><h4>Return</h4><p class="extra_info"> the default FocusTraversalPolicy. null will never be returned.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalPolicy">setDefaultFocusTraversalPolicy()</a></li><li><a href="../../org/aswing/Container.html#setFocusTraversalPolicy">Container.setFocusTraversalPolicy()</a></li><li><a href="../../org/aswing/Container.html#getFocusTraversalPolicy">Container.getFocusTraversalPolicy()</a></li></ul></div></div><div class="method_details"><a name="setDefaultFocusTraversalPolicy"></a><h3>setDefaultFocusTraversalPolicy</h3><code class="method_synopsis">public function <strong class="method_name">setDefaultFocusTraversalPolicy</strong>(newDefaultPolicy:<a href="../../org/aswing/FocusTraversalPolicy.html" class="interface_name" title="Interface org.aswing.FocusTraversalPolicy">FocusTraversalPolicy</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the default FocusTraversalPolicy. Top-level components 
+ use this value on their creation to initialize their own focus traversal
+ policy by explicit call to Container.setFocusTraversalPolicy.
+ Note: this call doesn't affect already created components as they have 
+ their policy initialized. Only new components will use this policy as
+ their default policy.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getDefaultFocusTraversalPolicy">getDefaultFocusTraversalPolicy()</a></li><li><a href="../../org/aswing/Container.html#setFocusTraversalPolicy">Container.setFocusTraversalPolicy()</a></li><li><a href="../../org/aswing/Container.html#getFocusTraversalPolicy">Container.getFocusTraversalPolicy()</a></li></ul></div></div><div class="method_details alt_row"><a name="getDefaultFocusTraversalKeys"></a><h3>getDefaultFocusTraversalKeys</h3><code class="method_synopsis">public function <strong class="method_name">getDefaultFocusTraversalKeys</strong>(id:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns a Array of default focus traversal keys for a given traversal
+ operation. This traversal key Set will be in effect on all Windows that
+ have no such Set of their own explicitly defined. This Set will also be
+ inherited, recursively, by any child Component of those Windows that has
+ no such Set of its own explicitly defined. (See
+ <code>setDefaultFocusTraversalKeys</code> for a full description of each
+ operation.)
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>id</code></td><td>one of KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+        KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+        KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, or
+        KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the <code>Array</code> of <code>Number(Key.getCode())</code>s
+         for the specified operation; <code>null</code> 
+         will be returned if the id is not defineded TRAVERSAL_KEYS.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultFocusTraversalKeys">setDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div><div class="method_details"><a name="setDefaultFocusTraversalKeys"></a><h3>setDefaultFocusTraversalKeys</h3><code class="method_synopsis">public function <strong class="method_name">setDefaultFocusTraversalKeys</strong>(id:<span class="unresolved_type_name">Number</span>, keys:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the default focus traversal keys for a given traversal operation.
+ This traversal key <code>Array</code> will be in effect on all
+ <code>JWindow</code>s that have no such <code>Array</code> of
+ their own explicitly defined. This <code>Array</code> will also be
+ inherited, recursively, by any child <code>Component</code> of
+ those <code>JWindows</code> that has
+ no such <code>Array</code> of its own explicitly defined.
+ <p>
+ The default values for the default focus traversal keys are
+ implementation-dependent. We recommends that all implementations for a
+ particular native platform use the same default values. The
+ recommendations for Windows and Unix are listed below. These
+ recommendations are used in the default implementations.
+
+ <table border=1 summary="Recommended default values for focus traversal keys">
+ <tr>
+    <th>Identifier</th>
+    <th>Meaning</th>
+    <th>Default</th>
+ </tr>
+ <tr>
+    <td><code>KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS</code></td>
+    <td>Normal forward keyboard traversal</td>
+    <td><code>TAB</code> on <code>KEY_PRESSED</code></td>
+ </tr>
+ <tr>
+    <td><code>KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS</code></td>
+    <td>Normal reverse keyboard traversal</td>
+    <td><code>SHIFT-TAB</code> on <code>KEY_PRESSED</code></td>
+ </tr>
+ <tr>
+    <td><code>KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS</code></td>
+    <td>Go up one focus traversal cycle</td>
+    <td>none</td>
+ </tr>
+ <tr>
+    <td><code>KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS</code></td>
+    <td>Go down one focus traversal cycle</td>
+    <td>none</td>
+ </tr>
+ </table>
+
+ To disable a traversal key, use an empty <code>Array</code>;
+ <code>[]</code> is recommended.
+ The priority of traversal keys check is first UP_CYCLE_TRAVERSAL_KEYS,
+ then DOWN_CYCLE_TRAVERSAL_KEYS,BACKWARD_TRAVERSAL_KEYS last FORWARD_TRAVERSAL_KEYS.
+ So, if there's same keys the high priority TRAVERSAL will be considered. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>id</code></td><td>one of
+        <code>FocusManager.FORWARD_TRAVERSAL_KEYS</code>,
+        <code>FocusManager.BACKWARD_TRAVERSAL_KEYS</code>,
+        <code>FocusManager.UP_CYCLE_TRAVERSAL_KEYS</code>, or
+        <code>FocusManager.DOWN_CYCLE_TRAVERSAL_KEYS</code>.
+        If it is not one of them, nothing will be done.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getDefaultFocusTraversalKeys">getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#setFocusTraversalKeys">Component.setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/Component.html#getFocusTraversalKeys">Component.getFocusTraversalKeys()</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

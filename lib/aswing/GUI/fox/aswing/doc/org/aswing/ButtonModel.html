@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.ButtonModel - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/Cell.html" title="Interface org.aswing.Cell" rel="prev"/><link href="../../org/aswing/ButtonGroup.html" title="Class org.aswing.ButtonGroup" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.ButtonModel</h1><div class="type_hierachy"><ul><li><a href="../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">org.aswing.IEventDispatcher</a><ul><li><strong>org.aswing.ButtonModel</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ State Model for buttons.
+ This model is used for check boxes and radio buttons, which are
+ special kinds of buttons, as well as for normal buttons.
+ For check boxes and radio buttons, pressing the mouse selects
+ the button. 
+ <p>
+ In use, a UI will invoke <a href="#setSelected">setSelected</a> when a mouse
+ click occurs over a check box or radio button. 
+ 
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addChangeListener" title="public function addChangeListener(func:Function, obj:Object):Object">addChangeListener()</a>, <a href="#addSelectionListener" title="public function addSelectionListener(func:Function, obj:Object):Object">addSelectionListener()</a>, <a href="#isAllowUnselectAllInGroup" title="public function isAllowUnselectAllInGroup():Boolean">isAllowUnselectAllInGroup()</a>, <a href="#isEnabled" title="public function isEnabled():Boolean">isEnabled()</a>, <a href="#isPressed" title="public function isPressed():Boolean">isPressed()</a>, <a href="#isReleased" title="public function isReleased():Boolean">isReleased()</a>, <a href="#isRollOver" title="public function isRollOver():Boolean">isRollOver()</a>, <a href="#isSelected" title="public function isSelected():Boolean">isSelected()</a>, <a href="#setAllowUnselectAllInGroup" title="public function setAllowUnselectAllInGroup(allow:Boolean):Void">setAllowUnselectAllInGroup()</a>, <a href="#setEnabled" title="public function setEnabled(b:Boolean):Void">setEnabled()</a>, <a href="#setGroup" title="public function setGroup(group:ButtonGroup):Void">setGroup()</a>, <a href="#setPressed" title="public function setPressed(b:Boolean):Void">setPressed()</a>, <a href="#setReleased" title="public function setReleased(b:Boolean):Void">setReleased()</a>, <a href="#setRollOver" title="public function setRollOver(b:Boolean):Void">setRollOver()</a>, <a href="#setSelected" title="public function setSelected(b:Boolean):Void">setSelected()</a><h4>Inherited from <a href="../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">IEventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/IEventDispatcher.html#addEventListener" title="public function addEventListener(eventNameOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../org/aswing/IEventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a></div></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="addChangeListener"></a><h3>addChangeListener</h3><code class="method_synopsis">public function <strong class="method_name">addChangeListener</strong>(func:<span class="unresolved_type_name">Function</span>, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Add a listener to listen the Model's change event.
+ <p>
+ When the button's state changed, the state is all about:
+ <ul>
+ <li>enabled
+ <li>rollOver
+ <li>pressed
+ <li>released
+ <li>selected
+ </ul>
+<br>
+ onStateChanged(source:ButtonModel)
+ </p><h4>Return</h4><p class="extra_info"> the listener added.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/Component.html#ON_STATE_CHANGED">org.aswing.Component.ON_STATE_CHANGED</a></li><li>EventDispatcher#addEventListener()</li></ul></div></div><div class="method_details"><a name="addSelectionListener"></a><h3>addSelectionListener</h3><code class="method_synopsis">public function <strong class="method_name">addSelectionListener</strong>(func:<span class="unresolved_type_name">Function</span>, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Add a listener to listen the Model's selection change event.
+ When the button's selection changed, fired when diselected or selected.
+<br>
+ onSelectionChanged(source:ButtonModel)
+ </p><h4>Return</h4><p class="extra_info"> the listener added.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/Component.html#ON_SELECTION_CHANGED">org.aswing.Component.ON_SELECTION_CHANGED</a></li><li>EventDispatcher#addEventListener()</li></ul></div></div><div class="method_details alt_row"><a name="isEnabled"></a><h3>isEnabled</h3><code class="method_synopsis">public function <strong class="method_name">isEnabled</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates if the button can be selected or pressed by an input device (such as a mouse pointer).
+	 </p></div></div><div class="method_details"><a name="isRollOver"></a><h3>isRollOver</h3><code class="method_synopsis">public function <strong class="method_name">isRollOver</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates that the mouse is over the button.
+	 </p></div></div><div class="method_details alt_row"><a name="isPressed"></a><h3>isPressed</h3><code class="method_synopsis">public function <strong class="method_name">isPressed</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates that the button has been pressed the and not be released yet.
+ <p><b>This is not same as Java Swing's, this is some like Java Swing's Armed</b>
+	 </p></div></div><div class="method_details"><a name="isReleased"></a><h3>isReleased</h3><code class="method_synopsis">public function <strong class="method_name">isReleased</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates if button has been released. This is some like java Swing's pressed when released inside.
+	 </p></div></div><div class="method_details alt_row"><a name="isSelected"></a><h3>isSelected</h3><code class="method_synopsis">public function <strong class="method_name">isSelected</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates if the button has been selected.
+	 </p></div></div><div class="method_details"><a name="setEnabled"></a><h3>setEnabled</h3><code class="method_synopsis">public function <strong class="method_name">setEnabled</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Enables or disables the button.
+	 </p></div></div><div class="method_details alt_row"><a name="setRollOver"></a><h3>setRollOver</h3><code class="method_synopsis">public function <strong class="method_name">setRollOver</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets or clears the button's rollover state.
+	 </p></div></div><div class="method_details"><a name="setPressed"></a><h3>setPressed</h3><code class="method_synopsis">public function <strong class="method_name">setPressed</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the button to being pressed or unpressed.
+	 </p></div></div><div class="method_details alt_row"><a name="setReleased"></a><h3>setReleased</h3><code class="method_synopsis">public function <strong class="method_name">setReleased</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the button to released or unreleased.
+	 </p></div></div><div class="method_details"><a name="setSelected"></a><h3>setSelected</h3><code class="method_synopsis">public function <strong class="method_name">setSelected</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Selects or deselects the button.
+	 </p></div></div><div class="method_details alt_row"><a name="setGroup"></a><h3>setGroup</h3><code class="method_synopsis">public function <strong class="method_name">setGroup</strong>(group:<a href="../../org/aswing/ButtonGroup.html" class="class_name" title="Class org.aswing.ButtonGroup">ButtonGroup</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Identifies the group this button belongs to --
+ needed for radio buttons, which are mutually
+ exclusive within their group.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>group</code></td><td>the ButtonGroup this button belongs to
+     </td></tr></table></div></div><div class="method_details"><a name="setAllowUnselectAllInGroup"></a><h3>setAllowUnselectAllInGroup</h3><code class="method_synopsis">public function <strong class="method_name">setAllowUnselectAllInGroup</strong>(allow:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets if selected element can change its status to unselected
+ then in group. In other words, if no slected elements in group is
+ allowed.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>allow</code></td><td>true if no selected elements in group is allowed and false if not
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isAllowUnselectAllInGroup">isAllowUnselectAllInGroup</a></li></ul></div></div><div class="method_details alt_row"><a name="isAllowUnselectAllInGroup"></a><h3>isAllowUnselectAllInGroup</h3><code class="method_synopsis">public function <strong class="method_name">isAllowUnselectAllInGroup</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Checks if selected element can change its status to unselected
+ then in group. In other words, if no slected elements in group is
+ allowed.
+ 
+ </p><h4>Return</h4><p class="extra_info"> true if no selected elements in group is allowed
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setAllowUnselectAllInGroup">setAllowUnselectAllInGroup</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

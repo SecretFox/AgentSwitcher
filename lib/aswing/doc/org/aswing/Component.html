@@ -1,0 +1,913 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.Component - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/ComponentDecorator.html" title="Class org.aswing.ComponentDecorator" rel="prev"/><link href="../../org/aswing/ComboBoxEditor.html" title="Interface org.aswing.ComboBoxEditor" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.Component</h1><div class="type_hierachy"><ul><li><a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">org.aswing.EventDispatcher</a><ul><li><strong>org.aswing.Component</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ The super class for all UIs.
+ 
+ <p>The maximumSize and minimumSize are the component's represent max or min size.
+ 
+ <p>You can set a Component's size max than its maximumSize, but when it was drawed,
+ it will not max than its maximumSize.Just as its maximumSize and posited itself
+ in that size dimension you just setted. The position is relative to <code>getAlignmentX</code> 
+ and <code>getAlignmentY<code>.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setSize">setSize()</a></li><li><a href="#setMaximuzedSize">setMaximuzedSize()</a></li><li><a href="#getAlignmentX">getAlignmentX()</a></li><li><a href="#setActive">setActive()</a></li></ul></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><a href="#creater" title="static public creater:ElementCreater">creater</a>, <a href="#MAX_CLICK_INTERVAL" title="static public MAX_CLICK_INTERVAL:Number">MAX_CLICK_INTERVAL</a>, <a href="#ON_CLICKED" title="static public ON_CLICKED:String">ON_CLICKED</a>, <a href="#ON_CREATED" title="static public ON_CREATED:String">ON_CREATED</a>, <a href="#ON_DESTROY" title="static public ON_DESTROY:String">ON_DESTROY</a>, <a href="#ON_DRAG_DROP" title="static public ON_DRAG_DROP:String">ON_DRAG_DROP</a>, <a href="#ON_DRAG_ENTER" title="static public ON_DRAG_ENTER:String">ON_DRAG_ENTER</a>, <a href="#ON_DRAG_EXIT" title="static public ON_DRAG_EXIT:String">ON_DRAG_EXIT</a>, <a href="#ON_DRAG_OVERRING" title="static public ON_DRAG_OVERRING:String">ON_DRAG_OVERRING</a>, <a href="#ON_DRAG_RECOGNIZED" title="static public ON_DRAG_RECOGNIZED:String">ON_DRAG_RECOGNIZED</a>, <a href="#ON_DRAGOUT" title="static public ON_DRAGOUT:String">ON_DRAGOUT</a>, <a href="#ON_DRAGOVER" title="static public ON_DRAGOVER:String">ON_DRAGOVER</a>, <a href="#ON_FOCUS_GAINED" title="static public ON_FOCUS_GAINED:String">ON_FOCUS_GAINED</a>, <a href="#ON_FOCUS_LOST" title="static public ON_FOCUS_LOST:String">ON_FOCUS_LOST</a>, <a href="#ON_HIDDEN" title="static public ON_HIDDEN:String">ON_HIDDEN</a>, <a href="#ON_KEY_DOWN" title="static public ON_KEY_DOWN:String">ON_KEY_DOWN</a>, <a href="#ON_KEY_UP" title="static public ON_KEY_UP:String">ON_KEY_UP</a>, <a href="#ON_MOUSE_WHEEL" title="static public ON_MOUSE_WHEEL:String">ON_MOUSE_WHEEL</a>, <a href="#ON_MOVED" title="static public ON_MOVED:String">ON_MOVED</a>, <a href="#ON_PAINT" title="static public ON_PAINT:String">ON_PAINT</a>, <a href="#ON_PRESS" title="static public ON_PRESS:String">ON_PRESS</a>, <a href="#ON_RELEASE" title="static public ON_RELEASE:String">ON_RELEASE</a>, <a href="#ON_RELEASEOUTSIDE" title="static public ON_RELEASEOUTSIDE:String">ON_RELEASEOUTSIDE</a>, <a href="#ON_RESIZED" title="static public ON_RESIZED:String">ON_RESIZED</a>, <a href="#ON_ROLLOUT" title="static public ON_ROLLOUT:String">ON_ROLLOUT</a>, <a href="#ON_ROLLOVER" title="static public ON_ROLLOVER:String">ON_ROLLOVER</a>, <a href="#ON_SHOWN" title="static public ON_SHOWN:String">ON_SHOWN</a>, <a href="#ON_STATE_CHANGED" title="static public ON_STATE_CHANGED:String">ON_STATE_CHANGED</a><h4>Inherited from <a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/EventDispatcher.html#ON_ACT" title="static public ON_ACT:String">ON_ACT</a></div></div><div class="method_index"><h2>Method Index</h2><a href="#addDragAcceptableInitiator" title="public function addDragAcceptableInitiator(com:Component):Void">addDragAcceptableInitiator()</a>, <a href="#addTo" title="public function addTo(parent:Container):Void">addTo()</a>, <a href="#attachMovieClip" title="public function attachMovieClip(linkage:String, nameStart:String, depth:Number):MovieClip">attachMovieClip()</a>, <a href="#bringToBottomDepth" title="public function bringToBottomDepth():Void">bringToBottomDepth()</a>, <a href="#bringToTopDepth" title="public function bringToTopDepth():Void">bringToTopDepth()</a>, <a href="#clearFocusGraphics" title="public function clearFocusGraphics():Void">clearFocusGraphics()</a>, <a href="#clearFocusGraphicsByUI" title="public function clearFocusGraphicsByUI():Void">clearFocusGraphicsByUI()</a>, <a href="#click" title="public function click():Void">click()</a>, <a href="#componentToGlobal" title="public function componentToGlobal(p:Point):Point">componentToGlobal()</a>, <a href="#createMovieClip" title="public function createMovieClip(nameStart:String, depth:Number):MovieClip">createMovieClip()</a>, <a href="#createMovieClipOnRoot" title="public function createMovieClipOnRoot(nameStart:String, depth:Number):MovieClip">createMovieClipOnRoot()</a>, <a href="#createTextField" title="public function createTextField(nameStart:String, depth:Number):TextField">createTextField()</a>, <a href="#destroy" title="public function destroy():Void">destroy()</a>, <a href="#doLayout" title="public function doLayout():Void">doLayout()</a>, <a href="#fireDragDropEvent" title="public function fireDragDropEvent(dragInitiator:Component, sourceData:SourceData, mousePos:Point):Void">fireDragDropEvent()</a>, <a href="#fireDragEnterEvent" title="public function fireDragEnterEvent(dragInitiator:Component, sourceData:SourceData, mousePos:Point):Void">fireDragEnterEvent()</a>, <a href="#fireDragExitEvent" title="public function fireDragExitEvent(dragInitiator:Component, sourceData:SourceData, mousePos:Point):Void">fireDragExitEvent()</a>, <a href="#fireDragOverringEvent" title="public function fireDragOverringEvent(dragInitiator:Component, sourceData:SourceData, mousePos:Point):Void">fireDragOverringEvent()</a>, <a href="#getAlignmentX" title="public function getAlignmentX():Number">getAlignmentX()</a>, <a href="#getAlignmentY" title="public function getAlignmentY():Number">getAlignmentY()</a>, <a href="#getAlpha" title="public function getAlpha():Number">getAlpha()</a>, <a href="#getAwmlID" title="public function getAwmlID():String">getAwmlID()</a>, <a href="#getAwmlIndex" title="public function getAwmlIndex():Number">getAwmlIndex()</a>, <a href="#getAwmlNamespace" title="public function getAwmlNamespace():String">getAwmlNamespace()</a>, <a href="#getBackground" title="public function getBackground():ASColor">getBackground()</a>, <a href="#getBorder" title="public function getBorder():Border">getBorder()</a>, <a href="#getBounds" title="public function getBounds(b:Rectangle):Rectangle">getBounds()</a>, <a href="#getClientProperty" title="public function getClientProperty(key)">getClientProperty()</a>, <a href="#getClipBounds" title="public function getClipBounds():Rectangle">getClipBounds()</a>, <a href="#getComponentRootAncestorMovieClip" title="public function getComponentRootAncestorMovieClip():MovieClip">getComponentRootAncestorMovieClip()</a>, <a href="#getConstraints" title="public function getConstraints():Object">getConstraints()</a>, <a href="#getDefaultBasicUIClass" title="public function getDefaultBasicUIClass():Function">getDefaultBasicUIClass()</a>, <a href="#getDepth" title="public function getDepth():Number">getDepth()</a>, <a href="#getFocusCycleRootAncestor" title="public function getFocusCycleRootAncestor():Container">getFocusCycleRootAncestor()</a>, <a href="#getFocusGraphics" title="public function getFocusGraphics():Graphics">getFocusGraphics()</a>, <a href="#getFocusTraversalKeys" title="public function getFocusTraversalKeys(id:Number):Array">getFocusTraversalKeys()</a>, <a href="#getFont" title="public function getFont():ASFont">getFont()</a>, <a href="#getForeground" title="public function getForeground():ASColor">getForeground()</a>, <a href="#getGlobalLocation" title="public function getGlobalLocation(p:Point):Point">getGlobalLocation()</a>, <a href="#getGraphics" title="public function getGraphics():Graphics">getGraphics()</a>, <a href="#getHeight" title="public function getHeight():Number">getHeight()</a>, <a href="#getID" title="public function getID():Object">getID()</a>, <a href="#getInsets" title="public function getInsets():Insets">getInsets()</a>, <a href="#getLocation" title="public function getLocation(p:Point):Point">getLocation()</a>, <a href="#getMaximumHeight" title="public function getMaximumHeight():Number">getMaximumHeight()</a>, <a href="#getMaximumSize" title="public function getMaximumSize():Dimension">getMaximumSize()</a>, <a href="#getMaximumWidth" title="public function getMaximumWidth():Number">getMaximumWidth()</a>, <a href="#getMinimumHeight" title="public function getMinimumHeight():Number">getMinimumHeight()</a>, <a href="#getMinimumSize" title="public function getMinimumSize():Dimension">getMinimumSize()</a>, <a href="#getMinimumWidth" title="public function getMinimumWidth():Number">getMinimumWidth()</a>, <a href="#getMousePosition" title="public function getMousePosition():Point">getMousePosition()</a>, <a href="#getName" title="public function getName():String">getName()</a>, <a href="#getOwnerComponent" title="static public function getOwnerComponent(mc:MovieClip):Component">getOwnerComponent()</a>, <a href="#getPaintBounds" title="public function getPaintBounds():Rectangle">getPaintBounds()</a>, <a href="#getParent" title="public function getParent():Container">getParent()</a>, <a href="#getPreferredHeight" title="public function getPreferredHeight():Number">getPreferredHeight()</a>, <a href="#getPreferredSize" title="public function getPreferredSize():Dimension">getPreferredSize()</a>, <a href="#getPreferredWidth" title="public function getPreferredWidth():Number">getPreferredWidth()</a>, <a href="#getRootAncestorMovieClip" title="public function getRootAncestorMovieClip():MovieClip">getRootAncestorMovieClip()</a>, <a href="#getSize" title="public function getSize(s:Dimension):Dimension">getSize()</a>, <a href="#getToolTipText" title="public function getToolTipText():String">getToolTipText()</a>, <a href="#getUIClassID" title="public function getUIClassID():String">getUIClassID()</a>, <a href="#getUIProperty" title="public function getUIProperty(name:String)">getUIProperty()</a>, <a href="#getWidth" title="public function getWidth():Number">getWidth()</a>, <a href="#getX" title="public function getX():Number">getX()</a>, <a href="#getY" title="public function getY():Number">getY()</a>, <a href="#globalToComponent" title="public function globalToComponent(p:Point):Point">globalToComponent()</a>, <a href="#hitTest" title="public function hitTest(x, y, shapeFlag):Boolean">hitTest()</a>, <a href="#hitTestMouse" title="public function hitTestMouse():Boolean">hitTestMouse()</a>, <a href="#invalidate" title="public function invalidate():Void">invalidate()</a>, <a href="#isAntiBlurring" title="public function isAntiBlurring():Boolean">isAntiBlurring()</a>, <a href="#isCachePreferSizes" title="public function isCachePreferSizes():Boolean">isCachePreferSizes()</a>, <a href="#isClipMasked" title="public function isClipMasked():Boolean">isClipMasked()</a>, <a href="#isDefaultAntiBlurring" title="static public function isDefaultAntiBlurring():Boolean">isDefaultAntiBlurring()</a>, <a href="#isDefaultCachePreferSizes" title="static public function isDefaultCachePreferSizes():Boolean">isDefaultCachePreferSizes()</a>, <a href="#isDisplayable" title="public function isDisplayable():Boolean">isDisplayable()</a>, <a href="#isDragAcceptableInitiator" title="public function isDragAcceptableInitiator(com:Component):Boolean">isDragAcceptableInitiator()</a>, <a href="#isDragEnabled" title="public function isDragEnabled():Boolean">isDragEnabled()</a>, <a href="#isDropTrigger" title="public function isDropTrigger():Boolean">isDropTrigger()</a>, <a href="#isEnabled" title="public function isEnabled():Boolean">isEnabled()</a>, <a href="#isFocusable" title="public function isFocusable():Boolean">isFocusable()</a>, <a href="#isFocusCycleRootOfContainer" title="public function isFocusCycleRootOfContainer(container:Container):Boolean">isFocusCycleRootOfContainer()</a>, <a href="#isFocusOwner" title="public function isFocusOwner():Boolean">isFocusOwner()</a>, <a href="#isFontValidated" title="public function isFontValidated():Boolean">isFontValidated()</a>, <a href="#isOpaque" title="public function isOpaque():Boolean">isOpaque()</a>, <a href="#isShowing" title="public function isShowing():Boolean">isShowing()</a>, <a href="#isTriggerEnabled" title="public function isTriggerEnabled():Boolean">isTriggerEnabled()</a>, <a href="#isUseHandCursor" title="public function isUseHandCursor():Boolean">isUseHandCursor()</a>, <a href="#isValid" title="public function isValid():Boolean">isValid()</a>, <a href="#isValidateRoot" title="public function isValidateRoot():Boolean">isValidateRoot()</a>, <a href="#isVisible" title="public function isVisible():Boolean">isVisible()</a>, <a href="#paintImmediately" title="public function paintImmediately():Void">paintImmediately()</a>, <a href="#print" title="public function print(printJob:PrintJob, printArea:Object, options:Object):Boolean">print()</a>, <a href="#putClientProperty" title="public function putClientProperty(key, value):Void">putClientProperty()</a>, <a href="#removeDragAcceptableInitiator" title="public function removeDragAcceptableInitiator(com:Component):Void">removeDragAcceptableInitiator()</a>, <a href="#removeFromContainer" title="public function removeFromContainer():Void">removeFromContainer()</a>, <a href="#repaint" title="public function repaint():Void">repaint()</a>, <a href="#requestFocus" title="public function requestFocus():Boolean">requestFocus()</a>, <a href="#revalidate" title="public function revalidate():Void">revalidate()</a>, <a href="#revalidateIfNecessary" title="public function revalidateIfNecessary():Void">revalidateIfNecessary()</a>, <a href="#setAlignmentX" title="public function setAlignmentX(ax:Number):Void">setAlignmentX()</a>, <a href="#setAlignmentY" title="public function setAlignmentY(ay:Number):Void">setAlignmentY()</a>, <a href="#setAlpha" title="public function setAlpha(alpha:Number):Void">setAlpha()</a>, <a href="#setAntiBlurring" title="public function setAntiBlurring(b:Boolean):Void">setAntiBlurring()</a>, <a href="#setAwmlID" title="public function setAwmlID(id:String):Void">setAwmlID()</a>, <a href="#setAwmlIndex" title="public function setAwmlIndex(index:Number):Void">setAwmlIndex()</a>, <a href="#setAwmlNamespace" title="public function setAwmlNamespace(namespace:String):Void">setAwmlNamespace()</a>, <a href="#setBackground" title="public function setBackground(c:ASColor):Void">setBackground()</a>, <a href="#setBorder" title="public function setBorder(b:Border):Void">setBorder()</a>, <a href="#setBounds" title="public function setBounds():Void">setBounds()</a>, <a href="#setBoundsImmediately" title="public function setBoundsImmediately():Void">setBoundsImmediately()</a>, <a href="#setCachePreferSizes" title="public function setCachePreferSizes(b:Boolean):Void">setCachePreferSizes()</a>, <a href="#setClipBounds" title="public function setClipBounds(x, y:Number, width:Number, height:Number):Void">setClipBounds()</a>, <a href="#setClipMasked" title="public function setClipMasked(m:Boolean):Void">setClipMasked()</a>, <a href="#setClipSize" title="public function setClipSize(width, height:Number):Void">setClipSize()</a>, <a href="#setConstraints" title="public function setConstraints(constraints:Object):Void">setConstraints()</a>, <a href="#setDefaultAntiBlurring" title="static public function setDefaultAntiBlurring(b:Boolean):Void">setDefaultAntiBlurring()</a>, <a href="#setDefaultCachePreferSizes" title="static public function setDefaultCachePreferSizes(b:Boolean):Void">setDefaultCachePreferSizes()</a>, <a href="#setDragEnabled" title="public function setDragEnabled(b:Boolean):Void">setDragEnabled()</a>, <a href="#setDropTrigger" title="public function setDropTrigger(b:Boolean):Void">setDropTrigger()</a>, <a href="#setEnabled" title="public function setEnabled(b:Boolean):Void">setEnabled()</a>, <a href="#setFocusable" title="public function setFocusable(focusable:Boolean):Void">setFocusable()</a>, <a href="#setFocusTraversalKeys" title="public function setFocusTraversalKeys(id:Number, keys:Array):Void">setFocusTraversalKeys()</a>, <a href="#setFont" title="public function setFont(newFont:ASFont):Void">setFont()</a>, <a href="#setFontValidated" title="public function setFontValidated(b:Boolean):Void">setFontValidated()</a>, <a href="#setForeground" title="public function setForeground(c:ASColor):Void">setForeground()</a>, <a href="#setGlobalLocation" title="public function setGlobalLocation():Void">setGlobalLocation()</a>, <a href="#setGlobalLocationImmediately" title="public function setGlobalLocationImmediately():Void">setGlobalLocationImmediately()</a>, <a href="#setHeight" title="public function setHeight(height:Number):Void">setHeight()</a>, <a href="#setLocation" title="public function setLocation():Void">setLocation()</a>, <a href="#setLocationImmediately" title="public function setLocationImmediately():Void">setLocationImmediately()</a>, <a href="#setMaximumHeight" title="public function setMaximumHeight(maximumHeight:Number):Void">setMaximumHeight()</a>, <a href="#setMaximumSize" title="public function setMaximumSize():Void">setMaximumSize()</a>, <a href="#setMaximumWidth" title="public function setMaximumWidth(maximumWidth:Number):Void">setMaximumWidth()</a>, <a href="#setMinimumHeight" title="public function setMinimumHeight(minimumHeight:Number):Void">setMinimumHeight()</a>, <a href="#setMinimumSize" title="public function setMinimumSize():Void">setMinimumSize()</a>, <a href="#setMinimumWidth" title="public function setMinimumWidth(minimumWidth:Number):Void">setMinimumWidth()</a>, <a href="#setName" title="public function setName(name:String):Void">setName()</a>, <a href="#setOpaque" title="public function setOpaque(b:Boolean):Void">setOpaque()</a>, <a href="#setPreferredHeight" title="public function setPreferredHeight(preferredHeight:Number):Void">setPreferredHeight()</a>, <a href="#setPreferredSize" title="public function setPreferredSize():Void">setPreferredSize()</a>, <a href="#setPreferredWidth" title="public function setPreferredWidth(preferredWidth:Number):Void">setPreferredWidth()</a>, <a href="#setSize" title="public function setSize():Void">setSize()</a>, <a href="#setToolTipText" title="public function setToolTipText(t:String):Void">setToolTipText()</a>, <a href="#setTriggerEnabled" title="public function setTriggerEnabled(b:Boolean):Void">setTriggerEnabled()</a>, <a href="#setUI" title="public function setUI(newUI:ComponentUI):Void">setUI()</a>, <a href="#setUIProperty" title="public function setUIProperty(name:String, value):Void">setUIProperty()</a>, <a href="#setUseHandCursor" title="public function setUseHandCursor(b:Boolean):Void">setUseHandCursor()</a>, <a href="#setVisible" title="public function setVisible(v:Boolean):Void">setVisible()</a>, <a href="#setWidth" title="public function setWidth(width:Number):Void">setWidth()</a>, <a href="#setX" title="public function setX(x:Number):Void">setX()</a>, <a href="#setY" title="public function setY(y:Number):Void">setY()</a>, <a href="#supplyOnPress" title="public function supplyOnPress():Void">supplyOnPress()</a>, <a href="#swapDepths" title="public function swapDepths(target):Void">swapDepths()</a>, <a href="#toString" title="public function toString():String">toString()</a>, <a href="#transferFocus" title="public function transferFocus():Boolean">transferFocus()</a>, <a href="#transferFocusBackward" title="public function transferFocusBackward():Boolean">transferFocusBackward()</a>, <a href="#transferFocusUpCycle" title="public function transferFocusUpCycle():Void">transferFocusUpCycle()</a>, <a href="#updateUI" title="public function updateUI():Void">updateUI()</a>, <a href="#validate" title="public function validate():Void">validate()</a>, <a href="#validateLocation" title="public function validateLocation():Void">validateLocation()</a><h4>Inherited from <a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/EventDispatcher.html#addEventListener" title="public function addEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#createEventListener" title="static public function createEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">createEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#dispatchEvent" title="public function dispatchEvent(name:Object, event:Event):Void">dispatchEvent()</a>, <a href="../../org/aswing/EventDispatcher.html#fireActionEvent" title="public function fireActionEvent():Void">fireActionEvent()</a>, <a href="../../org/aswing/EventDispatcher.html#isEventDispatchingEnabled" title="public function isEventDispatchingEnabled():Boolean">isEventDispatchingEnabled()</a>, <a href="../../org/aswing/EventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#setEventDispatchingEnabled" title="public function setEventDispatchingEnabled(e:Boolean):Void">setEventDispatchingEnabled()</a></div></div></div><div class="type_details"><div class="field_detail_list"><h2>Field Detail</h2><a name="ON_CREATED"></a><h3>ON_CREATED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_CREATED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was created due to displayable
+<br>
+ onCreated(source:Component)
+	 </div></div><a name="ON_DESTROY"></a><h3>ON_DESTROY</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DESTROY</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was removed due to undisplayable
+<br>
+ onDestroy(source:Component)
+	 </div></div><a name="ON_PAINT"></a><h3>ON_PAINT</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_PAINT</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component painting.
+ onPaint(source:Component)
+	 </div></div><a name="ON_SHOWN"></a><h3>ON_SHOWN</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_SHOWN</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onShown(source:Component)
+	 </div></div><a name="ON_HIDDEN"></a><h3>ON_HIDDEN</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_HIDDEN</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onHidden(source:Component)
+	 </div></div><a name="ON_MOVED"></a><h3>ON_MOVED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_MOVED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onMoved(source:Component, oldPos:Point, newPos:Point}
+	 </div></div><a name="ON_RESIZED"></a><h3>ON_RESIZED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_RESIZED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onResized(source:Component, oldSize:Dimension, newSize:Dimension}
+	 </div></div><a name="ON_DRAG_RECOGNIZED"></a><h3>ON_DRAG_RECOGNIZED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAG_RECOGNIZED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When dragging started if the component is drag enabled.<br>
+ onDragRecognized(dragInitiator:Component, touchedChild:Component)
+ <p>
+ <ul>
+ <li> dragInitiator the drag initiator component
+ <li> touchedChild the component that are mouse is pressed and then dragged of the initiator, it maybe the initiator self or its child.
+ </ul>
+ <h4>See Also</h4><ul class="extra_info"><li><a href="#isDragEnabled">isDragEnabled()</a></li></ul></div></div><a name="ON_DRAG_ENTER"></a><h3>ON_DRAG_ENTER</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAG_ENTER</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onDragEnter(source:Component, dragInitiator:Component, sourceData:SourceData, mousePos:Point)
+	 </div></div><a name="ON_DRAG_OVERRING"></a><h3>ON_DRAG_OVERRING</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAG_OVERRING</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onDragOverring(source:Component, dragInitiator:Component, sourceData:SourceData, mousePos:Point)
+	 </div></div><a name="ON_DRAG_EXIT"></a><h3>ON_DRAG_EXIT</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAG_EXIT</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onDragExit(source:Component, dragInitiator:Component, sourceData:SourceData, mousePos:Point)
+	 </div></div><a name="ON_DRAG_DROP"></a><h3>ON_DRAG_DROP</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAG_DROP</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ onDragDrop(source:Component, dragInitiator:Component, sourceData:SourceData, mousePos:Point)
+	 </div></div><a name="ON_STATE_CHANGED"></a><h3>ON_STATE_CHANGED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_STATE_CHANGED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component's state changed.
+ This is not implemented by every components.
+ If a component implemented to fire this event, it should 
+ declare this property again.
+<br>
+ onStateChanged(source:Component)
+ <h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/AbstractButton.html#ON_STATE_CHANGED">org.aswing.AbstractButton.ON_STATE_CHANGED</a></li><li><a href="../../org/aswing/ButtonModel.html#addChangeListener">org.aswing.ButtonModel.addChangeListener()</a></li><li><a href="../../org/aswing/BoundedRangeModel.html#addChangeListener">org.aswing.BoundedRangeModel.addChangeListener()</a></li></ul></div></div><a name="ON_PRESS"></a><h3>ON_PRESS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_PRESS</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was pressed<br>
+ onPress(source:Component)
+	 </div></div><a name="ON_RELEASE"></a><h3>ON_RELEASE</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_RELEASE</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was released<br>
+ onRelease(source:Component)
+	 </div></div><a name="ON_RELEASEOUTSIDE"></a><h3>ON_RELEASEOUTSIDE</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_RELEASEOUTSIDE</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was released outside<br>
+ onReleaseOutSide(source:Component)
+	 </div></div><a name="ON_ROLLOVER"></a><h3>ON_ROLLOVER</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_ROLLOVER</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was rollovered<br>
+ onRollOver(source:Component)
+	 </div></div><a name="ON_ROLLOUT"></a><h3>ON_ROLLOUT</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_ROLLOUT</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was rollout<br>
+ onRollOut(source:Component)
+	 </div></div><a name="ON_DRAGOVER"></a><h3>ON_DRAGOVER</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAGOVER</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was drag over<br>
+ onDragOver(source:Component)
+	 </div></div><a name="ON_DRAGOUT"></a><h3>ON_DRAGOUT</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_DRAGOUT</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was drag out<br>
+ onDragOut(source:Component)
+	 </div></div><a name="ON_CLICKED"></a><h3>ON_CLICKED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_CLICKED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was clicked outside, 
+ the clickCount was the clicked count of counted continuously<br>
+ onClicked(source:Component, clickCount:Number)
+	 </div></div><a name="ON_FOCUS_GAINED"></a><h3>ON_FOCUS_GAINED</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_FOCUS_GAINED</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component gained the focus from it is not the focus owner<br>
+ onFocusGained(source:Component)
+	 </div></div><a name="ON_FOCUS_LOST"></a><h3>ON_FOCUS_LOST</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_FOCUS_LOST</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component lost the focus from it was the focus owner<br>
+ onFocusLost(source:Component)
+	 </div></div><a name="ON_KEY_DOWN"></a><h3>ON_KEY_DOWN</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_KEY_DOWN</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was focused and <code>FocusManager.isTraversalEnabled()</code> and a keybord key is down<br>
+ onKeyDown(source:Component)
+	 </div></div><a name="ON_KEY_UP"></a><h3>ON_KEY_UP</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_KEY_UP</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was focused and <code>FocusManager.isTraversalEnabled()</code> and a keybord key is up<br>
+ onKeyUp(source:Component)
+	 </div></div><a name="ON_MOUSE_WHEEL"></a><h3>ON_MOUSE_WHEEL</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_MOUSE_WHEEL</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When the component was focused and a mouse wheel rolling<br>
+ delta as same as Mouse Listener.onMouseWheel in flash api<br>
+ onMouseWheel(source:Component, delta:Number)
+	 </div></div><a name="MAX_CLICK_INTERVAL"></a><h3>MAX_CLICK_INTERVAL</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">MAX_CLICK_INTERVAL</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info">
+ The max interval time to judge whether click was continuously.
+	 </div></div><a name="creater"></a><h3>creater</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">creater</strong>:<a href="../../org/aswing/ElementCreater.html" class="class_name" title="Class org.aswing.ElementCreater">ElementCreater</a> <em class="read_write_only">[Read Only]</em></code></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getID"></a><h3>getID</h3><code class="method_synopsis">public function <strong class="method_name">getID</strong>():<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Returns the component's id.(Type Object(usually a string))
+ Each component have their owner different id. This id is generated by Component constructor,
+ you should not to modify its value.
+	 </p></div></div><div class="method_details"><a name="setAwmlID"></a><h3>setAwmlID</h3><code class="method_synopsis">public function <strong class="method_name">setAwmlID</strong>(id:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets ID used to identify components created from AWML. Used to obtain components through 
+ <a href="../../org/aswing/awml/AwmlManager.html" class="class_name" title="Class org.aswing.awml.AwmlManager">AwmlManager</a>. You should never modify this value.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>id</code></td><td>the component's AWML ID
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getAwmlID"></a><h3>getAwmlID</h3><code class="method_synopsis">public function <strong class="method_name">getAwmlID</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns ID used to identify components created from AWML.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the AWML ID
+	 </p></div></div><div class="method_details"><a name="setAwmlNamespace"></a><h3>setAwmlNamespace</h3><code class="method_synopsis">public function <strong class="method_name">setAwmlNamespace</strong>(namespace:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets namespace used to identify components created from AWML. 
+ Used to obtain components through <a href="../../org/aswing/awml/AwmlManager.html" class="class_name" title="Class org.aswing.awml.AwmlManager">AwmlManager</a>. 
+ You should never modify this value.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>namespace</code></td><td>the new namespace name
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getAwmlNamespace"></a><h3>getAwmlNamespace</h3><code class="method_synopsis">public function <strong class="method_name">getAwmlNamespace</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns namespace name used to identify components created from AWML.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the namespace name
+	 </p></div></div><div class="method_details"><a name="setAwmlIndex"></a><h3>setAwmlIndex</h3><code class="method_synopsis">public function <strong class="method_name">setAwmlIndex</strong>(index:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets ID used to identify components created from AWML. Used to obtain components through 
+ <a href="../../org/aswing/awml/AwmlManager.html" class="class_name" title="Class org.aswing.awml.AwmlManager">AwmlManager</a>. You should never modify this value.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>index</code></td><td>the position index of the component
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getAwmlIndex"></a><h3>getAwmlIndex</h3><code class="method_synopsis">public function <strong class="method_name">getAwmlIndex</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns position index of the component inside its AWML container.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the component index in the AWML
+	 </p></div></div><div class="method_details"><a name="getUIClassID"></a><h3>getUIClassID</h3><code class="method_synopsis">public function <strong class="method_name">getUIClassID</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns the <code>UIDefaults</code> key used to
+ look up the name of the <code>org.aswing.plaf.ComponentUI</code>
+ class that defines the look and feel
+ for this component.  Most applications will never need to
+ call this method.  Subclasses of <code>Component</code> that support
+ pluggable look and feel should override this method to
+ return a <code>UIDefaults</code> key that maps to the
+ <code>ComponentUI</code> subclass that defines their look and feel.
+
+ </p><h4>Return</h4><p class="extra_info"> the <code>UIDefaults</code> key for a
+		<code>ComponentUI</code> subclass
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/UIDefaults.html#getUI">org.aswing.UIDefaults.getUI()</a></li></ul></div></div><div class="method_details alt_row"><a name="setName"></a><h3>setName</h3><code class="method_synopsis">public function <strong class="method_name">setName</strong>(name:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ This just for test, every component's root_mc name start with the name set here.
+ Different Component can have same name, suggest every type of component have a name same to his class name,
+ or you want to test, you can set any name to any component, but besure that you'd better set the same before it added to a container.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#addTo">addTo()</a></li></ul></div></div><div class="method_details"><a name="getName"></a><h3>getName</h3><code class="method_synopsis">public function <strong class="method_name">getName</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setName">setName()</a></li></ul></div></div><div class="method_details alt_row"><a name="updateUI"></a><h3>updateUI</h3><code class="method_synopsis">public function <strong class="method_name">updateUI</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Resets the UI property to a value from the current look and feel.
+ <code>Component</code> subclasses must override this method
+ like this:
+ <pre>
+   public void updateUI() {
+      setUI((SliderUI)UIManager.getUI(this);
+   }
+  </pre>
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setUI">setUI()</a></li><li><a href="../../org/aswing/UIManager.html#getLookAndFeel">org.aswing.UIManager.getLookAndFeel()</a></li><li><a href="../../org/aswing/UIManager.html#getUI">org.aswing.UIManager.getUI()</a></li></ul></div></div><div class="method_details"><a name="setUI"></a><h3>setUI</h3><code class="method_synopsis">public function <strong class="method_name">setUI</strong>(newUI:<a href="../../org/aswing/plaf/ComponentUI.html" class="class_name" title="Class org.aswing.plaf.ComponentUI">ComponentUI</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the look and feel delegate for this component.
+ <code>Component</code> subclasses generally override this method
+ to narrow the argument type. For example, in <code>JSlider</code>:
+ <pre>
+ public void setUI(SliderUI newUI) {
+     super.setUI(newUI);
+ }
+  </pre>
+ <p>
+ Additionally <code>Component</code> subclasses must provide a
+ <code>getUI</code> method that returns the correct type.  For example:
+ <pre>
+ public SliderUI getUI() {
+     return (SliderUI)ui;
+ }
+ </pre>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newUI</code></td><td>the new UI delegate
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#updateUI">updateUI()</a></li><li>UIManager#getLookAndFeel()</li><li>UIManager#getUI()</li></ul></div></div><div class="method_details alt_row"><a name="getDefaultBasicUIClass"></a><h3>getDefaultBasicUIClass</h3><code class="method_synopsis">public function <strong class="method_name">getDefaultBasicUIClass</strong>():<span class="unresolved_type_name">Function</span></code><div class="method_info"><p>
+ Returns the default basic ui class for this component.
+ If there is not a ui class specified in L&F for this component, 
+ this method will be called to return a default one.
+ <p>
+ Any component that have default ui should override this method.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the default basic ui class. 
+     </p></div></div><div class="method_details"><a name="setUIProperty"></a><h3>setUIProperty</h3><code class="method_synopsis">public function <strong class="method_name">setUIProperty</strong>(name:<span class="unresolved_type_name">String</span>, value):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the UI delegated property value.<br>
+ If the property value in component is undefined, then the delegated value 
+ will be used.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>name</code></td><td>the property name
+ </td></tr><tr><td><code>value</code></td><td>the value 
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getUIProperty"></a><h3>getUIProperty</h3><code class="method_synopsis">public function <strong class="method_name">getUIProperty</strong>(name:<span class="unresolved_type_name">String</span>)</code><div class="method_info"><p>
+ Returns the UI delegated property value.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>name</code></td><td>the property name
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the value of specified ui property
+	 </p></div></div><div class="method_details"><a name="setDefaultAntiBlurring"></a><h3>setDefaultAntiBlurring</h3><code class="method_synopsis">static public function <strong class="method_name">setDefaultAntiBlurring</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the default value of <code>antiBlurring</code> to all will created components.
+ Default value is true.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setAntiBlurring">setAntiBlurring()</a></li></ul></div></div><div class="method_details alt_row"><a name="isDefaultAntiBlurring"></a><h3>isDefaultAntiBlurring</h3><code class="method_synopsis">static public function <strong class="method_name">isDefaultAntiBlurring</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns the default value of <code>antiBlurring</code> to all will created components.
+ Default value is true.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#isAntiBlurring">isAntiBlurring()</a></li></ul></div></div><div class="method_details"><a name="setAntiBlurring"></a><h3>setAntiBlurring</h3><code class="method_synopsis">public function <strong class="method_name">setAntiBlurring</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether to anti blurring.
+ <p>
+ Anti-Blurring is that if your componenet's location is not an integer in global space, 
+ the graphics maybe blurry.
+ Sets this value to true, component will location it's root_mc to an integer position in global space and 
+ round it's paint size to integer values too.
+ Sets this value to false, component will use the location and size to paint directly 
+ without any change.
+ <p>
+ Sets this value to <code>null</code>, component will use default Anti-Blurring value 
+ returned by <code>isDefaultAntiBlurring()</code>.
+ The default value is related to <code>isDefaultAntiBlurring()</code>.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setDefaultAntiBlurring">setDefaultAntiBlurring()</a></li></ul></div></div><div class="method_details alt_row"><a name="isAntiBlurring"></a><h3>isAntiBlurring</h3><code class="method_synopsis">public function <strong class="method_name">isAntiBlurring</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether to anti blurring.
+ <p>
+ Anti-Blurring is that if your componenet's location is not an integer in global space, 
+ the graphics maybe blurry.
+ If this value is true, component will location it's root_mc to an integer position in global space and 
+ round it's paint size to integer values too.
+ If this value is false, component will use the location and size to paint directly without any change.
+ If this value is <code>null</code>, component will use default 
+ Anti-Blurring value returned by <code>isDefaultAntiBlurring()</code>.
+ <p>
+ The default value is related to <code>isDefaultAntiBlurring()</code>.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDefaultAntiBlurring">isDefaultAntiBlurring()</a></li></ul></div></div><div class="method_details"><a name="print"></a><h3>print</h3><code class="method_synopsis">public function <strong class="method_name">print</strong>(printJob:<span class="unresolved_type_name">PrintJob</span>, printArea:<span class="unresolved_type_name">Object</span>, options:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Sends this component as a single page to the print spooler. 
+ This method will call PrintJob.addPage see <span class="unresolved_type_name">http://livedocs.macromedia.com/flash/8/main/00002609.html</span> 
+ for details.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>printJob</code></td><td>the printJob used to print the component
+ </td></tr><tr><td><code>printArea</code></td><td>(optional)the print area in this component coordinates, default is the current component size area
+ </td></tr><tr><td><code>options</code></td><td>(optional)A parameter that specifies whether to print as vector or bitmap, in the following format:
+ <pre>
+ {printAsBitmap:Boolean}
+ </pre>
+ </td></tr></table><h4>Return</h4><p class="extra_info"> A Boolean value: true if the page is successfully sent to the print spooler; false otherwise.
+	 </p></div></div><div class="method_details alt_row"><a name="addTo"></a><h3>addTo</h3><code class="method_synopsis">public function <strong class="method_name">addTo</strong>(parent:<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Create and add this component to a Container.
+ the method must only can call in a Container's method,
+ else the Container's layout maybe wrong and Container event will not be called
+ 
+ If component was added to a displayable container it could be diplayable.
+ else it could be not diplayable.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#isDiplayable">isDiplayable()</a></li></ul></div></div><div class="method_details"><a name="removeFromContainer"></a><h3>removeFromContainer</h3><code class="method_synopsis">public function <strong class="method_name">removeFromContainer</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Destroy and remove this component from its parent(Container).
+ If it has not parent, call the destroy method to remove it.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#destroy">destroy()</a></li></ul></div></div><div class="method_details alt_row"><a name="destroy"></a><h3>destroy</h3><code class="method_synopsis">public function <strong class="method_name">destroy</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Destroy(Remove) the component's source movie clips.
+ After this, this component was undisplayable, has no parent, has no child...<br>
+ When a displayable component be destroied, the event onDestroy will be generated.
+ <b>
+ Note:You'd better not call this method directly, if you want to remove a compoent, call
+ its method removeFromContainer, it will notify its parent to remove and then destroy it.
+ </b>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#removeFromContainer">removeFromContainer()</a></li><li><a href="#ON_DESTROY">ON_DESTROY</a></li></ul></div></div><div class="method_details"><a name="getParent"></a><h3>getParent</h3><code class="method_synopsis">public function <strong class="method_name">getParent</strong>():<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a></code><div class="method_info"></div></div><div class="method_details alt_row"><a name="setBorder"></a><h3>setBorder</h3><code class="method_synopsis">public function <strong class="method_name">setBorder</strong>(b:<a href="../../org/aswing/border/Border.html" class="interface_name" title="Interface org.aswing.border.Border">Border</a>):<span class="void_name">Void</span></code><div class="method_info"></div></div><div class="method_details"><a name="getBorder"></a><h3>getBorder</h3><code class="method_synopsis">public function <strong class="method_name">getBorder</strong>():<a href="../../org/aswing/border/Border.html" class="interface_name" title="Interface org.aswing.border.Border">Border</a></code><div class="method_info"></div></div><div class="method_details alt_row"><a name="getInsets"></a><h3>getInsets</h3><code class="method_synopsis">public function <strong class="method_name">getInsets</strong>():<a href="../../org/aswing/Insets.html" class="class_name" title="Class org.aswing.Insets">Insets</a></code><div class="method_info"></div></div><div class="method_details"><a name="getGraphics"></a><h3>getGraphics</h3><code class="method_synopsis">public function <strong class="method_name">getGraphics</strong>():<a href="../../org/aswing/graphics/Graphics.html" class="class_name" title="Class org.aswing.graphics.Graphics">Graphics</a></code><div class="method_info"><p>
+ Returns a graphics of the Component.
+	 </p></div></div><div class="method_details alt_row"><a name="getFocusGraphics"></a><h3>getFocusGraphics</h3><code class="method_synopsis">public function <strong class="method_name">getFocusGraphics</strong>():<a href="../../org/aswing/graphics/Graphics.html" class="class_name" title="Class org.aswing.graphics.Graphics">Graphics</a></code><div class="method_info"><p>
+ Returns a graphics to draw focus representation. Every time 
+ this call will clear representation then return a graphics to draw.
+ <p>
+ This is not for user use, so do not call this method at you application. 
+	 </p></div></div><div class="method_details"><a name="clearFocusGraphicsByUI"></a><h3>clearFocusGraphicsByUI</h3><code class="method_synopsis">public function <strong class="method_name">clearFocusGraphicsByUI</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Call UI to clear the focus representation of this method.
+ Some times UI will draw representation at other where, so to ensure 
+ all will be cleared, call this method instead of <code>clearFocusGraphics</code>.
+ <p>
+ This is not for user use, so do not call this method at you application. 
+	 </p></div></div><div class="method_details alt_row"><a name="clearFocusGraphics"></a><h3>clearFocusGraphics</h3><code class="method_synopsis">public function <strong class="method_name">clearFocusGraphics</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Clear the focus grapics of this component.
+ <p>
+ This is not for user use, so do not call this method at you application. 
+	 </p></div></div><div class="method_details"><a name="repaint"></a><h3>repaint</h3><code class="method_synopsis">public function <strong class="method_name">repaint</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Redraws the component face next frame.This method can
+ be called often, so it needs to execute quickly.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/RepaintManager.html" class="class_name" title="Class org.aswing.RepaintManager">RepaintManager</a></li></ul></div></div><div class="method_details alt_row"><a name="getPaintBounds"></a><h3>getPaintBounds</h3><code class="method_synopsis">public function <strong class="method_name">getPaintBounds</strong>():<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a></code><div class="method_info"><p>
+ Returns the bounds that component should paint in.
+ <p>
+ This is same to some paint method param b:Rectangle.
+ So if you want to paint outside those method, you can get the 
+ rectangle from here.
+ 
+ If this component has a little maximum size, and then current 
+ size is larger, the bounds return from this method will be related 
+ to <code>getAlignmentX<code>, <code>getAlignmentY<code> and <code>getMaximumSize<code>.
+ </p><h4>Return</h4><p class="extra_info"> return the rectangle that component should paint in.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getAlignmentX">getAlignmentX()</a></li><li><a href="#getAlignmentY">getAlignmentY()</a></li><li><a href="#getMaximumSize">getMaximumSize()</a></li></ul></div></div><div class="method_details"><a name="paintImmediately"></a><h3>paintImmediately</h3><code class="method_synopsis">public function <strong class="method_name">paintImmediately</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Redraw the component face immediately.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#repaint">repaint()</a></li></ul></div></div><div class="method_details alt_row"><a name="setClipBounds"></a><h3>setClipBounds</h3><code class="method_synopsis">public function <strong class="method_name">setClipBounds</strong>(x, y:<span class="unresolved_type_name">Number</span>, width:<span class="unresolved_type_name">Number</span>, height:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ setClipBounds(x:Number, y:Number, width:Number, height:Number):Void<br>
+ setClipBounds(b:Rectangle):Void<br>
+ setClipBounds(null):Void<br>
+ Sets the clip bounds, a rectangle mask to make specified bounds visible.
+ Null to make the componet mask whole rectangle(show all).
+	 </p></div></div><div class="method_details"><a name="getClipBounds"></a><h3>getClipBounds</h3><code class="method_synopsis">public function <strong class="method_name">getClipBounds</strong>():<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a></code><div class="method_info"><p>
+ Returns the clip bounds.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setClipBounds">setClipBounds()</a></li></ul></div></div><div class="method_details alt_row"><a name="setClipSize"></a><h3>setClipSize</h3><code class="method_synopsis">public function <strong class="method_name">setClipSize</strong>(width, height:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ setClipSize(width:Number, height:Number):Void<br>
+ setClipSize(b:Dimension):Void<br>
+ Sets the clip size, a rectangle mask to make specified bounds visible.
+ This will be only in effect after component created and before next layout time.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setClipBounds">setClipBounds()</a></li></ul></div></div><div class="method_details"><a name="revalidate"></a><h3>revalidate</h3><code class="method_synopsis">public function <strong class="method_name">revalidate</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Supports deferred automatic layout.  
+ <p> 
+ Calls <code>invalidate</code> and then adds this component's
+ <code>validateRoot</code> to a list of components that need to be
+ validated.  Validation will occur after all currently pending
+ events have been dispatched.  In other words after this method
+ is called,  the first validateRoot (if any) found when walking
+ up the containment hierarchy of this component will be validated.
+ By default, <code>JPopup</code>, <code>JScrollPane</code>,
+ and <code>JTextField</code> return true 
+ from <code>isValidateRoot</code>.
+ <p>
+ This method will or will not automatically be called on this component 
+ when a property value changes such that size, location, or 
+ internal layout of this component has been affected.But invalidate
+ will do called after thats method, so you want to get the contents of 
+ the GUI to update you should call this method.
+ <p>
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#invalidate">invalidate()</a></li><li><a href="#validate">validate()</a></li><li><a href="#isValidateRoot">isValidateRoot()</a></li><li><a href="../../org/aswing/RepaintManager.html#addInvalidComponent">RepaintManager.addInvalidComponent()</a></li></ul></div></div><div class="method_details alt_row"><a name="revalidateIfNecessary"></a><h3>revalidateIfNecessary</h3><code class="method_synopsis">public function <strong class="method_name">revalidateIfNecessary</strong>():<span class="void_name">Void</span></code><div class="method_info"></div></div><div class="method_details"><a name="invalidate"></a><h3>invalidate</h3><code class="method_synopsis">public function <strong class="method_name">invalidate</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Invalidates this component.  This component and all parents
+ above it are marked as needing to be laid out.  This method can
+ be called often, so it needs to execute quickly.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#validate">validate()</a></li><li><a href="#doLayout">doLayout()</a></li><li><a href="../../org/aswing/LayoutManager.html" class="interface_name" title="Interface org.aswing.LayoutManager">LayoutManager</a></li></ul></div></div><div class="method_details alt_row"><a name="validate"></a><h3>validate</h3><code class="method_synopsis">public function <strong class="method_name">validate</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Ensures that this component has a valid layout.  This method is
+ primarily intended to operate on instances of <code>Container</code>.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#invalidate">invalidate()</a></li><li><a href="#doLayout">doLayout()</a></li><li><a href="../../org/aswing/LayoutManager.html" class="interface_name" title="Interface org.aswing.LayoutManager">LayoutManager</a></li><li><a href="../../org/aswing/Container.html#validate">org.aswing.Container.validate()</a></li></ul></div></div><div class="method_details"><a name="isValidateRoot"></a><h3>isValidateRoot</h3><code class="method_synopsis">public function <strong class="method_name">isValidateRoot</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ If this method returns true, revalidate calls by descendants of this 
+ component will cause the entire tree beginning with this root to be validated. 
+ Returns false by default. 
+ JScrollPane overrides this method and returns true. 
+ </p><h4>Return</h4><p class="extra_info"> always returns false
+	 </p></div></div><div class="method_details alt_row"><a name="isValid"></a><h3>isValid</h3><code class="method_synopsis">public function <strong class="method_name">isValid</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Determines whether this component is valid. A component is valid
+ when it is correctly sized and positioned within its parent
+ container and all its children are also valid. 
+ In order to account for peers' size requirements, components are invalidated
+ before they are first shown on the screen. By the time the parent container 
+ is fully realized, all its components will be valid.
+ </p><h4>Return</h4><p class="extra_info"> <code>true</code> if the component is valid, <code>false</code>
+ otherwise
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#validate">validate()</a></li><li><a href="#invalidate">invalidate()</a></li></ul></div></div><div class="method_details"><a name="doLayout"></a><h3>doLayout</h3><code class="method_synopsis">public function <strong class="method_name">doLayout</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ layout this component. Locate this component to its location and visible its visible.
+     </p></div></div><div class="method_details alt_row"><a name="setClipMasked"></a><h3>setClipMasked</h3><code class="method_synopsis">public function <strong class="method_name">setClipMasked</strong>(m:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether the component clip should be masked by its bounds. By default it is true.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>m</code></td><td>whether the component clip should be masked.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isClipMasked">isClipMasked()</a></li></ul></div></div><div class="method_details"><a name="isClipMasked"></a><h3>isClipMasked</h3><code class="method_synopsis">public function <strong class="method_name">isClipMasked</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the component clip should be masked by its bounds. By default it is true.
+ </p><h4>Return</h4><p class="extra_info"> whether the component clip should be masked.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setClipMasked">setClipMasked()</a></li></ul></div></div><div class="method_details alt_row"><a name="setVisible"></a><h3>setVisible</h3><code class="method_synopsis">public function <strong class="method_name">setVisible</strong>(v:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Set a component to be hide or shown.
+ If a component was hide, some laterly operation may not be done,
+ they will be done when next shown, ex: repaint, doLayout ....
+ So suggest you dont changed a component's visible frequently.
+	 </p></div></div><div class="method_details"><a name="isVisible"></a><h3>isVisible</h3><code class="method_synopsis">public function <strong class="method_name">isVisible</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"></div></div><div class="method_details alt_row"><a name="isDisplayable"></a><h3>isDisplayable</h3><code class="method_synopsis">public function <strong class="method_name">isDisplayable</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Determines whether this component is displayable. 
+ <br>
+ A component is displayable when it is connected to a native screen resource. 
+ 
+ <br>
+ A component is made displayable either when it is added to a displayable containment hierarchy or when its containment hierarchy is made displayable. 
+ A component is made undisplayable either when it is removed from a displayable containment hierarchy or when its containment hierarchy is made undisplayable.
+	 </p></div></div><div class="method_details"><a name="setFont"></a><h3>setFont</h3><code class="method_synopsis">public function <strong class="method_name">setFont</strong>(newFont:<a href="../../org/aswing/ASFont.html" class="class_name" title="Class org.aswing.ASFont">ASFont</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the text font for this component.<br>
+ this method will cause a repaint and revalidate method call.<br>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newFont</code></td><td>the font to set for this component.
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="isFontValidated"></a><h3>isFontValidated</h3><code class="method_synopsis">public function <strong class="method_name">isFontValidated</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the new font are applied and taked effect.
+ <p>
+ Some UI can just apply font to text when this method returned false 
+ to avoid wasteful time for font applying.
+ </p><h4>Return</h4><p class="extra_info"> true if currently font are applied to texts, otherwish false.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setFontValidated">setFontValidated()</a></li></ul></div></div><div class="method_details"><a name="setFontValidated"></a><h3>setFontValidated</h3><code class="method_synopsis">public function <strong class="method_name">setFontValidated</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether the new font are applied and taked effect.
+ <p>
+ Once the UI applied the font, it can call this method to set the value 
+ to be true, to avoid next wasteful applying.
+ </p><h4>Return</h4><p class="extra_info"> true set font are applied, otherwish false.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#isFontValidated">isFontValidated()</a></li></ul></div></div><div class="method_details alt_row"><a name="getFont"></a><h3>getFont</h3><code class="method_synopsis">public function <strong class="method_name">getFont</strong>():<a href="../../org/aswing/ASFont.html" class="class_name" title="Class org.aswing.ASFont">ASFont</a></code><div class="method_info"><p>
+ Gets the font of this component.
+ </p><h4>Return</h4><p class="extra_info"> this component's font; if a font has not been set
+ for this component and it has parent, the font of its parent is returned
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setFont">setFont()</a></li></ul></div></div><div class="method_details"><a name="setBackground"></a><h3>setBackground</h3><code class="method_synopsis">public function <strong class="method_name">setBackground</strong>(c:<a href="../../org/aswing/ASColor.html" class="class_name" title="Class org.aswing.ASColor">ASColor</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the background color of this component.
+ <p>
+ The background color affects each component differently.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the color to become this component's color;
+          if this parameter is <code>null/undefined</code> and it has parent, then this
+          component will inherit the background color of its parent
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getBackground">getBackground()</a></li></ul></div></div><div class="method_details alt_row"><a name="getBackground"></a><h3>getBackground</h3><code class="method_synopsis">public function <strong class="method_name">getBackground</strong>():<a href="../../org/aswing/ASColor.html" class="class_name" title="Class org.aswing.ASColor">ASColor</a></code><div class="method_info"><p>
+ Gets the background color of this component.
+ </p><h4>Return</h4><p class="extra_info"> this component's background color; if this component does
+          not have a background color and it has parent,
+          the background color of its parent is returned
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setBackground">setBackground()</a></li></ul></div></div><div class="method_details"><a name="setForeground"></a><h3>setForeground</h3><code class="method_synopsis">public function <strong class="method_name">setForeground</strong>(c:<a href="../../org/aswing/ASColor.html" class="class_name" title="Class org.aswing.ASColor">ASColor</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the foreground color of this component.
+ <p>
+ The foreground color affects each component differently.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the color to become this component's color;
+          if this parameter is <code>null/undefined</code> and it has parent, then this
+          component will inherit the foreground color of its parent
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getForeground">getForeground()</a></li></ul></div></div><div class="method_details alt_row"><a name="getForeground"></a><h3>getForeground</h3><code class="method_synopsis">public function <strong class="method_name">getForeground</strong>():<a href="../../org/aswing/ASColor.html" class="class_name" title="Class org.aswing.ASColor">ASColor</a></code><div class="method_info"><p>
+ Gets the foreground color of this component.
+ </p><h4>Return</h4><p class="extra_info"> this component's foreground color; if this component does
+          not have a foreground color and it has parent,
+          the foreground color of its parent is returned
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setForeground">setForeground()</a></li></ul></div></div><div class="method_details"><a name="setOpaque"></a><h3>setOpaque</h3><code class="method_synopsis">public function <strong class="method_name">setOpaque</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ If true the component paints every pixel within its bounds. 
+ Otherwise, the component may not paint some or all of its
+ pixels, allowing the underlying pixels to show through.
+ <p>
+ The default value of this property is false for <code>JComponent</code>.
+ However, the default value for this property on most standard
+ <code>Component</code> subclasses (such as <code>JButton</code> and
+ <code>JTree</code>) is look-and-feel dependent.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true if this component should be opaque
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isOpaque">isOpaque()</a></li></ul></div></div><div class="method_details alt_row"><a name="isOpaque"></a><h3>isOpaque</h3><code class="method_synopsis">public function <strong class="method_name">isOpaque</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if this component is completely opaque.
+ <p>
+ An opaque component paints every pixel within its
+ rectangular bounds. A non-opaque component paints only a subset of
+ its pixels or none at all, allowing the pixels underneath it to
+ "show through".  Therefore, a component that does not fully paint
+ its pixels provides a degree of transparency.
+ <p>
+ Subclasses that guarantee to always completely paint their contents
+ should override this method and return true.
+
+ </p><h4>Return</h4><p class="extra_info"> true if this component is completely opaque
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setOpaque">setOpaque()</a></li></ul></div></div><div class="method_details"><a name="setAlpha"></a><h3>setAlpha</h3><code class="method_synopsis">public function <strong class="method_name">setAlpha</strong>(alpha:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the alpha for this component.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>alpha</code></td><td>the alpha for this component, between 0 and 100. default is 100.
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="getAlpha"></a><h3>getAlpha</h3><code class="method_synopsis">public function <strong class="method_name">getAlpha</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the alpha of this component.
+ </p><h4>Return</h4><p class="extra_info"> the alpha of this component. default is 100.
+     </p></div></div><div class="method_details"><a name="setBounds"></a><h3>setBounds</h3><code class="method_synopsis">public function <strong class="method_name">setBounds</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setBounds(bounds:Rectangle)<br>
+ setBounds(x:Number, y:Number, width:Number, height:Number)
+ <p>
+ Sets the location and size.
+	 </p></div></div><div class="method_details alt_row"><a name="setBoundsImmediately"></a><h3>setBoundsImmediately</h3><code class="method_synopsis">public function <strong class="method_name">setBoundsImmediately</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setBounds(bounds:Rectangle)<br>
+ setBounds(x:Number, y:Number, width:Number, height:Number)
+ <p>
+ Sets the location immediately if the size is not changed or set the location and size and then 
+ <code>invalidate</code>.
+ See <a href="#setLocationImmediately">setLocationImmediately()</a> for more infomation.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setLocationImmediately">setLocationImmediately()</a></li><li><a href="#setBounds">setBounds()</a></li><li><a href="#validateLocation">validateLocation()</a></li></ul></div></div><div class="method_details"><a name="getBounds"></a><h3>getBounds</h3><code class="method_synopsis">public function <strong class="method_name">getBounds</strong>(b:<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a></code><div class="method_info"><p>
+ Moves and resizes this component. The new location of the top-left corner is specified by x and y, and the new size is specified by width and height. 
+ 
+ <p>Stores the bounds value of this component into "return value" b and returns b. 
+ If b is null or undefined a new Rectangle object is allocated. 
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>the return value, modified to the component's bounds.
+ 
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setSize">setSize()</a></li><li><a href="#setLocation">setLocation()</a></li></ul></div></div><div class="method_details alt_row"><a name="setLocation"></a><h3>setLocation</h3><code class="method_synopsis">public function <strong class="method_name">setLocation</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setLocation(x:Number, y:Number)<br>
+ setLocation(p:Point)
+ <p>
+ Set the component's location, if it is diffs from old location, invalidate it to wait validate.
+ The top-left corner of the new location is specified by the x and y parameters 
+ in the coordinate space of this component's parent.
+	 </p></div></div><div class="method_details"><a name="setLocationImmediately"></a><h3>setLocationImmediately</h3><code class="method_synopsis">public function <strong class="method_name">setLocationImmediately</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setLocationImmediately(x:Number, y:Number)<br>
+ setLocationImmediately(p:Point)
+ <p>
+ Set the component's location and move it's assets immediately.<br>
+ <b>Note:</b>
+ The method may be fast(cool thing:)), but take care to use it, because it will not 
+ call <code>invalidate()</code>, it validate the new location immediately(
+ <code>setLocation</code> method will <code>invalidate</code> the component and 
+ then may validate the move at next frame, it is time different), it is just move 
+ the component location, will not cause it's container relayouting, so it is 
+ <b>faster</b> than <code>setLocation</code> generally.  However, generally the 
+ layout managers do not care the old location of it's children, but you must 
+ ensure it really do not, then call this method to move the component.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setLocation">setLocation()</a></li><li><a href="#setBoundsImmediately">setBoundsImmediately()</a></li><li><a href="#validateLocation">validateLocation()</a></li></ul></div></div><div class="method_details alt_row"><a name="validateLocation"></a><h3>validateLocation</h3><code class="method_synopsis">public function <strong class="method_name">validateLocation</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Locate this component assets to its location.
+     </p></div></div><div class="method_details"><a name="setGlobalLocation"></a><h3>setGlobalLocation</h3><code class="method_synopsis">public function <strong class="method_name">setGlobalLocation</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setGlobalLocation(x:Number, y:Number)<br>
+ setGlobalLocation(p:Point)
+ <p>
+ Set the component's location in global coordinate. This method should only be called when the component 
+ is created(That mean the MCs for this component are created).
+ </p><h4>See Also</h4><ul class="extra_info"><li><span class="unresolved_type_name">setLocation()</span></li><li><span class="unresolved_type_name">MovieClip.localToGlobal()</span></li><li><span class="unresolved_type_name">MovieClip.globalToLocal()</span></li></ul></div></div><div class="method_details alt_row"><a name="setGlobalLocationImmediately"></a><h3>setGlobalLocationImmediately</h3><code class="method_synopsis">public function <strong class="method_name">setGlobalLocationImmediately</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setGlobalLocation(x:Number, y:Number)<br>
+ setGlobalLocation(p:Point)
+ <p>
+ Sets the component's location in global coordinate immediately. 
+ See <a href="#setLocationImmediately">setLocationImmediately()</a> for more infomation.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setLocationImmediately">setLocationImmediately()</a></li><li><a href="#validateLocation">validateLocation()</a></li></ul></div></div><div class="method_details"><a name="getLocation"></a><h3>getLocation</h3><code class="method_synopsis">public function <strong class="method_name">getLocation</strong>(p:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"><p>
+ getLocation(p:Point)<br>
+ getLocation()
+ <p>
+ Stores the location value of this component into "return value" p and returns p. 
+ If p is null or undefined a new Point object is allocated. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>p</code></td><td>the return value, modified to the component's location.
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getGlobalLocation"></a><h3>getGlobalLocation</h3><code class="method_synopsis">public function <strong class="method_name">getGlobalLocation</strong>(p:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"><p>
+ getGlobalLocation(p:Point)<br>
+ getGlobalLocation()
+ <p>
+ Stores the global location value of this component into "return value" p and returns p. 
+ If p is null or undefined a new Point object is allocated. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>p</code></td><td>the return value, modified to the component's global location.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getLocation">getLocation()</a></li><li><a href="#setGlobalLocation">setGlobalLocation()</a></li><li><span class="unresolved_type_name">MovieClip.localToGlobal()</span></li><li><span class="unresolved_type_name">MovieClip.globalToLocal()</span></li></ul></div></div><div class="method_details"><a name="setSize"></a><h3>setSize</h3><code class="method_synopsis">public function <strong class="method_name">setSize</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setSize(width:Number, height:Number)<br>
+ setSize(dim:Dimension)
+ <p>
+ Set the component's size, the width and height all will be setted to not less than zero, 
+ then set the size.
+ You can set a Component's size max than its maximumSize, but when it was drawed,
+ it will not max than its maximumSize.Just as its maximumSize and posited itself
+ in that size dimension you just setted. The position is relative to <code>getAlignmentX</code> 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getAlignmentX">getAlignmentX()</a></li><li><a href="#getAlignmentY">getAlignmentY()</a></li><li><a href="#getMinimumSize">getMinimumSize()</a></li><li><a href="#countMaximumSize">countMaximumSize()</a></li><li><a href="#getPreferredSize">getPreferredSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="getSize"></a><h3>getSize</h3><code class="method_synopsis">public function <strong class="method_name">getSize</strong>(s:<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a>):<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ getSize(s:Dimension)<br>
+ getSize()
+ <p>
+ Stores the size value of this component into "return value" s and returns s. 
+ If s is null or undefined a new Dimension object is allocated. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table></div></div><div class="method_details"><a name="setWidth"></a><h3>setWidth</h3><code class="method_synopsis">public function <strong class="method_name">setWidth</strong>(width:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the component's width.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>width</code></td><td>the width of component to set
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setSize">setSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setHeight"></a><h3>setHeight</h3><code class="method_synopsis">public function <strong class="method_name">setHeight</strong>(height:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the component's height.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>height</code></td><td>the height of component to set
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setSize">setSize()</a></li></ul></div></div><div class="method_details"><a name="getWidth"></a><h3>getWidth</h3><code class="method_synopsis">public function <strong class="method_name">getWidth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the current width of this component
+ </p><h4>Return</h4><p class="extra_info"> the width of the component
+	 </p></div></div><div class="method_details alt_row"><a name="getHeight"></a><h3>getHeight</h3><code class="method_synopsis">public function <strong class="method_name">getHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the current height of this component
+ </p><h4>Return</h4><p class="extra_info"> the height of the component
+	 </p></div></div><div class="method_details"><a name="setX"></a><h3>setX</h3><code class="method_synopsis">public function <strong class="method_name">setX</strong>(x:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the x coordinate of the components.
+ </p><h4>Return</h4><p class="extra_info"> the x coordinate
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setLocation">setLocation()</a></li></ul></div></div><div class="method_details alt_row"><a name="setY"></a><h3>setY</h3><code class="method_synopsis">public function <strong class="method_name">setY</strong>(y:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the y coordinate of the components.
+ </p><h4>Return</h4><p class="extra_info"> the y coordinate
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setLocation">setLocation()</a></li></ul></div></div><div class="method_details"><a name="getX"></a><h3>getX</h3><code class="method_synopsis">public function <strong class="method_name">getX</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the current x coordinate of the components.
+ </p><h4>Return</h4><p class="extra_info"> the current x coordinate of the components
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getLocation">getLocation()</a></li></ul></div></div><div class="method_details alt_row"><a name="getY"></a><h3>getY</h3><code class="method_synopsis">public function <strong class="method_name">getY</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the current y coordinate of the components.
+ </p><h4>Return</h4><p class="extra_info"> the current y coordinate of the components
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getLocation">getLocation()</a></li></ul></div></div><div class="method_details"><a name="setToolTipText"></a><h3>setToolTipText</h3><code class="method_synopsis">public function <strong class="method_name">setToolTipText</strong>(t:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Registers the text to display in a tool tip. 
+ The text displays when the cursor lingers over the component. 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>t</code></td><td>the string to display; if the text is null, 
+ the tool tip is turned off for this component
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="getToolTipText"></a><h3>getToolTipText</h3><code class="method_synopsis">public function <strong class="method_name">getToolTipText</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns the tooltip string that has been set with setToolTipText. 
+ </p><h4>Return</h4><p class="extra_info"> the text of the tool tip
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setToolTipText">setToolTipText()</a></li></ul></div></div><div class="method_details"><a name="setAlignmentX"></a><h3>setAlignmentX</h3><code class="method_synopsis">public function <strong class="method_name">setAlignmentX</strong>(ax:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>ax</code></td><td></td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getAlignmentX">getAlignmentX()</a></li></ul></div></div><div class="method_details alt_row"><a name="setAlignmentY"></a><h3>setAlignmentY</h3><code class="method_synopsis">public function <strong class="method_name">setAlignmentY</strong>(ay:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>ay</code></td><td></td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getAlignmentY">getAlignmentY()</a></li></ul></div></div><div class="method_details"><a name="getAlignmentX"></a><h3>getAlignmentX</h3><code class="method_synopsis">public function <strong class="method_name">getAlignmentX</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the alignment along the x axis. 
+ This specifies how the component would like to be aligned relative 
+ to its size when its size is maxer than its maximumSize. 
+ The value should be a number between 0 and 1 where 0 
+ represents alignment start from left, 1 is aligned the furthest 
+ away from the left, 0.5 is centered, etc. 
+ </p><h4>Return</h4><p class="extra_info"> the alignment along the x axis, 0 by default
+	 </p></div></div><div class="method_details alt_row"><a name="getAlignmentY"></a><h3>getAlignmentY</h3><code class="method_synopsis">public function <strong class="method_name">getAlignmentY</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the alignment along the y axis. 
+ This specifies how the component would like to be aligned relative 
+ to its size when its size is maxer than its maximumSize. 
+ The value should be a number between 0 and 1 where 0 
+ represents alignment start from top, 1 is aligned the furthest 
+ away from the top, 0.5 is centered, etc. 
+ </p><h4>Return</h4><p class="extra_info"> the alignment along the y axis, 0 by default
+	 </p></div></div><div class="method_details"><a name="getClientProperty"></a><h3>getClientProperty</h3><code class="method_synopsis">public function <strong class="method_name">getClientProperty</strong>(key)</code><div class="method_info"><p>
+ Returns the value of the property with the specified key. 
+ Only properties added with putClientProperty will return a non-null value.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>the being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the value of this property or null
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#putClientProperty">putClientProperty()</a></li></ul></div></div><div class="method_details alt_row"><a name="putClientProperty"></a><h3>putClientProperty</h3><code class="method_synopsis">public function <strong class="method_name">putClientProperty</strong>(key, value):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds an arbitrary key/value "client property" to this component.
+ <p>
+ The <code>get/putClientProperty</code> methods provide access to 
+ a small per-instance hashtable. Callers can use get/putClientProperty
+ to annotate components that were created by another module.
+ For example, a
+ layout manager might store per child constraints this way. For example:
+ <pre>
+ componentA.putClientProperty("to the left of", componentB);
+ </pre>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>the new client property key
+ </td></tr><tr><td><code>value</code></td><td>the new client property value
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getClientProperty">getClientProperty()</a></li></ul></div></div><div class="method_details"><a name="setDefaultCachePreferSizes"></a><h3>setDefaultCachePreferSizes</h3><code class="method_synopsis">static public function <strong class="method_name">setDefaultCachePreferSizes</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the default value of <code>cachePrefSizes</code> to all will created components.
+ Default value is true.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setCachePreferSizes">setCachePreferSizes()</a></li></ul></div></div><div class="method_details alt_row"><a name="isDefaultCachePreferSizes"></a><h3>isDefaultCachePreferSizes</h3><code class="method_synopsis">static public function <strong class="method_name">isDefaultCachePreferSizes</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns the default value of <code>cachePrefSizes</code> to all will created components.
+ Default value is true.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#isCachePreferSizes">isCachePreferSizes()</a></li></ul></div></div><div class="method_details"><a name="setCachePreferSizes"></a><h3>setCachePreferSizes</h3><code class="method_synopsis">public function <strong class="method_name">setCachePreferSizes</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether or not turn on the preferred size, minimum size and 
+ max size cache. By default, this is true(means turned on).
+ <p>
+ If this is turned on, the size count will be very fast as most time. 
+ So suggest you that do not turn off it unless you have your personal reason.
+ </p>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true to turn on it, false trun off it.
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="isCachePreferSizes"></a><h3>isCachePreferSizes</h3><code class="method_synopsis">public function <strong class="method_name">isCachePreferSizes</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether or not the preferred size, minimum size and 
+ max size cache is turned on.
+ </p><h4>Return</h4><p class="extra_info"> whether or not the preferred size, minimum size and 
+ max size cache is turned on.
+	 </p></div></div><div class="method_details"><a name="getMinimumSize"></a><h3>getMinimumSize</h3><code class="method_synopsis">public function <strong class="method_name">getMinimumSize</strong>():<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMinimumSize">setMinimumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="getMaximumSize"></a><h3>getMaximumSize</h3><code class="method_synopsis">public function <strong class="method_name">getMaximumSize</strong>():<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMaximumSize">setMaximumSize()</a></li></ul></div></div><div class="method_details"><a name="getPreferredSize"></a><h3>getPreferredSize</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredSize</strong>():<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setPreferredSize">setPreferredSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setMinimumSize"></a><h3>setMinimumSize</h3><code class="method_synopsis">public function <strong class="method_name">setMinimumSize</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setMinimumSize(d:Dimension)<br>
+ setMinimumSize(width:Number, height:Number)
+ <p>
+ Set the minimumSize, then the component's minimumSize is
+ specified. otherwish getMinimumSize will can the count method.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getMinimumSize">getMinimumSize()</a></li></ul></div></div><div class="method_details"><a name="setMaximumSize"></a><h3>setMaximumSize</h3><code class="method_synopsis">public function <strong class="method_name">setMaximumSize</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setMaximumSize(d:Dimension)<br>
+ setMaximumSize(width:Number, height:Number)<br>
+ <p>
+ Set the maximumSize, then the component's maximumSize is
+ specified. otherwish getMaximumSize will can count method.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getMaximumSize">getMaximumSize()</a></li><li><a href="#MaximumSize">MaximumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setPreferredSize"></a><h3>setPreferredSize</h3><code class="method_synopsis">public function <strong class="method_name">setPreferredSize</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ setPreferredSize(d:Dimension)<br>
+ setPreferredSize(width:Number, height:Number)<br>
+ <p>
+ Set the preferredSize, then the component's preferredSize is
+ specified. otherwish getPreferredSize will count method.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getPreferredSize">getPreferredSize()</a></li></ul></div></div><div class="method_details"><a name="getPreferredWidth"></a><h3>getPreferredWidth</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredWidth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getPreferredSize().width</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getPreferredSize">getPreferredSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setPreferredWidth"></a><h3>setPreferredWidth</h3><code class="method_synopsis">public function <strong class="method_name">setPreferredWidth</strong>(preferredWidth:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setPreferredSize(preferredWidth, getPreferredHeight())</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setPreferredSize">setPreferredSize()</a></li></ul></div></div><div class="method_details"><a name="getPreferredHeight"></a><h3>getPreferredHeight</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getPreferredSize().height</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getPreferredSize">getPreferredSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setPreferredHeight"></a><h3>setPreferredHeight</h3><code class="method_synopsis">public function <strong class="method_name">setPreferredHeight</strong>(preferredHeight:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setPreferredSize(getPreferredWidth(), preferredHeight)</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setPreferredSize">setPreferredSize()</a></li></ul></div></div><div class="method_details"><a name="getMaximumWidth"></a><h3>getMaximumWidth</h3><code class="method_synopsis">public function <strong class="method_name">getMaximumWidth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getMaximumSize().width</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getMaximumSize">getMaximumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setMaximumWidth"></a><h3>setMaximumWidth</h3><code class="method_synopsis">public function <strong class="method_name">setMaximumWidth</strong>(maximumWidth:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setMaximumSize(maximumWidth, getMaximumHeight())</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMaximumSize">setMaximumSize()</a></li></ul></div></div><div class="method_details"><a name="getMaximumHeight"></a><h3>getMaximumHeight</h3><code class="method_synopsis">public function <strong class="method_name">getMaximumHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getMaximumSize().height</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getMaximumSize">getMaximumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setMaximumHeight"></a><h3>setMaximumHeight</h3><code class="method_synopsis">public function <strong class="method_name">setMaximumHeight</strong>(maximumHeight:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setMaximumSize(getMaximumWidth(), maximumHeight)</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMaximumSize">setMaximumSize()</a></li></ul></div></div><div class="method_details"><a name="getMinimumWidth"></a><h3>getMinimumWidth</h3><code class="method_synopsis">public function <strong class="method_name">getMinimumWidth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getMinimumSize().width</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getMinimumSize">getMinimumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setMinimumWidth"></a><h3>setMinimumWidth</h3><code class="method_synopsis">public function <strong class="method_name">setMinimumWidth</strong>(minimumWidth:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setMinimumSize(minimumWidth, getMinimumHeight())</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMinimumSize">setMinimumSize()</a></li></ul></div></div><div class="method_details"><a name="getMinimumHeight"></a><h3>getMinimumHeight</h3><code class="method_synopsis">public function <strong class="method_name">getMinimumHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns <code>getMinimumSize().height</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#getMinimumSize">getMinimumSize()</a></li></ul></div></div><div class="method_details alt_row"><a name="setMinimumHeight"></a><h3>setMinimumHeight</h3><code class="method_synopsis">public function <strong class="method_name">setMinimumHeight</strong>(minimumHeight:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls <code>setMinimumSize(getMinimumWidth(), minimumHeight)</code>
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setMinimumSize">setMinimumSize()</a></li></ul></div></div><div class="method_details"><a name="setEnabled"></a><h3>setEnabled</h3><code class="method_synopsis">public function <strong class="method_name">setEnabled</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Enable or disable the component.
+ <p>
+ If a component is disabled, it will not fire mouse events. 
+ And some component will has different interface when enabled or disabled.
+ But it will also eat mouse clicks when disable even it will not fire mouse events.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true to enable the component, false to disable it.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setTriggerEnabled">setTriggerEnabled()</a></li><li><a href="#ON_ROLLOVER">ON_ROLLOVER</a></li><li><a href="#ON_ROLLOUT">ON_ROLLOUT</a></li><li><a href="#ON_PRESS">ON_PRESS</a></li><li><a href="#ON_RELEASE">ON_RELEASE</a></li><li><a href="#ON_RELEASEOUTSIDE">ON_RELEASEOUTSIDE</a></li></ul></div></div><div class="method_details alt_row"><a name="isEnabled"></a><h3>isEnabled</h3><code class="method_synopsis">public function <strong class="method_name">isEnabled</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the component is enabled.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setEnabled">setEnabled()</a></li></ul></div></div><div class="method_details"><a name="setTriggerEnabled"></a><h3>setTriggerEnabled</h3><code class="method_synopsis">public function <strong class="method_name">setTriggerEnabled</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether the component trigger be enabled.
+ <P>
+ If it is enabled, it will fire events when mouse roll, press on the component, of course 
+ it eats the mouse clicks so its container may not got clicks.
+ If it is disabled, it will not fire events when mouse roll press on, 
+ And the importance is that it will not eat the mouse clicks.
+ <P>
+ Default value is true.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true to enable trigger, false to disable it.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#ON_ROLLOVER">ON_ROLLOVER</a></li><li><a href="#ON_ROLLOUT">ON_ROLLOUT</a></li><li><a href="#ON_PRESS">ON_PRESS</a></li><li><a href="#ON_RELEASE">ON_RELEASE</a></li><li><a href="#ON_RELEASEOUTSIDE">ON_RELEASEOUTSIDE</a></li></ul></div></div><div class="method_details alt_row"><a name="isTriggerEnabled"></a><h3>isTriggerEnabled</h3><code class="method_synopsis">public function <strong class="method_name">isTriggerEnabled</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns is trigger enabled.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setTriggerEnabled">setTriggerEnabled()</a></li></ul></div></div><div class="method_details"><a name="setUseHandCursor"></a><h3>setUseHandCursor</h3><code class="method_synopsis">public function <strong class="method_name">setUseHandCursor</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether use hand cursor when mouse move on this component.
+ Default is false.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true to use hand cursor when mouse move on this component, false not.
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="isUseHandCursor"></a><h3>isUseHandCursor</h3><code class="method_synopsis">public function <strong class="method_name">isUseHandCursor</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ </p><h4>Return</h4><p class="extra_info"> whether use hand cursor when mouse move on this component.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setUseHandCursor">setUseHandCursor()</a></li></ul></div></div><div class="method_details"><a name="setDragEnabled"></a><h3>setDragEnabled</h3><code class="method_synopsis">public function <strong class="method_name">setDragEnabled</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether this component can fire ON_DRAG_RECOGNIZED event.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#ON_DRAG_RECOGNIZED">ON_DRAG_RECOGNIZED</a></li><li><a href="#isDragEnabled">isDragEnabled()</a></li></ul></div></div><div class="method_details alt_row"><a name="isDragEnabled"></a><h3>isDragEnabled</h3><code class="method_synopsis">public function <strong class="method_name">isDragEnabled</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether this component can fire ON_DRAG_RECOGNIZED event. (Default value is false)
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#ON_DRAG_RECOGNIZED">ON_DRAG_RECOGNIZED</a></li><li><a href="#setDragEnabled">setDragEnabled()</a></li></ul></div></div><div class="method_details"><a name="setDropTrigger"></a><h3>setDropTrigger</h3><code class="method_synopsis">public function <strong class="method_name">setDropTrigger</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether this component can trigger dragging component to fire drag events 
+ when dragging over to this component.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>true to make this component to be a trigger that trigger drag and drop 
+ action to fire events, false not to do that things.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#ON_DRAG_ENTER">ON_DRAG_ENTER</a></li><li><a href="#ON_DRAG_OVER">ON_DRAG_OVER</a></li><li><a href="#ON_DRAG_EXIT">ON_DRAG_EXIT</a></li><li><a href="#ON_DRAG_DROP">ON_DRAG_DROP</a></li><li><a href="#isDropTrigger">isDropTrigger()</a></li></ul></div></div><div class="method_details alt_row"><a name="isDropTrigger"></a><h3>isDropTrigger</h3><code class="method_synopsis">public function <strong class="method_name">isDropTrigger</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether this component can trigger dragging component to fire drag events 
+ when dragging over to this component.(Default value is false)
+ </p><h4>Return</h4><p class="extra_info"> true if this component is a trigger that can trigger drag and drop action to 
+ fire events, false it is not.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#ON_DRAG_ENTER">ON_DRAG_ENTER</a></li><li><a href="#ON_DRAG_OVER">ON_DRAG_OVER</a></li><li><a href="#ON_DRAG_EXIT">ON_DRAG_EXIT</a></li><li><a href="#ON_DRAG_DROP">ON_DRAG_DROP</a></li><li><a href="#setDropTrigger">setDropTrigger()</a></li></ul></div></div><div class="method_details"><a name="createMovieClipOnRoot"></a><h3>createMovieClipOnRoot</h3><code class="method_synopsis">public function <strong class="method_name">createMovieClipOnRoot</strong>(nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Creates and returns an empty MovieClip from the Component's root MovieClip.
+ This method will only return non-null when the component is displayable, a normal 
+ way to ensure this method will really create context, you can add a ON_CREATED even 
+ handler to the component, whan handler executed, then you can create real contexts.
+ <p>
+ Note that the mc created is not cliped by component size, it is different from 
+ <code>createMovieClip()</code>.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>nameStart</code></td><td>(optional)the prefix of the created MovieClip's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)the depth of the created MovieClip.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDisplayable">isDisplayable()</a></li><li><a href="#createMovieClip">createMovieClip()</a></li></ul></div></div><div class="method_details alt_row"><a name="createMovieClip"></a><h3>createMovieClip</h3><code class="method_synopsis">public function <strong class="method_name">createMovieClip</strong>(nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Creates and returns an empty MovieClip from the Component's target MovieClip.
+ This method will only return non-null when the component is displayable, a normal 
+ way to ensure this method will really create context, you can add a ON_CREATED even 
+ handler to the component, whan handler executed, then you can create real contexts.
+ <p>
+ Note that if you create an new MC for a border or icon you should remove them in your 
+ uninstallXXx method of them.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>nameStart</code></td><td>(optional)the prefix of the created MovieClip's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)the depth of the created MovieClip.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDisplayable">isDisplayable()</a></li></ul></div></div><div class="method_details"><a name="attachMovieClip"></a><h3>attachMovieClip</h3><code class="method_synopsis">public function <strong class="method_name">attachMovieClip</strong>(linkage:<span class="unresolved_type_name">String</span>, nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Attaches and returns a MovieClip from the Component's target MovieClip.
+ This method will only return non-null when the component is displayable, a normal 
+ way to ensure this method will really create context, you can add a ON_CREATED even 
+ handler to the component, whan handler executed, then you can create real contexts.
+ <p>
+ Note that if you attach an new MC for a border or icon you should remove them in your 
+ uninstallXXx method of them.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>linkage</code></td><td>the linkage id of the MovieClip in your Symbol Library.
+ </td></tr><tr><td><code>nameStart</code></td><td>(optional)the prefix of the attached MovieClip's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)the depth of the attached MovieClip.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDisplayable">isDisplayable()</a></li></ul></div></div><div class="method_details alt_row"><a name="createTextField"></a><h3>createTextField</h3><code class="method_synopsis">public function <strong class="method_name">createTextField</strong>(nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">TextField</span></code><div class="method_info"><p>
+ Creates and returns an textfiled from the Component's target MovieClip.
+ This method will only return non-null when the component is displayable, a normal 
+ way to ensure this method will really create context, you can add a ON_CREATED even 
+ handler to the component, whan handler executed, then you can create real contexts.
+ <p>
+ Note that if you create an new textfiled for a border or icon you should remove them in your 
+ uninstallXXx method of them.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>nameStart</code></td><td>(optional)the prefix of the created textfiled's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)the depth of the created textfiled.
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDisplayable">isDisplayable()</a></li></ul></div></div><div class="method_details"><a name="getRootAncestorMovieClip"></a><h3>getRootAncestorMovieClip</h3><code class="method_synopsis">public function <strong class="method_name">getRootAncestorMovieClip</strong>():<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Returns the component based root movie clip's ancestor movie clip.<br>
+ Generally it is _root.
+ </p><h4>Return</h4><p class="extra_info"> the root movie clip of the component rootest based.
+	 </p></div></div><div class="method_details alt_row"><a name="getComponentRootAncestorMovieClip"></a><h3>getComponentRootAncestorMovieClip</h3><code class="method_synopsis">public function <strong class="method_name">getComponentRootAncestorMovieClip</strong>():<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Returns the root ancestor component(a jwindow or a mcpanel)'s movie clip.<br>
+ </p><h4>Return</h4><p class="extra_info"> the root ancestor component movie clip.
+	 </p></div></div><div class="method_details"><a name="getDepth"></a><h3>getDepth</h3><code class="method_synopsis">public function <strong class="method_name">getDepth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the component's mc's depth.  
+ It will return undefined when this component is displayable.
+	 </p></div></div><div class="method_details alt_row"><a name="swapDepths"></a><h3>swapDepths</h3><code class="method_synopsis">public function <strong class="method_name">swapDepths</strong>(target):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Swap the component's mc's depth. This is only effective when this component is displayable.
+	 </p></div></div><div class="method_details"><a name="bringToTopDepth"></a><h3>bringToTopDepth</h3><code class="method_synopsis">public function <strong class="method_name">bringToTopDepth</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Brings this component at top depth of all brothers. 
+ This is only effective when this component is displayable.
+	 </p></div></div><div class="method_details alt_row"><a name="bringToBottomDepth"></a><h3>bringToBottomDepth</h3><code class="method_synopsis">public function <strong class="method_name">bringToBottomDepth</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Brings this component at bottom depth of all brothers. 
+ This is only effective when this component is displayable.
+	 </p></div></div><div class="method_details"><a name="hitTest"></a><h3>hitTest</h3><code class="method_synopsis">public function <strong class="method_name">hitTest</strong>(x, y, shapeFlag):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ hitTest(target:MovieClip):Boolean<br>
+ hitTest(x:Number, y:Number, [shapeFlag:Boolean]):Boolean
+ <p>
+ Returns the component's clip mc hitTest()
+	 </p></div></div><div class="method_details alt_row"><a name="hitTestMouse"></a><h3>hitTestMouse</h3><code class="method_synopsis">public function <strong class="method_name">hitTestMouse</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the component hit the mouse.
+	 </p></div></div><div class="method_details"><a name="getMousePosition"></a><h3>getMousePosition</h3><code class="method_synopsis">public function <strong class="method_name">getMousePosition</strong>():<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"><p>
+ Returns the position of the mouse in the Component area.
+ (0, 0) is the top left of the component bounds.
+ </p><h4>Return</h4><p class="extra_info"> the position of the mouse in the Component area.
+	 </p></div></div><div class="method_details alt_row"><a name="globalToComponent"></a><h3>globalToComponent</h3><code class="method_synopsis">public function <strong class="method_name">globalToComponent</strong>(p:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"></div></div><div class="method_details"><a name="componentToGlobal"></a><h3>componentToGlobal</h3><code class="method_synopsis">public function <strong class="method_name">componentToGlobal</strong>(p:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"></div></div><div class="method_details alt_row"><a name="getFocusCycleRootAncestor"></a><h3>getFocusCycleRootAncestor</h3><code class="method_synopsis">public function <strong class="method_name">getFocusCycleRootAncestor</strong>():<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a></code><div class="method_info"><p>
+ Returns the Container which is the focus cycle root of this Component's
+ focus traversal cycle. Each focus traversal cycle has only a single
+ focus cycle root and each Component which is not a Container belongs to
+ only a single focus traversal cycle. Containers which are focus cycle
+ roots belong to two cycles: one rooted at the Container itself, and one
+ rooted at the Container's nearest focus-cycle-root ancestor. For such
+ Containers, this method will return the Container's nearest focus-cycle-
+ root ancestor.
+
+ </p><h4>Return</h4><p class="extra_info"> this Component's nearest focus-cycle-root ancestor
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/Container.html#isFocusCycleRoot">Container.isFocusCycleRoot()</a></li></ul></div></div><div class="method_details"><a name="isFocusCycleRootOfContainer"></a><h3>isFocusCycleRootOfContainer</h3><code class="method_synopsis">public function <strong class="method_name">isFocusCycleRootOfContainer</strong>(container:<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the specified Container is the focus cycle root of this
+ Component's focus traversal cycle. Each focus traversal cycle has only
+ a single focus cycle root and each Component which is not a Container
+ belongs to only a single focus traversal cycle.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>container</code></td><td>the Container to be tested
+ </td></tr></table><h4>Return</h4><p class="extra_info"> <code>true</code> if the specified Container is a focus-cycle-
+         root of this Component; <code>false</code> otherwise
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/Container.html#isFocusCycleRoot">Container.isFocusCycleRoot()</a></li></ul></div></div><div class="method_details alt_row"><a name="isShowing"></a><h3>isShowing</h3><code class="method_synopsis">public function <strong class="method_name">isShowing</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Determines whether this component is showing on screen. This means
+ that the component must be visible, and it must be in a container
+ that is visible and showing.
+ </p><h4>Return</h4><p class="extra_info"> <code>true</code> if the component is showing,
+          <code>false</code> otherwise
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setVisible">setVisible()</a></li></ul></div></div><div class="method_details"><a name="isFocusOwner"></a><h3>isFocusOwner</h3><code class="method_synopsis">public function <strong class="method_name">isFocusOwner</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns <code>true</code> if this <code>Component</code> is the 
+    focus owner.
+
+ </p><h4>Return</h4><p class="extra_info"> <code>true</code> if this <code>Component</code> is the 
+     focus owner; <code>false</code> otherwise
+     </p></div></div><div class="method_details alt_row"><a name="requestFocus"></a><h3>requestFocus</h3><code class="method_synopsis">public function <strong class="method_name">requestFocus</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Requests that this Component get the input focus, and that this
+ Component's top-level ancestor become the focused Window. This component
+ must be displayable, visible, and focusable for the request to be
+ granted. Every effort will be made to honor the request; however, in
+ some cases it may be impossible to do so. Developers must never assume
+ that this Component is the focus owner until this Component receives a
+ ON_FOCUS_GAINED event.
+
+ </p><h4>Return</h4><p class="extra_info"> true if the request is made successful, false if the request is denied.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#isFocusable">isFocusable()</a></li><li><a href="#isDisplayable">isDisplayable()</a></li><li><a href="#ON_FOCUS_GAINED">ON_FOCUS_GAINED</a></li></ul></div></div><div class="method_details"><a name="transferFocus"></a><h3>transferFocus</h3><code class="method_synopsis">public function <strong class="method_name">transferFocus</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Transfers the focus to the next component, as though this Component were
+ the focus owner.
+ 
+ </p><h4>Return</h4><p class="extra_info"> true if transfered, false otherwise
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#requestFocus">requestFocus()</a></li></ul></div></div><div class="method_details alt_row"><a name="transferFocusBackward"></a><h3>transferFocusBackward</h3><code class="method_synopsis">public function <strong class="method_name">transferFocusBackward</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Transfers the focus to the previous component, as though this Component
+ were the focus owner.
+ 
+ </p><h4>Return</h4><p class="extra_info"> true if transfered, false otherwise
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#requestFocus">requestFocus()</a></li></ul></div></div><div class="method_details"><a name="transferFocusUpCycle"></a><h3>transferFocusUpCycle</h3><code class="method_synopsis">public function <strong class="method_name">transferFocusUpCycle</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Transfers the focus up one focus traversal cycle. Typically, the focus
+ owner is set to this Component's focus cycle root, and the current focus
+ cycle root is set to the new focus owner's focus cycle root. If,
+ however, this Component's focus cycle root is a Window, then the focus
+ owner is set to the focus cycle root's default Component to focus, and
+ the current focus cycle root is unchanged.
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#requestFocus">requestFocus()</a></li><li><a href="../../org/aswing/Container.html#isFocusCycleRoot">Container.isFocusCycleRoot()</a></li><li><a href="../../org/aswing/Container.html#setFocusCycleRoot">Container.setFocusCycleRoot()</a></li></ul></div></div><div class="method_details alt_row"><a name="getFocusTraversalKeys"></a><h3>getFocusTraversalKeys</h3><code class="method_synopsis">public function <strong class="method_name">getFocusTraversalKeys</strong>(id:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns the Set of focus traversal keys for a given traversal operation
+ for this Component. (See
+ <code>setFocusTraversalKeys</code> for a full description of each key.)
+ <p>
+ If a Set of traversal keys has not been explicitly defined for this
+ Component, then this Component's parent's Set is returned. If no Set
+ has been explicitly defined for any of this Component's ancestors, then
+ the current FocusManager's default Set is returned.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>id</code></td><td>one of FocusManager.FORWARD_TRAVERSAL_KEYS,
+        FocusManager.BACKWARD_TRAVERSAL_KEYS, or
+        FocusManager.UP_CYCLE_TRAVERSAL_KEYS.
+        FocusManager.DOWN_CYCLE_TRAVERSAL_KEYS is not useful for a component, 
+        it only be useful if this component is a instance of Container.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the Set of Key codes(contains in a Array) for the specified operation. The Set
+         will be unmodifiable, and may be empty. null will never be
+         returned.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setFocusTraversalKeys">setFocusTraversalKeys()</a></li><li><a href="../../org/aswing/FocusManager.html#getDefaultFocusTraversalKeys">FocusManager.getDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/FocusManager.html#FORWARD_TRAVERSAL_KEYS">FocusManager.FORWARD_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#BACKWARD_TRAVERSAL_KEYS">FocusManager.BACKWARD_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#UP_CYCLE_TRAVERSAL_KEYS">FocusManager.UP_CYCLE_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#DOWN_CYCLE_TRAVERSAL_KEYS">FocusManager.DOWN_CYCLE_TRAVERSAL_KEYS</a></li></ul></div></div><div class="method_details"><a name="setFocusTraversalKeys"></a><h3>setFocusTraversalKeys</h3><code class="method_synopsis">public function <strong class="method_name">setFocusTraversalKeys</strong>(id:<span class="unresolved_type_name">Number</span>, keys:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the focus traversal keys for a given traversal operation for this
+ Component.
+ <p>
+ To disable a traversal key, use an empty Array; [] is
+ recommended.
+ <p>
+ If a value of null is specified for the Set, this Component inherits the
+ Set from its parent. If all ancestors of this Component have null
+ specified for the Set, then the current FocusManager's default
+ Set is used.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>id</code></td><td>one of FocusManager.FORWARD_TRAVERSAL_KEYS,
+        FocusManager.BACKWARD_TRAVERSAL_KEYS, or
+        FocusManager.UP_CYCLE_TRAVERSAL_KEYS
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getFocusTraversalKeys">getFocusTraversalKeys()</a></li><li><a href="../../org/aswing/FocusManager.html#setDefaultFocusTraversalKeys">FocusManager.setDefaultFocusTraversalKeys()</a></li><li><a href="../../org/aswing/FocusManager.html#FORWARD_TRAVERSAL_KEYS">FocusManager.FORWARD_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#BACKWARD_TRAVERSAL_KEYS">FocusManager.BACKWARD_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#UP_CYCLE_TRAVERSAL_KEYS">FocusManager.UP_CYCLE_TRAVERSAL_KEYS</a></li><li><a href="../../org/aswing/FocusManager.html#DOWN_CYCLE_TRAVERSAL_KEYS">FocusManager.DOWN_CYCLE_TRAVERSAL_KEYS</a></li></ul></div></div><div class="method_details alt_row"><a name="isFocusable"></a><h3>isFocusable</h3><code class="method_synopsis">public function <strong class="method_name">isFocusable</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether this Component can be focused.
+
+ </p><h4>Return</h4><p class="extra_info"> <code>true</code> if this Component is focusable;
+         <code>false</code> otherwise.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setFocusable">setFocusable()</a></li></ul></div></div><div class="method_details"><a name="setFocusable"></a><h3>setFocusable</h3><code class="method_synopsis">public function <strong class="method_name">setFocusable</strong>(focusable:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the focusable state of this Component to the specified value. This
+ value overrides the Component's default focusability.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>focusable</code></td><td>indicates whether this Component is focusable
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isFocusable">isFocusable()</a></li></ul></div></div><div class="method_details alt_row"><a name="addDragAcceptableInitiator"></a><h3>addDragAcceptableInitiator</h3><code class="method_synopsis">public function <strong class="method_name">addDragAcceptableInitiator</strong>(com:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds a component to be the acceptable drag initiator to this component.
+ <p>
+ It is not meanning that the DnD events will not be fired when the initiator 
+ is dragging enter/over/exit/drop on this component.
+ It is meanning that you can have a convenient way to proccess that events from 
+ the method <code>isDragAcceptableInitiator</code> later, and the default dragging 
+ image will take advantage to present a better picture when painting.
+ <P>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>com</code></td><td>the acceptable drag initiator
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isDragAcceptableInitiator">isDragAcceptableInitiator()</a></li></ul></div></div><div class="method_details"><a name="removeDragAcceptableInitiator"></a><h3>removeDragAcceptableInitiator</h3><code class="method_synopsis">public function <strong class="method_name">removeDragAcceptableInitiator</strong>(com:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes a component to be the acceptable drag initiator to this component.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>com</code></td><td>the acceptable drag initiator
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#addDragAcceptableInitiator">addDragAcceptableInitiator()</a></li></ul></div></div><div class="method_details alt_row"><a name="isDragAcceptableInitiator"></a><h3>isDragAcceptableInitiator</h3><code class="method_synopsis">public function <strong class="method_name">isDragAcceptableInitiator</strong>(com:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the component is acceptable drag initiator for this component.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>com</code></td><td>the maybe acceptable drag initiator
+ </td></tr></table><h4>Return</h4><p class="extra_info"> true if it is acceptable drag initiator, false not
+	 </p></div></div><div class="method_details"><a name="toString"></a><h3>toString</h3><code class="method_synopsis">public function <strong class="method_name">toString</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"></div></div><div class="method_details alt_row"><a name="setConstraints"></a><h3>setConstraints</h3><code class="method_synopsis">public function <strong class="method_name">setConstraints</strong>(constraints:<span class="unresolved_type_name">Object</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets component's constraints.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>constraints</code></td><td>the constraints to set
+	 </td></tr></table></div></div><div class="method_details"><a name="getConstraints"></a><h3>getConstraints</h3><code class="method_synopsis">public function <strong class="method_name">getConstraints</strong>():<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Gets cpmponent's constraints.
+ </p><h4>Return</h4><p class="extra_info"> component's constraints
+	 </p></div></div><div class="method_details alt_row"><a name="getOwnerComponent"></a><h3>getOwnerComponent</h3><code class="method_synopsis">static public function <strong class="method_name">getOwnerComponent</strong>(mc:<span class="unresolved_type_name">MovieClip</span>):<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Returns a component that is the specified movie clip's owner.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>mc</code></td><td>the movie clip
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the owner of the movie clip, or null if it is not owned by any component.
+	 </p></div></div><div class="method_details"><a name="fireDragEnterEvent"></a><h3>fireDragEnterEvent</h3><code class="method_synopsis">public function <strong class="method_name">fireDragEnterEvent</strong>(dragInitiator:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, sourceData:<a href="../../org/aswing/dnd/SourceData.html" class="class_name" title="Class org.aswing.dnd.SourceData">SourceData</a>, mousePos:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Fires ON_DRAG_ENTER event.(Note, this method is only for DragManager use)
+	 </p></div></div><div class="method_details alt_row"><a name="fireDragOverringEvent"></a><h3>fireDragOverringEvent</h3><code class="method_synopsis">public function <strong class="method_name">fireDragOverringEvent</strong>(dragInitiator:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, sourceData:<a href="../../org/aswing/dnd/SourceData.html" class="class_name" title="Class org.aswing.dnd.SourceData">SourceData</a>, mousePos:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Fires ON_DRAG_ENTER event.(Note, this method is only for DragManager use)
+	 </p></div></div><div class="method_details"><a name="fireDragExitEvent"></a><h3>fireDragExitEvent</h3><code class="method_synopsis">public function <strong class="method_name">fireDragExitEvent</strong>(dragInitiator:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, sourceData:<a href="../../org/aswing/dnd/SourceData.html" class="class_name" title="Class org.aswing.dnd.SourceData">SourceData</a>, mousePos:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Fires ON_DRAG_ENTER event.(Note, this method is only for DragManager use)
+	 </p></div></div><div class="method_details alt_row"><a name="fireDragDropEvent"></a><h3>fireDragDropEvent</h3><code class="method_synopsis">public function <strong class="method_name">fireDragDropEvent</strong>(dragInitiator:<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, sourceData:<a href="../../org/aswing/dnd/SourceData.html" class="class_name" title="Class org.aswing.dnd.SourceData">SourceData</a>, mousePos:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Fires ON_DRAG_ENTER event.(Note, this method is only for DragManager use)
+	 </p></div></div><div class="method_details"><a name="supplyOnPress"></a><h3>supplyOnPress</h3><code class="method_synopsis">public function <strong class="method_name">supplyOnPress</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Supply On press action, some times the component trigger are not cover 
+ the whole space, so if some other space of this component on press, the 
+ on press action will not fired, then call this method to supply.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#supplyOnRelease">supplyOnRelease()</a></li></ul></div></div><div class="method_details alt_row"><a name="click"></a><h3>click</h3><code class="method_synopsis">public function <strong class="method_name">click</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Simulates click on the component. Performs press and then release actions.
+	 </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

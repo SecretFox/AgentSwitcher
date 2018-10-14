@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.MenuElement - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/MenuSelectionManager.html" title="Class org.aswing.MenuSelectionManager" rel="prev"/><link href="../../org/aswing/MCPanel.html" title="Class org.aswing.MCPanel" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.MenuElement</h1><div class="type_hierachy"><ul><li><strong>org.aswing.MenuElement</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ Any component that can be placed into a menu should implement this interface.
+ This interface is used by <code>MenuSelectionManager</code>
+ to handle selection and navigation in menu hierarchies.
+ 
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#getMenuComponent" title="public function getMenuComponent():Component">getMenuComponent()</a>, <a href="#getSubElements" title="public function getSubElements():Array">getSubElements()</a>, <a href="#isInUse" title="public function isInUse():Boolean">isInUse()</a>, <a href="#menuSelectionChanged" title="public function menuSelectionChanged(isIncluded:Boolean):Void">menuSelectionChanged()</a>, <a href="#processKeyEvent" title="public function processKeyEvent(code:Number):Void">processKeyEvent()</a>, <a href="#setInUse" title="public function setInUse(b:Boolean):Void">setInUse()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="menuSelectionChanged"></a><h3>menuSelectionChanged</h3><code class="method_synopsis">public function <strong class="method_name">menuSelectionChanged</strong>(isIncluded:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Call by the <code>MenuSelectionManager</code> when the
+ <code>MenuElement</code> is added or remove from 
+ the menu selection.
+     </p></div></div><div class="method_details"><a name="getSubElements"></a><h3>getSubElements</h3><code class="method_synopsis">public function <strong class="method_name">getSubElements</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ This method should return an array containing the sub-elements for the receiving menu element
+
+ </p><h4>Return</h4><p class="extra_info"> an array of MenuElements
+     </p></div></div><div class="method_details alt_row"><a name="processKeyEvent"></a><h3>processKeyEvent</h3><code class="method_synopsis">public function <strong class="method_name">processKeyEvent</strong>(code:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Precess the selection when key typed. 
+     </p></div></div><div class="method_details"><a name="setInUse"></a><h3>setInUse</h3><code class="method_synopsis">public function <strong class="method_name">setInUse</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether the menu element is in use.
+     </p></div></div><div class="method_details alt_row"><a name="isInUse"></a><h3>isInUse</h3><code class="method_synopsis">public function <strong class="method_name">isInUse</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the menu element is in use or not.
+     </p></div></div><div class="method_details"><a name="getMenuComponent"></a><h3>getMenuComponent</h3><code class="method_synopsis">public function <strong class="method_name">getMenuComponent</strong>():<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ This method should return the Component used to paint the receiving element.
+ The returned component will be used to convert events and detect if an event is inside
+ a MenuElement's component.
+
+ </p><h4>Return</h4><p class="extra_info"> the Component value
+     </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

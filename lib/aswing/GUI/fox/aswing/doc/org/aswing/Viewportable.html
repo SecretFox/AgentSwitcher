@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.Viewportable - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/ViewportLayout.html" title="Class org.aswing.ViewportLayout" rel="prev"/><link href="../../org/aswing/VectorListModel.html" title="Class org.aswing.VectorListModel" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.Viewportable</h1><div class="type_hierachy"><ul><li><a href="../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">org.aswing.IEventDispatcher</a><ul><li><strong>org.aswing.Viewportable</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ A viewportable object can scrolled by JScrollPane, JScrollBar to view 
+ its viewed content in a visible area.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><span class="unresolved_type_name">JScrollPane</span></li><li><span class="unresolved_type_name">JViewport</span></li><li><span class="unresolved_type_name">JList</span></li><li><span class="unresolved_type_name">JTextArea</span></li></ul></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addChangeListener" title="public function addChangeListener(func:Function, obj:Object):Object">addChangeListener()</a>, <a href="#getExtentSize" title="public function getExtentSize():Dimension">getExtentSize()</a>, <a href="#getHorizontalBlockIncrement" title="public function getHorizontalBlockIncrement():Number">getHorizontalBlockIncrement()</a>, <a href="#getHorizontalUnitIncrement" title="public function getHorizontalUnitIncrement():Number">getHorizontalUnitIncrement()</a>, <a href="#getVerticalBlockIncrement" title="public function getVerticalBlockIncrement():Number">getVerticalBlockIncrement()</a>, <a href="#getVerticalUnitIncrement" title="public function getVerticalUnitIncrement():Number">getVerticalUnitIncrement()</a>, <a href="#getViewportPane" title="public function getViewportPane():Component">getViewportPane()</a>, <a href="#getViewPosition" title="public function getViewPosition():Point">getViewPosition()</a>, <a href="#getViewSize" title="public function getViewSize():Dimension">getViewSize()</a>, <a href="#scrollRectToVisible" title="public function scrollRectToVisible(contentRect:Rectangle):Void">scrollRectToVisible()</a>, <a href="#setHorizontalBlockIncrement" title="public function setHorizontalBlockIncrement(increment:Number):Void">setHorizontalBlockIncrement()</a>, <a href="#setHorizontalUnitIncrement" title="public function setHorizontalUnitIncrement(increment:Number):Void">setHorizontalUnitIncrement()</a>, <a href="#setVerticalBlockIncrement" title="public function setVerticalBlockIncrement(increment:Number):Void">setVerticalBlockIncrement()</a>, <a href="#setVerticalUnitIncrement" title="public function setVerticalUnitIncrement(increment:Number):Void">setVerticalUnitIncrement()</a>, <a href="#setViewportTestSize" title="public function setViewportTestSize(s:Dimension):Void">setViewportTestSize()</a>, <a href="#setViewPosition" title="public function setViewPosition(p:Point):Void">setViewPosition()</a><h4>Inherited from <a href="../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">IEventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/IEventDispatcher.html#addEventListener" title="public function addEventListener(eventNameOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../org/aswing/IEventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a></div></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getVerticalUnitIncrement"></a><h3>getVerticalUnitIncrement</h3><code class="method_synopsis">public function <strong class="method_name">getVerticalUnitIncrement</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the unit value for the Vertical scrolling.
+	 </p></div></div><div class="method_details"><a name="getVerticalBlockIncrement"></a><h3>getVerticalBlockIncrement</h3><code class="method_synopsis">public function <strong class="method_name">getVerticalBlockIncrement</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Return the block value for the Vertical scrolling.
+     </p></div></div><div class="method_details alt_row"><a name="getHorizontalUnitIncrement"></a><h3>getHorizontalUnitIncrement</h3><code class="method_synopsis">public function <strong class="method_name">getHorizontalUnitIncrement</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the unit value for the Horizontal scrolling.
+	 </p></div></div><div class="method_details"><a name="getHorizontalBlockIncrement"></a><h3>getHorizontalBlockIncrement</h3><code class="method_synopsis">public function <strong class="method_name">getHorizontalBlockIncrement</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Return the block value for the Horizontal scrolling.
+     </p></div></div><div class="method_details alt_row"><a name="setVerticalUnitIncrement"></a><h3>setVerticalUnitIncrement</h3><code class="method_synopsis">public function <strong class="method_name">setVerticalUnitIncrement</strong>(increment:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the unit value for the Vertical scrolling.
+	 </p></div></div><div class="method_details"><a name="setVerticalBlockIncrement"></a><h3>setVerticalBlockIncrement</h3><code class="method_synopsis">public function <strong class="method_name">setVerticalBlockIncrement</strong>(increment:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the block value for the Vertical scrolling.
+     </p></div></div><div class="method_details alt_row"><a name="setHorizontalUnitIncrement"></a><h3>setHorizontalUnitIncrement</h3><code class="method_synopsis">public function <strong class="method_name">setHorizontalUnitIncrement</strong>(increment:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the unit value for the Horizontal scrolling.
+	 </p></div></div><div class="method_details"><a name="setHorizontalBlockIncrement"></a><h3>setHorizontalBlockIncrement</h3><code class="method_synopsis">public function <strong class="method_name">setHorizontalBlockIncrement</strong>(increment:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the block value for the Horizontal scrolling.
+     </p></div></div><div class="method_details alt_row"><a name="setViewportTestSize"></a><h3>setViewportTestSize</h3><code class="method_synopsis">public function <strong class="method_name">setViewportTestSize</strong>(s:<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Before JScrollPane analyse the scroll properties(call getExtentSize and getViewSize), 
+ it will call this method to set the size of viewport will be to test.
+     </p></div></div><div class="method_details"><a name="getExtentSize"></a><h3>getExtentSize</h3><code class="method_synopsis">public function <strong class="method_name">getExtentSize</strong>():<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ Returns the size of the visible part of the view in view logic coordinates.
+
+ </p><h4>Return</h4><p class="extra_info"> a <code>Dimension</code> object giving the size of the view
+     </p></div></div><div class="method_details alt_row"><a name="getViewSize"></a><h3>getViewSize</h3><code class="method_synopsis">public function <strong class="method_name">getViewSize</strong>():<a href="../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ Returns the viewportable view's amount size if view all content in view logic coordinates.
+ Usually the view's preffered size.
+ </p><h4>Return</h4><p class="extra_info"> the view's size.
+     </p></div></div><div class="method_details"><a name="getViewPosition"></a><h3>getViewPosition</h3><code class="method_synopsis">public function <strong class="method_name">getViewPosition</strong>():<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a></code><div class="method_info"><p>
+ Returns the view coordinates that appear in the upper left
+ hand corner of the viewport, or 0,0 if there's no view. in view logic coordinates.
+
+ </p><h4>Return</h4><p class="extra_info"> a <code>Point</code> object giving the upper left coordinates
+     </p></div></div><div class="method_details alt_row"><a name="setViewPosition"></a><h3>setViewPosition</h3><code class="method_synopsis">public function <strong class="method_name">setViewPosition</strong>(p:<a href="../../org/aswing/geom/Point.html" class="class_name" title="Class org.aswing.geom.Point">Point</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the view coordinates that appear in the upper left
+ hand corner of the viewport. in view logic coordinates.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>p</code></td><td>a <code>Point</code> object giving the upper left coordinates
+     </td></tr></table></div></div><div class="method_details"><a name="scrollRectToVisible"></a><h3>scrollRectToVisible</h3><code class="method_synopsis">public function <strong class="method_name">scrollRectToVisible</strong>(contentRect:<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Scrolls the view so that <code>Rectangle</code>
+ within the view becomes visible. in view logic coordinates.
+ <p>
+ Note that this method will not scroll outside of the
+ valid viewport; for example, if <code>contentRect</code> is larger
+ than the viewport, scrolling will be confined to the viewport's
+ bounds.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>contentRect</code></td><td>the <code>Rectangle</code> to display
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="addChangeListener"></a><h3>addChangeListener</h3><code class="method_synopsis">public function <strong class="method_name">addChangeListener</strong>(func:<span class="unresolved_type_name">Function</span>, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Add a listener to listen the viewpoat state change event.
+ <p>
+ When the viewpoat's state changed, the state is all about:
+ <ul>
+ <li>viewPosition
+ </ul>
+<br>
+ onStateChanged(source:Viewportable)
+ </p><h4>Return</h4><p class="extra_info"> the listener added.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/Component.html#ON_STATE_CHANGED">org.aswing.Component.ON_STATE_CHANGED</a></li><li>EventDispatcher#addEventListener()</li></ul></div></div><div class="method_details"><a name="getViewportPane"></a><h3>getViewportPane</h3><code class="method_synopsis">public function <strong class="method_name">getViewportPane</strong>():<a href="../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Return the component of the viewportable's pane which would added to displayed on the stage.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the component of the viewportable pane.
+     </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

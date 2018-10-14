@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.event.TableModelEvent - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.event" rel="up"/><link href="../../../org/aswing/event/TableModelListener.html" title="Interface org.aswing.event.TableModelListener" rel="prev"/><link href="../../../org/aswing/event/ListDataListener.html" title="Interface org.aswing.event.ListDataListener" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.event.TableModelEvent</h1><div class="type_hierachy"><ul><li><a href="../../../org/aswing/Event.html" class="class_name" title="Class org.aswing.Event">org.aswing.Event</a><ul><li><strong>org.aswing.event.TableModelEvent</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ TableModelEvent is used to notify listeners that a table model
+ has changed. The model event describes changes to a TableModel 
+ and all references to rows and columns are in the co-ordinate 
+ system of the model. 
+ Depending on the parameters used in the constructors, the TableModelevent
+ can be used to specify the following types of changes: <p>
+
+ <pre>
+ TableModelEvent(source);              //  The data, ie. all rows changed 
+ TableModelEvent(source, HEADER_ROW);  //  Structure change, reallocate TableColumns
+ TableModelEvent(source, 1);           //  Row 1 changed
+ TableModelEvent(source, 3, 6);        //  Rows 3 to 6 inclusive changed
+ TableModelEvent(source, 2, 2, 6);     //  Cell at (2, 6) changed
+ TableModelEvent(source, 3, 6, ALL_COLUMNS, INSERT); // Rows (3, 6) were inserted
+ TableModelEvent(source, 3, 6, ALL_COLUMNS, DELETE); // Rows (3, 6) were deleted
+ </pre>
+
+ It is possible to use other combinations of the parameters, not all of them 
+ are meaningful. By subclassing, you can add other information, for example: 
+ whether the event WILL happen or DID happen. This makes the specification 
+ of rows in DELETE events more useful but has not been included in 
+ the swing package as the JTable only needs post-event notification. 
+ <p>
+ 
+ </p></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><a href="#ALL_COLUMNS" title="static public ALL_COLUMNS:Number">ALL_COLUMNS</a>, <a href="#DELETE" title="static public DELETE:String">DELETE</a>, <a href="#HEADER_ROW" title="static public HEADER_ROW:Number">HEADER_ROW</a>, <a href="#INSERT" title="static public INSERT:String">INSERT</a>, <a href="#UPDATE" title="static public UPDATE:String">UPDATE</a></div><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#TableModelEvent" title="public function TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number, column:Number, type:String)">TableModelEvent()</a></code></div><a href="#getColumn" title="public function getColumn():Number">getColumn()</a>, <a href="#getFirstRow" title="public function getFirstRow():Number">getFirstRow()</a>, <a href="#getLastRow" title="public function getLastRow():Number">getLastRow()</a><h4>Inherited from <a href="../../../org/aswing/Event.html" class="class_name" title="Class org.aswing.Event">Event</a></h4><div class="extra_info"><a href="../../../org/aswing/Event.html#getArguments" title="public function getArguments():Array">getArguments()</a>, <a href="../../../org/aswing/Event.html#getSource" title="public function getSource():Object">getSource()</a>, <a href="../../../org/aswing/Event.html#getType" title="public function getType():String">getType()</a></div></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="TableModelEvent"></a><h3>TableModelEvent</h3><code class="method_synopsis">public function <strong class="method_name">TableModelEvent</strong>(source:<a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">TableModel</a>, firstRow:<span class="unresolved_type_name">Number</span>, lastRow:<span class="unresolved_type_name">Number</span>, column:<span class="unresolved_type_name">Number</span>, type:<span class="unresolved_type_name">String</span>)</code><div class="method_info"><p>
+ <pre>
+ TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number, column:Number, type:String)
+ TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number, column:Number)
+ TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number)
+ TableModelEvent(source:TableModel, row:Number)
+ TableModelEvent(source:TableModel)
+ </pre>
+ <p>
+ <ul>
+ <li>TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number, column:Number, type:String)<br>
+  The cells from (firstRow, column) to (lastRow, column) have been changed. 
+  The <I>column</I> refers to the column index of the cell in the model's 
+  co-ordinate system. When <I>column</I> is ALL_COLUMNS, all cells in the 
+  specified range of rows are considered changed. <br>
+  The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
+  
+  <li>TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number, column:Number)<br>
+  The cells in column <I>column</I> in the range 
+  [<I>firstRow</I>, <I>lastRow</I>] have been updated. 
+  
+  <li>TableModelEvent(source:TableModel, firstRow:Number, lastRow:Number)<br>
+  The data in rows [<I>firstRow</I>, <I>lastRow</I>] have been updated.
+   
+  <li>TableModelEvent(source:TableModel, row:Number)<br>
+  This row of data has been updated. 
+  To denote the arrival of a completely new table with a different structure 
+  use <code>HEADER_ROW</code> as the value for the <code>row</code>. 
+  When the <code>JTable</code> receives this event and its
+  <code>autoCreateColumnsFromModel</code> 
+  flag is set it discards any TableColumns that it had and reallocates 
+  default ones in the order they appear in the model. This is the 
+  same as calling <code>setModel(TableModel)</code> on the <code>JTable</code>.
+   
+  <li>TableModelEvent(source:TableModel)<br>
+  All row data in the table has changed, listeners should discard any state 
+  that was based on the rows and requery the <code>TableModel</code>
+  to get the new row count and all the appropriate values. 
+  The <code>JTable</code> will repaint the entire visible region on
+  receiving this event, querying the model for the cell values that are visible. 
+  The structure of the table ie, the column names, types and order 
+  have not changed.  
+ </ul>
+     </p></div></div></div><div class="field_detail_list"><h2>Field Detail</h2><a name="INSERT"></a><h3>INSERT</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">INSERT</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info"> Identifies the addtion of new rows or columns. </div></div><a name="UPDATE"></a><h3>UPDATE</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">UPDATE</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info"> Identifies a change to existing data. </div></div><a name="DELETE"></a><h3>DELETE</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">DELETE</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info"> Identifies the removal of rows or columns. </div></div><a name="HEADER_ROW"></a><h3>HEADER_ROW</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">HEADER_ROW</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info"> Identifies the header row. </div></div><a name="ALL_COLUMNS"></a><h3>ALL_COLUMNS</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ALL_COLUMNS</strong>:<span class="unresolved_type_name">Number</span></code><div class="field_info"> Specifies all columns in a row or rows. </div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getFirstRow"></a><h3>getFirstRow</h3><code class="method_synopsis">public function <strong class="method_name">getFirstRow</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p> Returns the first row that changed.  HEADER_ROW means the meta data, 
+ ie. names, types and order of the columns. 
+     </p></div></div><div class="method_details"><a name="getLastRow"></a><h3>getLastRow</h3><code class="method_synopsis">public function <strong class="method_name">getLastRow</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p> Returns the last row that changed. </p></div></div><div class="method_details alt_row"><a name="getColumn"></a><h3>getColumn</h3><code class="method_synopsis">public function <strong class="method_name">getColumn</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+  Returns the column for the event.  If the return
+  value is ALL_COLUMNS; it means every column in the specified
+  rows changed.
+     </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.event" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

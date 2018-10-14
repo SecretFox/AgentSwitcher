@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.tree.AbstractLayoutCache - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.tree" rel="up"/><link href="../../../org/aswing/tree/DefaultMutableTreeNode.html" title="Class org.aswing.tree.DefaultMutableTreeNode" rel="prev"/><link href="../../../org/aswing/ToggleButtonModel.html" title="Class org.aswing.ToggleButtonModel" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.tree.AbstractLayoutCache</h1><div class="type_hierachy"><ul><li><strong>org.aswing.tree.AbstractLayoutCache</strong></li></ul></div><div class="interfaces"><h2>Implemented Interfaces</h2><code><a href="../../../org/aswing/tree/RowMapper.html" class="interface_name" title="Interface org.aswing.tree.RowMapper">RowMapper</a></code> </div><div class="type_description"><h2>Description</h2><p>
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#getBounds" title="public function getBounds(path:TreePath, placeIn:Rectangle):Rectangle">getBounds()</a>, <a href="#getExpandedState" title="public function getExpandedState(path:TreePath):Boolean">getExpandedState()</a>, <a href="#getModel" title="public function getModel():TreeModel">getModel()</a>, <a href="#getNodeDimensions" title="public function getNodeDimensions():NodeDimensions">getNodeDimensions()</a>, <a href="#getPathClosestTo" title="public function getPathClosestTo(x:Number, y:Number):TreePath">getPathClosestTo()</a>, <a href="#getPathForRow" title="public function getPathForRow(row:Number):TreePath">getPathForRow()</a>, <a href="#getPreferredHeight" title="public function getPreferredHeight():Number">getPreferredHeight()</a>, <a href="#getPreferredWidth" title="public function getPreferredWidth(bounds:Rectangle):Number">getPreferredWidth()</a>, <a href="#getRowContainingYLocation" title="public function getRowContainingYLocation(location:Number):Number">getRowContainingYLocation()</a>, <a href="#getRowCount" title="public function getRowCount():Number">getRowCount()</a>, <a href="#getRowForPath" title="public function getRowForPath(path:TreePath):Number">getRowForPath()</a>, <a href="#getRowHeight" title="public function getRowHeight():Number">getRowHeight()</a>, <a href="#getRowsForPaths" title="public function getRowsForPaths(paths:Array):Array">getRowsForPaths()</a>, <a href="#getSelectionModel" title="public function getSelectionModel():TreeSelectionModel">getSelectionModel()</a>, <a href="#getVisibleChildCount" title="public function getVisibleChildCount(path:TreePath):Number">getVisibleChildCount()</a>, <a href="#getVisiblePathsFrom" title="public function getVisiblePathsFrom(path:TreePath, totalCount:Number):Array">getVisiblePathsFrom()</a>, <a href="#invalidatePathBounds" title="public function invalidatePathBounds(path:TreePath):Void">invalidatePathBounds()</a>, <a href="#invalidateSizes" title="public function invalidateSizes():Void">invalidateSizes()</a>, <a href="#isExpanded" title="public function isExpanded(path:TreePath):Boolean">isExpanded()</a>, <a href="#isRootVisible" title="public function isRootVisible():Boolean">isRootVisible()</a>, <a href="#setExpandedState" title="public function setExpandedState(path:TreePath, isExpanded:Boolean):Void">setExpandedState()</a>, <a href="#setModel" title="public function setModel(newModel:TreeModel):Void">setModel()</a>, <a href="#setNodeDimensions" title="public function setNodeDimensions(nd:NodeDimensions):Void">setNodeDimensions()</a>, <a href="#setRootVisible" title="public function setRootVisible(rootVisible:Boolean):Void">setRootVisible()</a>, <a href="#setRowHeight" title="public function setRowHeight(rowHeight:Number):Void">setRowHeight()</a>, <a href="#setSelectionModel" title="public function setSelectionModel(newLSM:TreeSelectionModel):Void">setSelectionModel()</a>, <a href="#treeNodesChanged" title="public function treeNodesChanged(e:TreeModelEvent):Void">treeNodesChanged()</a>, <a href="#treeNodesInserted" title="public function treeNodesInserted(e:TreeModelEvent):Void">treeNodesInserted()</a>, <a href="#treeNodesRemoved" title="public function treeNodesRemoved(e:TreeModelEvent):Void">treeNodesRemoved()</a>, <a href="#treeStructureChanged" title="public function treeStructureChanged(e:TreeModelEvent):Void">treeStructureChanged()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="setNodeDimensions"></a><h3>setNodeDimensions</h3><code class="method_synopsis">public function <strong class="method_name">setNodeDimensions</strong>(nd:<a href="../../../org/aswing/tree/NodeDimensions.html" class="interface_name" title="Interface org.aswing.tree.NodeDimensions">NodeDimensions</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the renderer that is responsible for drawing nodes in the tree
+ and which is threfore responsible for calculating the dimensions of
+ individual nodes.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>nd</code></td><td>a <code>NodeDimensions</code> object
+     </td></tr></table></div></div><div class="method_details"><a name="getNodeDimensions"></a><h3>getNodeDimensions</h3><code class="method_synopsis">public function <strong class="method_name">getNodeDimensions</strong>():<a href="../../../org/aswing/tree/NodeDimensions.html" class="interface_name" title="Interface org.aswing.tree.NodeDimensions">NodeDimensions</a></code><div class="method_info"><p>
+ Returns the object that renders nodes in the tree, and which is 
+ responsible for calculating the dimensions of individual nodes.
+
+ </p><h4>Return</h4><p class="extra_info"> the <code>NodeDimensions</code> object
+     </p></div></div><div class="method_details alt_row"><a name="setModel"></a><h3>setModel</h3><code class="method_synopsis">public function <strong class="method_name">setModel</strong>(newModel:<a href="../../../org/aswing/tree/TreeModel.html" class="interface_name" title="Interface org.aswing.tree.TreeModel">TreeModel</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <code>TreeModel</code> that will provide the data.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newModel</code></td><td>the <code>TreeModel</code> that is to
+		provide the data
+     </td></tr></table></div></div><div class="method_details"><a name="getModel"></a><h3>getModel</h3><code class="method_synopsis">public function <strong class="method_name">getModel</strong>():<a href="../../../org/aswing/tree/TreeModel.html" class="interface_name" title="Interface org.aswing.tree.TreeModel">TreeModel</a></code><div class="method_info"><p>
+ Returns the <code>TreeModel</code> that is providing the data.
+
+ </p><h4>Return</h4><p class="extra_info"> the <code>TreeModel</code> that is providing the data
+     </p></div></div><div class="method_details alt_row"><a name="setRootVisible"></a><h3>setRootVisible</h3><code class="method_synopsis">public function <strong class="method_name">setRootVisible</strong>(rootVisible:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Determines whether or not the root node from
+ the <code>TreeModel</code> is visible.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>rootVisible</code></td><td>true if the root node of the tree is to be displayed
+     </td></tr></table></div></div><div class="method_details"><a name="isRootVisible"></a><h3>isRootVisible</h3><code class="method_synopsis">public function <strong class="method_name">isRootVisible</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the root node of the tree is displayed.
+
+ </p><h4>Return</h4><p class="extra_info"> true if the root node of the tree is displayed
+     </p></div></div><div class="method_details alt_row"><a name="setRowHeight"></a><h3>setRowHeight</h3><code class="method_synopsis">public function <strong class="method_name">setRowHeight</strong>(rowHeight:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the height of each cell.  If the specified value
+ is less than or equal to zero the current cell renderer is
+ queried for each row's height.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>rowHeight</code></td><td>the height of each cell, in pixels
+     </td></tr></table></div></div><div class="method_details"><a name="getRowHeight"></a><h3>getRowHeight</h3><code class="method_synopsis">public function <strong class="method_name">getRowHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the height of each row.  If the returned value is less than
+ or equal to 0 the height for each row is determined by the
+ renderer.
+     </p></div></div><div class="method_details alt_row"><a name="setSelectionModel"></a><h3>setSelectionModel</h3><code class="method_synopsis">public function <strong class="method_name">setSelectionModel</strong>(newLSM:<a href="../../../org/aswing/tree/TreeSelectionModel.html" class="interface_name" title="Interface org.aswing.tree.TreeSelectionModel">TreeSelectionModel</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <code>TreeSelectionModel</code> used to manage the
+ selection to new LSM.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newLSM</code></td><td>the new <code>TreeSelectionModel</code>
+     </td></tr></table></div></div><div class="method_details"><a name="getSelectionModel"></a><h3>getSelectionModel</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionModel</strong>():<a href="../../../org/aswing/tree/TreeSelectionModel.html" class="interface_name" title="Interface org.aswing.tree.TreeSelectionModel">TreeSelectionModel</a></code><div class="method_info"><p>
+ Returns the model used to maintain the selection.
+
+ </p><h4>Return</h4><p class="extra_info"> the <code>treeSelectionModel</code>
+     </p></div></div><div class="method_details alt_row"><a name="getPreferredHeight"></a><h3>getPreferredHeight</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredHeight</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the preferred height.
+
+ </p><h4>Return</h4><p class="extra_info"> the preferred height
+     </p></div></div><div class="method_details"><a name="getPreferredWidth"></a><h3>getPreferredWidth</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredWidth</strong>(bounds:<a href="../../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the preferred width for the passed in region.
+ The region is defined by the path closest to
+ <code>(bounds.x, bounds.y)</code> and
+ ends at <code>bounds.height + bounds.y</code>.
+ If <code>bounds</code> is <code>null</code>,
+ the preferred width for all the nodes
+ will be returned (and this may be a VERY expensive
+ computation).
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>bounds</code></td><td>the region being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the preferred width for the passed in region
+     </p></div></div><div class="method_details alt_row"><a name="isExpanded"></a><h3>isExpanded</h3><code class="method_synopsis">public function <strong class="method_name">isExpanded</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the value identified by row is currently expanded.
+      </p></div></div><div class="method_details"><a name="getBounds"></a><h3>getBounds</h3><code class="method_synopsis">public function <strong class="method_name">getBounds</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>, placeIn:<a href="../../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<a href="../../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a></code><div class="method_info"><p>
+ Returns a rectangle giving the bounds needed to draw path.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>a <code>TreePath</code> specifying a node
+ </td></tr><tr><td><code>placeIn</code></td><td>a <code>Rectangle</code> object giving the
+		available space
+ </td></tr></table><h4>Return</h4><p class="extra_info"> a <code>Rectangle</code> object specifying the space to be used
+     </p></div></div><div class="method_details alt_row"><a name="getPathForRow"></a><h3>getPathForRow</h3><code class="method_synopsis">public function <strong class="method_name">getPathForRow</strong>(row:<span class="unresolved_type_name">Number</span>):<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a></code><div class="method_info"><p>
+ Returns the path for passed in row.  If row is not visible
+ <code>null</code> is returned.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>row</code></td><td>the row being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the <code>TreePath</code> for the given row
+      </p></div></div><div class="method_details"><a name="getRowForPath"></a><h3>getRowForPath</h3><code class="method_synopsis">public function <strong class="method_name">getRowForPath</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the row that the last item identified in path is visible
+ at.  Will return -1 if any of the elements in path are not
+ currently visible.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the <code>TreePath</code> being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the row where the last item in path is visible or -1
+		if any elements in path aren't currently visible
+      </p></div></div><div class="method_details alt_row"><a name="getRowContainingYLocation"></a><h3>getRowContainingYLocation</h3><code class="method_synopsis">public function <strong class="method_name">getRowContainingYLocation</strong>(location:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the index of the row containing location.  If there
+ are no rows, -1 is returned.  If location is beyond the last
+ row index, the last row index is returned.
+      </p></div></div><div class="method_details"><a name="getPathClosestTo"></a><h3>getPathClosestTo</h3><code class="method_synopsis">public function <strong class="method_name">getPathClosestTo</strong>(x:<span class="unresolved_type_name">Number</span>, y:<span class="unresolved_type_name">Number</span>):<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a></code><div class="method_info"><p>
+ Returns the path to the node that is closest to x,y.  If
+ there is nothing currently visible this will return <code>null</code>,
+ otherwise it'll always return a valid path.
+ If you need to test if the
+ returned object is exactly at x, y you should get the bounds for
+ the returned path and test x, y against that.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>x</code></td><td>the horizontal component of the desired location
+ </td></tr><tr><td><code>y</code></td><td>the vertical component of the desired location
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the <code>TreePath</code> closest to the specified point
+      </p></div></div><div class="method_details alt_row"><a name="getVisiblePathsFrom"></a><h3>getVisiblePathsFrom</h3><code class="method_synopsis">public function <strong class="method_name">getVisiblePathsFrom</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>, totalCount:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns an <code>Enumerator</code> that increments over the visible 
+ paths starting at the passed in location. The ordering of the 
+ enumeration is based on how the paths are displayed.
+ The first element of the returned enumeration will be path,
+ unless it isn't visible,
+ in which case <code>null</code> will be returned.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the starting location for the enumeration
+ </td></tr><tr><td><code>totalCount</code></td><td>the total number of path to contains.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the <code>Enumerator</code> starting at the desired location
+     </p></div></div><div class="method_details"><a name="getVisibleChildCount"></a><h3>getVisibleChildCount</h3><code class="method_synopsis">public function <strong class="method_name">getVisibleChildCount</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of visible children for row.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the path being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the number of visible children for the specified path
+     </p></div></div><div class="method_details alt_row"><a name="setExpandedState"></a><h3>setExpandedState</h3><code class="method_synopsis">public function <strong class="method_name">setExpandedState</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>, isExpanded:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Marks the path <code>path</code> expanded state to
+ <code>isExpanded</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the path being expanded or collapsed
+ </td></tr><tr><td><code>isExpanded</code></td><td>true if the path should be expanded, false otherwise 
+     </td></tr></table></div></div><div class="method_details"><a name="getExpandedState"></a><h3>getExpandedState</h3><code class="method_synopsis">public function <strong class="method_name">getExpandedState</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the path is expanded, and visible.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the path being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> true if the path is expanded and visible, false otherwise
+     </p></div></div><div class="method_details alt_row"><a name="getRowCount"></a><h3>getRowCount</h3><code class="method_synopsis">public function <strong class="method_name">getRowCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Number of rows being displayed.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the number of rows being displayed
+     </p></div></div><div class="method_details"><a name="invalidateSizes"></a><h3>invalidateSizes</h3><code class="method_synopsis">public function <strong class="method_name">invalidateSizes</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Informs the <code>TreeState</code> that it needs to recalculate
+ all the sizes it is referencing.
+     </p></div></div><div class="method_details alt_row"><a name="invalidatePathBounds"></a><h3>invalidatePathBounds</h3><code class="method_synopsis">public function <strong class="method_name">invalidatePathBounds</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Instructs the <code>LayoutCache</code> that the bounds for
+ <code>path</code> are invalid, and need to be updated.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the path being updated
+     </td></tr></table></div></div><div class="method_details"><a name="treeNodesChanged"></a><h3>treeNodesChanged</h3><code class="method_synopsis">public function <strong class="method_name">treeNodesChanged</strong>(e:<a href="../../../org/aswing/event/TreeModelEvent.html" class="class_name" title="Class org.aswing.event.TreeModelEvent">TreeModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ <p>
+ Invoked after a node (or a set of siblings) has changed in some
+ way. The node(s) have not changed locations in the tree or
+ altered their children arrays, but other attributes have
+ changed and may affect presentation. Example: the name of a
+ file has changed, but it is in the same location in the file
+ system.</p>
+
+ <p>e.path() returns the path the parent of the changed node(s).</p>
+
+ <p>e.childIndices() returns the index(es) of the changed node(s).</p>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>e</code></td><td>the <code>TreeModelEvent</code>
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="treeNodesInserted"></a><h3>treeNodesInserted</h3><code class="method_synopsis">public function <strong class="method_name">treeNodesInserted</strong>(e:<a href="../../../org/aswing/event/TreeModelEvent.html" class="class_name" title="Class org.aswing.event.TreeModelEvent">TreeModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ <p>Invoked after nodes have been inserted into the tree.</p>
+
+ <p>e.path() returns the parent of the new nodes</p>
+ <p>e.childIndices() returns the indices of the new nodes in
+ ascending order.</p>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>e</code></td><td>the <code>TreeModelEvent</code>
+     </td></tr></table></div></div><div class="method_details"><a name="treeNodesRemoved"></a><h3>treeNodesRemoved</h3><code class="method_synopsis">public function <strong class="method_name">treeNodesRemoved</strong>(e:<a href="../../../org/aswing/event/TreeModelEvent.html" class="class_name" title="Class org.aswing.event.TreeModelEvent">TreeModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ <p>Invoked after nodes have been removed from the tree.  Note that
+ if a subtree is removed from the tree, this method may only be
+ invoked once for the root of the removed subtree, not once for
+ each individual set of siblings removed.</p>
+
+ <p>e.path() returns the former parent of the deleted nodes.</p>
+
+ <p>e.childIndices() returns the indices the nodes had before they were deleted in ascending order.</p>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>e</code></td><td>the <code>TreeModelEvent</code>
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="treeStructureChanged"></a><h3>treeStructureChanged</h3><code class="method_synopsis">public function <strong class="method_name">treeStructureChanged</strong>(e:<a href="../../../org/aswing/event/TreeModelEvent.html" class="class_name" title="Class org.aswing.event.TreeModelEvent">TreeModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ <p>Invoked after the tree has drastically changed structure from a
+ given node down.  If the path returned by <code>e.getPath()</code>
+ is of length one and the first element does not identify the
+ current root node the first element should become the new root
+ of the tree.</p>
+
+ <p>e.path() holds the path to the node.</p>
+ <p>e.childIndices() returns null.</p>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>e</code></td><td>the <code>TreeModelEvent</code>
+     </td></tr></table></div></div><div class="method_details"><a name="getRowsForPaths"></a><h3>getRowsForPaths</h3><code class="method_synopsis">public function <strong class="method_name">getRowsForPaths</strong>(paths:<span class="unresolved_type_name">Array</span>):<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns the rows that the <code>TreePath</code> instances in
+ <code>path</code> are being displayed at.
+ This method should return an array of the same length as that passed
+ in, and if one of the <code>TreePaths</code>
+ in <code>path</code> is not valid its entry in the array should
+ be set to -1.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>paths</code></td><td>the array of <code>TreePath</code>s being queried
+ </td></tr></table><h4>Return</h4><p class="extra_info"> an array of the same length that is passed in containing
+		the rows that each corresponding where each
+		<code>TreePath</code> is displayed; if <code>paths</code>
+		is <code>null</code>, <code>null</code> is returned
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/tree/RowMapper.html#getRowsForPaths" title="public function getRowsForPaths(path:Array):Array">getRowsForPaths()</a> in <a href="../../../org/aswing/tree/RowMapper.html" class="interface_name" title="Interface org.aswing.tree.RowMapper">org.aswing.tree.RowMapper</a></p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.tree" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

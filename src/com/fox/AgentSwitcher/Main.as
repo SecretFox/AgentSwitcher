@@ -2,24 +2,32 @@ import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.CharacterBase;
+import com.GameInterface.UtilsBase;
 import com.Utils.Archive;
 import com.Utils.Colors;
 import com.Utils.Draw;
 import com.Utils.GlobalSignal;
 import com.Utils.ID32;
+import com.fox.AgentSwitcher.Settings;
 import flash.geom.Point;
 import com.fox.Utils.Common;
 import mx.utils.Delegate;
+import GUI.fox.aswing.TswLookAndFeel;
+import GUI.fox.aswing.ASWingUtils;
+import GUI.fox.aswing.UIManager;
 /**
  * ...
  * @author fox
  */
 
 class com.fox.AgentSwitcher.Main {
-	private var DebugDval:DistributedValue;
-	private var SlotDval:DistributedValue;
-	private var SwitchDval:DistributedValue;
-	private var DefaultDelayDval:DistributedValue;
+	public var DebugDval:DistributedValue;
+	public var SlotDval:DistributedValue;
+	public var SwitchDval:DistributedValue;
+	public var DefaultDelayDval:DistributedValue;
+	public var OpenSettingsDval:DistributedValue;
+	public var ActiveDval:DistributedValue;
 
 	private var DefaultAgent:Number;
 	private var m_Player:Character;
@@ -30,15 +38,17 @@ class com.fox.AgentSwitcher.Main {
 	private var LastSelectedRace:String;
 	
 	private var m_swfRoot:MovieClip;
+	private var m_settingsRoot:MovieClip;
+	private var m_settings:Settings;
 	private var m_Icon:MovieClip;
 	private var iconPos:Point;
-	private var Active:Boolean;
+	
 
 	public static function main(swfRoot:MovieClip):Void {
 		var s_app = new Main(swfRoot);
 		swfRoot.onLoad =  function() {return s_app.Load()};
 		swfRoot.onUnload =  function() {return s_app.Unload()};
-		swfRoot.OnModuleActivated = function(settings:Archive) {s_app.LoadSettings(settings)};
+		swfRoot.OnModuleActivated = function(config:Archive) {s_app.LoadSettings(config)};
 		swfRoot.OnModuleDeactivated = function() {return s_app.SaveSettings()};
 	}
 
@@ -48,6 +58,9 @@ class com.fox.AgentSwitcher.Main {
 		SlotDval = DistributedValue.Create("AgentSwitcher_Slot");
 		SwitchDval = DistributedValue.Create("AgentSwitcher_DefaultOnCombatEnd");
 		DefaultDelayDval = DistributedValue.Create("AgentSwitcher_DefaultDelay");
+		OpenSettingsDval = DistributedValue.Create("AgentSwitcher_OpenSettings");
+		ActiveDval = DistributedValue.Create("AgentSwitcher_Enabled");
+		OpenSettingsDval.SetValue(false);
 	}
 
 	public function LoadSettings(config: Archive):Void {
@@ -58,7 +71,7 @@ class com.fox.AgentSwitcher.Main {
 		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
 		DefaultAgent = config.FindEntry("Default", 0);
 		iconPos = config.FindEntry("iconPos", new Point(200, 50));
-		Active = config.FindEntry("Active", true);
+		ActiveDval.SetValue(config.FindEntry("Active", true));
 		if (DefaultAgent == 0) DefaultAgent = GetCurrentAgent().m_AgentId;
 		CreateTopIcon();
 	}
@@ -71,7 +84,7 @@ class com.fox.AgentSwitcher.Main {
 		config.AddEntry("Delay", DefaultDelayDval.GetValue());
 		config.AddEntry("Default", DefaultAgent);
 		config.AddEntry("iconPos", iconPos);
-		config.AddEntry("Active", Active);
+		config.AddEntry("Active", ActiveDval.GetValue());
 		return config
 	}
 
@@ -80,7 +93,15 @@ class com.fox.AgentSwitcher.Main {
 		m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
 		m_Player.SignalToggleCombat.Connect(SwitchToDefault, this);
 		SlotDval.SignalChanged.Connect(SlotDestionationChanged, this);
+		OpenSettingsDval.SignalChanged.Connect(OpenSettings, this);
+		ActiveDval.SignalChanged.Connect(StateChanged, this);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
+		m_settingsRoot = m_swfRoot.createEmptyMovieClip("m_settingsRoot", m_swfRoot.getNextHighestDepth());
+		ASWingUtils.setRootMovieClip(m_settingsRoot);
+		var laf:TswLookAndFeel = new TswLookAndFeel();
+		UIManager.setLookAndFeel(laf)
+		OpenSettings.SetValue(false);
+		CharacterBase.SignalCharacterEnteredReticuleMode.Connect(CloseSettings, this);
 	}
 
 	public function Unload():Void {
@@ -88,6 +109,10 @@ class com.fox.AgentSwitcher.Main {
 		m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
 		SlotDval.SignalChanged.Disconnect(SlotDestionationChanged, this);
+		OpenSettingsDval.SignalChanged.Disconnect(OpenSettings, this);
+		ActiveDval.SignalChanged.Disconnect(StateChanged, this);
+		m_settingsRoot.removeMovieClip();
+		CharacterBase.SignalCharacterEnteredReticuleMode.Disconnect(CloseSettings, this);
 	}
 	private function guiEdit(state) {
 		if (!state) {
@@ -95,13 +120,20 @@ class com.fox.AgentSwitcher.Main {
 			iconPos = Common.getOnScreen(m_Icon);
 			m_Icon._x = iconPos.x;
 			m_Icon._y = iconPos.y;
-			m_Icon.onPress = Delegate.create(this, StateChanged);
+			m_Icon.onPress = Delegate.create(this, function() {
+				this.ActiveDval.SetValue(!this.ActiveDval.GetValue());
+			});
+			m_Icon.onPressAux = Delegate.create(this, function() {
+				this.OpenSettingsDval.SetValue(!this.OpenSettingsDval.GetValue());
+			});
 			m_Icon.onRelease = undefined;
 			m_Icon.onReleaseOutside = undefined;
 		} else {
+			OpenSettingsDval.SetValue(false);
 			m_Icon.onPress = Delegate.create(this, function() {
 				this.m_Icon.startDrag();
 			});
+			m_Icon.onPressAux = undefined;
 			m_Icon.onRelease = Delegate.create(this, function() {
 				this.m_Icon.stopDrag();
 			});
@@ -110,13 +142,23 @@ class com.fox.AgentSwitcher.Main {
 			});
 		}
 	}
-	private function StateChanged() {
-		Active = !Active;
-		if (Active) {
+	public function StateChanged(dv:DistributedValue) {
+		if (dv.GetValue()) {
 			Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
 		} else {
 			Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
 		}
+	}
+	private function OpenSettings(dv:DistributedValue){
+		if (dv.GetValue()){
+			if(m_settings) m_settings.dispose();
+			m_settings = new Settings(m_Icon._x, m_Icon._y, this);
+		}else{
+			if (m_settings){
+				m_settings.dispose();
+				m_settings = undefined;
+			}
+}
 	}
 	public function CreateTopIcon() {
 		if (!m_Icon) {
@@ -124,7 +166,7 @@ class com.fox.AgentSwitcher.Main {
 			m_Icon._x = iconPos.x;
 			m_Icon._y = iconPos.y;
 			var m_Img = m_Icon.attachMovie("src.assets.AgentTopBar.png", "m_Img", m_Icon.getNextHighestDepth(), {_x:2, _y:2})
-			if (Active) {
+			if (ActiveDval.GetValue()) {
 				Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
 			} else {
 				Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
@@ -134,6 +176,10 @@ class com.fox.AgentSwitcher.Main {
 			guiEdit(false);
 			GlobalSignal.SignalSetGUIEditMode.Connect(guiEdit, this);
 		}
+	}
+	
+	private function CloseSettings(){
+		OpenSettingsDval.SetValue(false);
 	}
 	
 	private function SlotDestionationChanged(dv:DistributedValue) {
@@ -339,7 +385,7 @@ class com.fox.AgentSwitcher.Main {
 	}
 
 	private function TargetChanged(id:ID32) {
-		if (Active){
+		if (ActiveDval.GetValue()){
 			clearTimeout(DefaultTimeout);
 			if (!id.IsNull()) {
 				var data:Object = GetRace(id);

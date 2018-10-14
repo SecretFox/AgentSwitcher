@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.ElementCreater - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/EmptyLayout.html" title="Class org.aswing.EmptyLayout" rel="prev"/><link href="../../org/aswing/dnd/TreeSourceData.html" title="Class org.aswing.dnd.TreeSourceData" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.ElementCreater</h1><div class="type_hierachy"><ul><li><strong>org.aswing.ElementCreater</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ The creater use to create UI elements like movieclips, textfield...
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#attachMC" title="public function attachMC(position_mc:MovieClip, linkage:String, nameStart:String, depth:Number):MovieClip">attachMC()</a>, <a href="#attachMCWithName" title="public function attachMCWithName(position_mc:MovieClip, linkage:String, name:String, depth:Number):MovieClip">attachMCWithName()</a>, <a href="#createMC" title="public function createMC(position_mc:MovieClip, nameStart:String, depth:Number):MovieClip">createMC()</a>, <a href="#createMCWithName" title="public function createMCWithName(position_mc:MovieClip, name:String, depth:Number):MovieClip">createMCWithName()</a>, <a href="#createTF" title="public function createTF(position_mc:MovieClip, nameStart:String, depth:Number):TextField">createTF()</a>, <a href="#createTFWithName" title="public function createTFWithName(position_mc:MovieClip, name:String, depth:Number):TextField">createTFWithName()</a>, <a href="#getInstance" title="static public function getInstance():ElementCreater">getInstance()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getInstance"></a><h3>getInstance</h3><code class="method_synopsis">static public function <strong class="method_name">getInstance</strong>():<a href="../../org/aswing/ElementCreater.html" class="class_name" title="Class org.aswing.ElementCreater">ElementCreater</a></code><div class="method_info"></div></div><div class="method_details"><a name="createMC"></a><h3>createMC</h3><code class="method_synopsis">public function <strong class="method_name">createMC</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Creates and returns a new empty MovieClip.
+ <p>
+ createMC(position_mc:MovieClip, nameStart:String, depth:Number)<br>
+ createMC(position_mc:MovieClip, nameStart:String,)<br>
+ createMC(position_mc:MovieClip)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new mc's parent.
+ </td></tr><tr><td><code>nameStart</code></td><td>(optional)the new mc's name prefix. Default is aswing_e_
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new mc's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new empty MC created.
+	 </p></div></div><div class="method_details alt_row"><a name="createMCWithName"></a><h3>createMCWithName</h3><code class="method_synopsis">public function <strong class="method_name">createMCWithName</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, name:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Creates and returns a new empty MovieClip with specified name.
+ <p>
+ createMCWithName(position_mc:MovieClip, name:String, depth:Number)<br>
+ createMCWithName(position_mc:MovieClip, name:String,)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new mc's parent.
+ </td></tr><tr><td><code>name</code></td><td>the new mc's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new mc's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new empty MC created.
+	 </p></div></div><div class="method_details"><a name="attachMC"></a><h3>attachMC</h3><code class="method_synopsis">public function <strong class="method_name">attachMC</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, linkage:<span class="unresolved_type_name">String</span>, nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Attaches and returns a new MovieClip by given linkage id.
+ <p>
+ attachMC(position_mc:MovieClip, linkage:String, nameStart:String, depth:Number)<br>
+ attachMC(position_mc:MovieClip, linkage:String, nameStart:String,)<br>
+ attachMC(position_mc:MovieClip, linkage:String,)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new mc's parent.
+ </td></tr><tr><td><code>linkage</code></td><td>the linkage id.
+ </td></tr><tr><td><code>nameStart</code></td><td>(optional)the new mc's name prefix. Default is aswing_e_
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new mc's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new MC attached.
+	 </p></div></div><div class="method_details alt_row"><a name="attachMCWithName"></a><h3>attachMCWithName</h3><code class="method_synopsis">public function <strong class="method_name">attachMCWithName</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, linkage:<span class="unresolved_type_name">String</span>, name:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">MovieClip</span></code><div class="method_info"><p>
+ Attaches and returns a new MovieClip by given linkage id and specified name.
+ <p>
+ attachMCWithName(position_mc:MovieClip, linkage:String, name:String, depth:Number)<br>
+ attachMCWithName(position_mc:MovieClip, linkage:String, name:String,)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new mc's parent.
+ </td></tr><tr><td><code>linkage</code></td><td>the linkage id.
+ </td></tr><tr><td><code>name</code></td><td>the new mc's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new mc's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new MC attached.
+	 </p></div></div><div class="method_details"><a name="createTF"></a><h3>createTF</h3><code class="method_synopsis">public function <strong class="method_name">createTF</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, nameStart:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">TextField</span></code><div class="method_info"><p>
+ Creates and returns a new TextField.
+ <p>
+ createTF(position_mc:MovieClip, nameStart:String, depth:Number)<br>
+ createTF(position_mc:MovieClip, nameStart:String,)<br>
+ createTF(position_mc:MovieClip)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new textField's parent.
+ </td></tr><tr><td><code>nameStart</code></td><td>(optional)the new textField's name prefix. Default is aswing_e_
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new textField's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new textField created.
+	 </p></div></div><div class="method_details alt_row"><a name="createTFWithName"></a><h3>createTFWithName</h3><code class="method_synopsis">public function <strong class="method_name">createTFWithName</strong>(position_mc:<span class="unresolved_type_name">MovieClip</span>, name:<span class="unresolved_type_name">String</span>, depth:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">TextField</span></code><div class="method_info"><p>
+ Creates and returns a new TextField with specified name.
+ <p>
+ createTF(position_mc:MovieClip, name:String, depth:Number)<br>
+ createTF(position_mc:MovieClip, name:String,)<br>
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>position_mc</code></td><td>new textField's parent.
+ </td></tr><tr><td><code>name</code></td><td>the new textField's name.
+ </td></tr><tr><td><code>depth</code></td><td>(optional)new textField's depth. Default is getNextHighestDepth
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the new textField created.
+	 </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

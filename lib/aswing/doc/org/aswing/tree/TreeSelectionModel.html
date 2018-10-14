@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.tree.TreeSelectionModel - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.tree" rel="up"/><link href="../../../org/aswing/UIDefaults.html" title="Class org.aswing.UIDefaults" rel="prev"/><link href="../../../org/aswing/tree/TreePathMap.html" title="Class org.aswing.tree.TreePathMap" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.tree.TreeSelectionModel</h1><div class="type_hierachy"><ul><li><a href="../../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">org.aswing.IEventDispatcher</a><ul><li><strong>org.aswing.tree.TreeSelectionModel</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ This interface represents the current state of the selection for
+ the tree component.
+ For information and examples of using tree selection models,
+ see <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/tree.html">How to Use Trees</a>
+ in <em>The Java Tutorial.</em>
+
+ <p>
+ The state of the tree selection is characterized by
+ a set of TreePaths, and optionally a set of integers. The mapping
+ from TreePath to integer is done by way of an instance of RowMapper.
+ It is not necessary for a TreeSelectionModel to have a RowMapper to
+ correctly operate, but without a RowMapper <code>getSelectionRows</code>
+ will return null.
+
+ <p>
+ 
+ A TreeSelectionModel can be configured to allow only one
+ path (<code>SINGLE_TREE_SELECTION</code>) a number of
+ continguous paths (<code>CONTIGUOUS_TREE_SELECTION</code>) or a number of
+ discontiguous paths (<code>DISCONTIGUOUS_TREE_SELECTION</code>).
+ A <code>RowMapper</code> is used to determine if TreePaths are
+ contiguous.
+ In the absence of a RowMapper <code>CONTIGUOUS_TREE_SELECTION</code> and
+ <code>DISCONTIGUOUS_TREE_SELECTION</code> behave the same, that is they
+ allow any number of paths to be contained in the TreeSelectionModel.
+
+ <p>
+ 
+ For a selection model of <code>CONTIGUOUS_TREE_SELECTION</code> any
+ time the paths are changed (<code>setSelectionPath</code>,
+ <code>addSelectionPath</code> ...) the TreePaths are again checked to
+ make they are contiguous. A check of the TreePaths can also be forced
+ by invoking <code>resetRowSelection</code>. How a set of discontiguous
+ TreePaths is mapped to a contiguous set is left to implementors of
+ this interface to enforce a particular policy.
+
+ <p>
+
+ Implementations should combine duplicate TreePaths that are
+ added to the selection. For example, the following code
+ <pre>
+   var paths:Array = [ treePath, treePath ];
+   treeSelectionModel.setSelectionPaths(paths);
+ </pre>
+ should result in only one path being selected:
+ <code>treePath</code>, and
+ not two copies of <code>treePath</code>.
+
+ <p>
+
+ The lead TreePath is the last path that was added (or set). The lead
+ row is then the row that corresponds to the TreePath as determined
+ from the RowMapper.
+ <p>
+ (Fully quoted from java swing's tree doc)
+
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addPropertyChangeListener" title="public function addPropertyChangeListener(func:Function, contextObj:Object):Object">addPropertyChangeListener()</a>, <a href="#addSelectionPath" title="public function addSelectionPath(path:TreePath):Void">addSelectionPath()</a>, <a href="#addSelectionPaths" title="public function addSelectionPaths(paths:Array):Void">addSelectionPaths()</a>, <a href="#addTreeSelectionListener" title="public function addTreeSelectionListener(func:Function, contextObj:Object):Object">addTreeSelectionListener()</a>, <a href="#clearSelection" title="public function clearSelection():Void">clearSelection()</a>, <a href="#getLeadSelectionPath" title="public function getLeadSelectionPath():TreePath">getLeadSelectionPath()</a>, <a href="#getLeadSelectionRow" title="public function getLeadSelectionRow():Number">getLeadSelectionRow()</a>, <a href="#getMaxSelectionRow" title="public function getMaxSelectionRow():Number">getMaxSelectionRow()</a>, <a href="#getMinSelectionRow" title="public function getMinSelectionRow():Number">getMinSelectionRow()</a>, <a href="#getRowMapper" title="public function getRowMapper():RowMapper">getRowMapper()</a>, <a href="#getSelectionCount" title="public function getSelectionCount():Number">getSelectionCount()</a>, <a href="#getSelectionMode" title="public function getSelectionMode():Number">getSelectionMode()</a>, <a href="#getSelectionPath" title="public function getSelectionPath():TreePath">getSelectionPath()</a>, <a href="#getSelectionPaths" title="public function getSelectionPaths():Array">getSelectionPaths()</a>, <a href="#getSelectionRows" title="public function getSelectionRows():Array">getSelectionRows()</a>, <a href="#isPathSelected" title="public function isPathSelected(path:TreePath):Boolean">isPathSelected()</a>, <a href="#isRowSelected" title="public function isRowSelected(row:Number):Boolean">isRowSelected()</a>, <a href="#isSelectionEmpty" title="public function isSelectionEmpty():Boolean">isSelectionEmpty()</a>, <a href="#removeSelectionPath" title="public function removeSelectionPath(path:TreePath):Void">removeSelectionPath()</a>, <a href="#removeSelectionPaths" title="public function removeSelectionPaths(paths:Array):Void">removeSelectionPaths()</a>, <a href="#resetRowSelection" title="public function resetRowSelection():Void">resetRowSelection()</a>, <a href="#setRowMapper" title="public function setRowMapper(newMapper:RowMapper):Void">setRowMapper()</a>, <a href="#setSelectionMode" title="public function setSelectionMode(mode:Number):Void">setSelectionMode()</a>, <a href="#setSelectionPath" title="public function setSelectionPath(path:TreePath):Void">setSelectionPath()</a>, <a href="#setSelectionPaths" title="public function setSelectionPaths(paths:Array):Void">setSelectionPaths()</a><h4>Inherited from <a href="../../../org/aswing/IEventDispatcher.html" class="interface_name" title="Interface org.aswing.IEventDispatcher">IEventDispatcher</a></h4><div class="extra_info"><a href="../../../org/aswing/IEventDispatcher.html#addEventListener" title="public function addEventListener(eventNameOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../../org/aswing/IEventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a></div></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="setSelectionMode"></a><h3>setSelectionMode</h3><code class="method_synopsis">public function <strong class="method_name">setSelectionMode</strong>(mode:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the selection model, which must be one of SINGLE_TREE_SELECTION,
+ CONTIGUOUS_TREE_SELECTION or DISCONTIGUOUS_TREE_SELECTION.
+ <p>
+ This may change the selection if the current selection is not valid
+ for the new mode. For example, if three TreePaths are
+ selected when the mode is changed to <code>SINGLE_TREE_SELECTION</code>,
+ only one TreePath will remain selected. It is up to the particular
+ implementation to decide what TreePath remains selected.
+     </p></div></div><div class="method_details"><a name="getSelectionMode"></a><h3>getSelectionMode</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionMode</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the current selection mode, one of
+ <code>SINGLE_TREE_SELECTION</code>,
+ <code>CONTIGUOUS_TREE_SELECTION</code> or
+ <code>DISCONTIGUOUS_TREE_SELECTION</code>.
+     </p></div></div><div class="method_details alt_row"><a name="setSelectionPath"></a><h3>setSelectionPath</h3><code class="method_synopsis">public function <strong class="method_name">setSelectionPath</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the selection to path. If this represents a change, then
+ the TreeSelectionListeners are notified. If <code>path</code> is
+ null, this has the same effect as invoking <code>clearSelection</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>new path to select
+      </td></tr></table></div></div><div class="method_details"><a name="setSelectionPaths"></a><h3>setSelectionPaths</h3><code class="method_synopsis">public function <strong class="method_name">setSelectionPaths</strong>(paths:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the selection to path(TreePath[]) . If this represents a change, then
+ the TreeSelectionListeners are notified. If <code>paths</code> is
+ null, this has the same effect as invoking <code>clearSelection</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>paths</code></td><td>new selection
+      </td></tr></table></div></div><div class="method_details alt_row"><a name="addSelectionPath"></a><h3>addSelectionPath</h3><code class="method_synopsis">public function <strong class="method_name">addSelectionPath</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds path to the current selection. If path is not currently
+ in the selection the TreeSelectionListeners are notified. This has
+ no effect if <code>path</code> is null.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the new path to add to the current selection
+      </td></tr></table></div></div><div class="method_details"><a name="addSelectionPaths"></a><h3>addSelectionPaths</h3><code class="method_synopsis">public function <strong class="method_name">addSelectionPaths</strong>(paths:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds paths(TreePath[]) to the current selection.  If any of the paths in
+ paths are not currently in the selection the TreeSelectionListeners
+ are notified. This has
+ no effect if <code>paths</code> is null.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>paths</code></td><td>the new paths to add to the current selection
+      </td></tr></table></div></div><div class="method_details alt_row"><a name="removeSelectionPath"></a><h3>removeSelectionPath</h3><code class="method_synopsis">public function <strong class="method_name">removeSelectionPath</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes path from the selection. If path is in the selection
+ The TreeSelectionListeners are notified. This has no effect if
+ <code>path</code> is null.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>path</code></td><td>the path to remove from the selection
+      </td></tr></table></div></div><div class="method_details"><a name="removeSelectionPaths"></a><h3>removeSelectionPaths</h3><code class="method_synopsis">public function <strong class="method_name">removeSelectionPaths</strong>(paths:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes paths(TreePath[]) from the selection.  If any of the paths in 
+ <code>paths</code>
+ are in the selection, the TreeSelectionListeners are notified.
+ This method has no effect if <code>paths</code> is null.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>paths</code></td><td>the path to remove from the selection
+      </td></tr></table></div></div><div class="method_details alt_row"><a name="getSelectionPath"></a><h3>getSelectionPath</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionPath</strong>():<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a></code><div class="method_info"><p>
+ Returns the first path in the selection. How first is defined is
+ up to implementors, and may not necessarily be the TreePath with
+ the smallest integer value as determined from the
+ <code>RowMapper</code>.
+      </p></div></div><div class="method_details"><a name="getSelectionPaths"></a><h3>getSelectionPaths</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionPaths</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns the paths(TreePath[]) in the selection. This will return null (or an
+ empty array) if nothing is currently selected.
+      </p></div></div><div class="method_details alt_row"><a name="getSelectionCount"></a><h3>getSelectionCount</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of paths that are selected.
+     </p></div></div><div class="method_details"><a name="isPathSelected"></a><h3>isPathSelected</h3><code class="method_synopsis">public function <strong class="method_name">isPathSelected</strong>(path:<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the path, <code>path</code>, is in the current
+ selection.
+      </p></div></div><div class="method_details alt_row"><a name="isSelectionEmpty"></a><h3>isSelectionEmpty</h3><code class="method_synopsis">public function <strong class="method_name">isSelectionEmpty</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the selection is currently empty.
+      </p></div></div><div class="method_details"><a name="clearSelection"></a><h3>clearSelection</h3><code class="method_synopsis">public function <strong class="method_name">clearSelection</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Empties the current selection.  If this represents a change in the
+ current selection, the selection listeners are notified.
+      </p></div></div><div class="method_details alt_row"><a name="setRowMapper"></a><h3>setRowMapper</h3><code class="method_synopsis">public function <strong class="method_name">setRowMapper</strong>(newMapper:<a href="../../../org/aswing/tree/RowMapper.html" class="interface_name" title="Interface org.aswing.tree.RowMapper">RowMapper</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the RowMapper instance. This instance is used to determine
+ the row for a particular TreePath.
+     </p></div></div><div class="method_details"><a name="getRowMapper"></a><h3>getRowMapper</h3><code class="method_synopsis">public function <strong class="method_name">getRowMapper</strong>():<a href="../../../org/aswing/tree/RowMapper.html" class="interface_name" title="Interface org.aswing.tree.RowMapper">RowMapper</a></code><div class="method_info"><p>
+ Returns the RowMapper instance that is able to map a TreePath to a
+ row.
+     </p></div></div><div class="method_details alt_row"><a name="getSelectionRows"></a><h3>getSelectionRows</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionRows</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns all of the currently selected rows. This will return
+ null (or an empty array) if there are no selected TreePaths or
+ a RowMapper has not been set.
+      </p></div></div><div class="method_details"><a name="getMinSelectionRow"></a><h3>getMinSelectionRow</h3><code class="method_synopsis">public function <strong class="method_name">getMinSelectionRow</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the smallest value obtained from the RowMapper for the
+ current set of selected TreePaths. If nothing is selected,
+ or there is no RowMapper, this will return -1.
+      </p></div></div><div class="method_details alt_row"><a name="getMaxSelectionRow"></a><h3>getMaxSelectionRow</h3><code class="method_synopsis">public function <strong class="method_name">getMaxSelectionRow</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the largest value obtained from the RowMapper for the
+ current set of selected TreePaths. If nothing is selected,
+ or there is no RowMapper, this will return -1.
+      </p></div></div><div class="method_details"><a name="isRowSelected"></a><h3>isRowSelected</h3><code class="method_synopsis">public function <strong class="method_name">isRowSelected</strong>(row:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if the row identified by <code>row</code> is selected.
+      </p></div></div><div class="method_details alt_row"><a name="resetRowSelection"></a><h3>resetRowSelection</h3><code class="method_synopsis">public function <strong class="method_name">resetRowSelection</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Updates this object's mapping from TreePaths to rows. This should
+ be invoked when the mapping from TreePaths to integers has changed
+ (for example, a node has been expanded).
+ <p>
+ You do not normally have to call this; JTree and its associated
+ listeners will invoke this for you. If you are implementing your own
+ view class, then you will have to invoke this.
+     </p></div></div><div class="method_details"><a name="getLeadSelectionRow"></a><h3>getLeadSelectionRow</h3><code class="method_synopsis">public function <strong class="method_name">getLeadSelectionRow</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the lead selection index. That is the last index that was
+ added.
+     </p></div></div><div class="method_details alt_row"><a name="getLeadSelectionPath"></a><h3>getLeadSelectionPath</h3><code class="method_synopsis">public function <strong class="method_name">getLeadSelectionPath</strong>():<a href="../../../org/aswing/tree/TreePath.html" class="class_name" title="Class org.aswing.tree.TreePath">TreePath</a></code><div class="method_info"><p>
+ Returns the last path that was added. This may differ from the 
+ leadSelectionPath property maintained by the JTree.
+     </p></div></div><div class="method_details"><a name="addPropertyChangeListener"></a><h3>addPropertyChangeListener</h3><code class="method_synopsis">public function <strong class="method_name">addPropertyChangeListener</strong>(func:<span class="unresolved_type_name">Function</span>, contextObj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Adds a PropertyChangeListener to the listener list.
+ The listener is registered for all properties.
+ <p>
+ A PropertyChangeEvent will get fired when the selection mode
+ changes.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/JTree.html#ON_PROPERTY_CHANGED">org.aswing.JTree.ON_PROPERTY_CHANGED</a></li></ul></div></div><div class="method_details alt_row"><a name="addTreeSelectionListener"></a><h3>addTreeSelectionListener</h3><code class="method_synopsis">public function <strong class="method_name">addTreeSelectionListener</strong>(func:<span class="unresolved_type_name">Function</span>, contextObj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ Adds x to the list of listeners that are notified each time the
+ set of selected TreePaths changes.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/JTree.html#ON_SELECTION_CHANGED">org.aswing.JTree.ON_SELECTION_CHANGED</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.tree" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

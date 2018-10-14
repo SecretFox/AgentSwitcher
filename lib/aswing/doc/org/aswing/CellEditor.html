@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.CellEditor - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/CenterLayout.html" title="Class org.aswing.CenterLayout" rel="prev"/><link href="../../org/aswing/Cell.html" title="Interface org.aswing.Cell" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.CellEditor</h1><div class="type_hierachy"><ul><li><strong>org.aswing.CellEditor</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ This interface defines the methods any general editor should be able
+ to implement. <p>
+
+ Having this interface enables complex components (the client of the
+ editor) such as <code>JList</code>, <code>JTree</code>, and
+ <code>JTable</code> to allow any generic editor to
+ edit values in a table cell, or tree cell, etc.  Without this generic
+ editor interface, <code>JTable</code> would have to know about specific editors,
+ such as <code>JTextField</code>, <code>JCheckBox</code>, <code>JComboBox</code>,
+ etc.  In addition, without this interface, clients of editors such as
+ <code>JTable</code> would not be able
+ to work with any editors developed in the future by the user
+ or a 3rd party ISV. <p>
+
+ To use this interface, a developer creating a new editor can have the
+ new component implement the interface.  Or the developer can
+ choose a wrapper based approach and provide a companion object which
+ implements the <code>CellEditor</code> interface (See
+ <code>JCellEditor</code> for example).  The wrapper approach
+ is particularly useful if the user want to use a 3rd party ISV 
+ editor with <code>JTable</code>, but the ISV didn't implement the
+ <code>CellEditor</code> interface.  The user can simply create an object 
+ that contains an instance of the 3rd party editor object and "translate"
+ the <code>CellEditor</code> API into the 3rd party editor's API.
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../org/aswing/event/CellEditorListener.html" class="interface_name" title="Interface org.aswing.event.CellEditorListener">CellEditorListener</a></li></ul></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addCellEditorListener" title="public function addCellEditorListener(l:CellEditorListener):Void">addCellEditorListener()</a>, <a href="#cancelCellEditing" title="public function cancelCellEditing():Void">cancelCellEditing()</a>, <a href="#getCellEditorValue" title="public function getCellEditorValue()">getCellEditorValue()</a>, <a href="#isCellEditable" title="public function isCellEditable(clickCount:Number):Boolean">isCellEditable()</a>, <a href="#isCellEditing" title="public function isCellEditing():Boolean">isCellEditing()</a>, <a href="#removeCellEditorListener" title="public function removeCellEditorListener(l:CellEditorListener):Void">removeCellEditorListener()</a>, <a href="#startCellEditing" title="public function startCellEditing(owner:Container, value, bounds:Rectangle):Void">startCellEditing()</a>, <a href="#stopCellEditing" title="public function stopCellEditing():Boolean">stopCellEditing()</a>, <a href="#updateUI" title="public function updateUI():Void">updateUI()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getCellEditorValue"></a><h3>getCellEditorValue</h3><code class="method_synopsis">public function <strong class="method_name">getCellEditorValue</strong>()</code><div class="method_info"><p>
+ Returns the value contained in the editor.
+ </p><h4>Return</h4><p class="extra_info"> the value contained in the editor
+     </p></div></div><div class="method_details"><a name="isCellEditable"></a><h3>isCellEditable</h3><code class="method_synopsis">public function <strong class="method_name">isCellEditable</strong>(clickCount:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Asks the editor if it can start editing using <code>clickCount</code>.
+ <code>clickCount</code> 0 means pressed, 1 means released, 2 or more means 
+ real clicked times.<br>
+ If editing can be started this method returns true.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>clickCount</code></td><td>the clickCount the editor should use to consider
+				whether to begin editing or not, 0 means pressed, 1 means released, 
+				2 or more means real clicked times.
+ </td></tr></table><h4>Return</h4><p class="extra_info">	true if editing can be started
+     </p></div></div><div class="method_details alt_row"><a name="startCellEditing"></a><h3>startCellEditing</h3><code class="method_synopsis">public function <strong class="method_name">startCellEditing</strong>(owner:<a href="../../org/aswing/Container.html" class="class_name" title="Class org.aswing.Container">Container</a>, value, bounds:<a href="../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Tells the editor to show the edit component to start editing.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>owner</code></td><td>the owner component of this editor
+ </td></tr><tr><td><code>value</code></td><td>the currently value of this cell
+ </td></tr><tr><td><code>bounds</code></td><td>the bounds of the editor in the owner coordinate system
+	 </td></tr></table></div></div><div class="method_details"><a name="stopCellEditing"></a><h3>stopCellEditing</h3><code class="method_synopsis">public function <strong class="method_name">stopCellEditing</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Tells the editor to stop editing and accept any partially edited
+ value as the value of the editor.  The editor returns false if
+ editing was not stopped; this is useful for editors that validate
+ and can not accept invalid entries.
+
+ </p><h4>Return</h4><p class="extra_info">	true if editing was stopped; false otherwise
+     </p></div></div><div class="method_details alt_row"><a name="isCellEditing"></a><h3>isCellEditing</h3><code class="method_synopsis">public function <strong class="method_name">isCellEditing</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns is the cell editor is editing.
+ </p><h4>Return</h4><p class="extra_info"> true if the it is editing, false otherwise
+	 </p></div></div><div class="method_details"><a name="cancelCellEditing"></a><h3>cancelCellEditing</h3><code class="method_synopsis">public function <strong class="method_name">cancelCellEditing</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Tells the editor to cancel editing and not accept any partially
+ edited value.
+     </p></div></div><div class="method_details alt_row"><a name="addCellEditorListener"></a><h3>addCellEditorListener</h3><code class="method_synopsis">public function <strong class="method_name">addCellEditorListener</strong>(l:<a href="../../org/aswing/event/CellEditorListener.html" class="interface_name" title="Interface org.aswing.event.CellEditorListener">CellEditorListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds a listener to the list that's notified when the editor 
+ stops, or cancels editing.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>l</code></td><td>the CellEditorListener
+     </td></tr></table></div></div><div class="method_details"><a name="removeCellEditorListener"></a><h3>removeCellEditorListener</h3><code class="method_synopsis">public function <strong class="method_name">removeCellEditorListener</strong>(l:<a href="../../org/aswing/event/CellEditorListener.html" class="interface_name" title="Interface org.aswing.event.CellEditorListener">CellEditorListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes a listener from the list that's notified
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>l</code></td><td>the CellEditorListener
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="updateUI"></a><h3>updateUI</h3><code class="method_synopsis">public function <strong class="method_name">updateUI</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Calls the editor's component to update UI.
+     </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

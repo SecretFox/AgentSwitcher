@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.DefaultBoundedRangeModel - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/DefaultButtonModel.html" title="Class org.aswing.DefaultButtonModel" rel="prev"/><link href="../../org/aswing/DecorateIcon.html" title="Class org.aswing.DecorateIcon" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.DefaultBoundedRangeModel</h1><div class="type_hierachy"><ul><li><a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">org.aswing.EventDispatcher</a><ul><li><strong>org.aswing.DefaultBoundedRangeModel</strong></li></ul></li></ul></div><div class="interfaces"><h2>Implemented Interfaces</h2><code><a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></code> </div><div class="type_description"><h2>Description</h2><p>
+ 
+ </p></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><h4>Inherited from <a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/EventDispatcher.html#ON_ACT" title="static public ON_ACT:String">ON_ACT</a></div></div><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#DefaultBoundedRangeModel" title="public function DefaultBoundedRangeModel(value:Number, extent:Number, min:Number, max:Number)">DefaultBoundedRangeModel()</a></code></div><a href="#addChangeListener" title="public function addChangeListener(func:Function, obj:Object):Object">addChangeListener()</a>, <a href="#fireStateChanged" title="public function fireStateChanged():Void">fireStateChanged()</a>, <a href="#getExtent" title="public function getExtent():Number">getExtent()</a>, <a href="#getMaximum" title="public function getMaximum():Number">getMaximum()</a>, <a href="#getMinimum" title="public function getMinimum():Number">getMinimum()</a>, <a href="#getValue" title="public function getValue():Number">getValue()</a>, <a href="#getValueIsAdjusting" title="public function getValueIsAdjusting():Boolean">getValueIsAdjusting()</a>, <a href="#setExtent" title="public function setExtent(n:Number):Void">setExtent()</a>, <a href="#setMaximum" title="public function setMaximum(n:Number):Void">setMaximum()</a>, <a href="#setMinimum" title="public function setMinimum(n:Number):Void">setMinimum()</a>, <a href="#setRangeProperties" title="public function setRangeProperties(newValue:Number, newExtent:Number, newMin:Number, newMax:Number, adjusting:Boolean):Void">setRangeProperties()</a>, <a href="#setValue" title="public function setValue(n:Number):Void">setValue()</a>, <a href="#setValueIsAdjusting" title="public function setValueIsAdjusting(b:Boolean):Void">setValueIsAdjusting()</a>, <a href="#toString" title="public function toString():String">toString()</a><h4>Inherited from <a href="../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../org/aswing/EventDispatcher.html#addEventListener" title="public function addEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#createEventListener" title="static public function createEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">createEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#dispatchEvent" title="public function dispatchEvent(name:Object, event:Event):Void">dispatchEvent()</a>, <a href="../../org/aswing/EventDispatcher.html#fireActionEvent" title="public function fireActionEvent():Void">fireActionEvent()</a>, <a href="../../org/aswing/EventDispatcher.html#isEventDispatchingEnabled" title="public function isEventDispatchingEnabled():Boolean">isEventDispatchingEnabled()</a>, <a href="../../org/aswing/EventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a>, <a href="../../org/aswing/EventDispatcher.html#setEventDispatchingEnabled" title="public function setEventDispatchingEnabled(e:Boolean):Void">setEventDispatchingEnabled()</a></div></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="DefaultBoundedRangeModel"></a><h3>DefaultBoundedRangeModel</h3><code class="method_synopsis">public function <strong class="method_name">DefaultBoundedRangeModel</strong>(value:<span class="unresolved_type_name">Number</span>, extent:<span class="unresolved_type_name">Number</span>, min:<span class="unresolved_type_name">Number</span>, max:<span class="unresolved_type_name">Number</span>)</code><div class="method_info"><p>
+ </p><h4>Throws</h4><table class="exceptions extra_info" summary=""><tr><td><span class="unresolved_type_name">Error</span></td><td>when invalid range properties
+	 </td></tr></table></div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getValue"></a><h3>getValue</h3><code class="method_synopsis">public function <strong class="method_name">getValue</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Returns the model's current value.  Note that the upper
+ limit on the model's value is <code>maximum - extent</code> 
+ and the lower limit is <code>minimum</code>.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#getValue" title="public function getValue():Number">getValue()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="getExtent"></a><h3>getExtent</h3><code class="method_synopsis">public function <strong class="method_name">getExtent</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Returns the model's extent, the length of the inner range that
+ begins at the model's value.  
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#getExtent" title="public function getExtent():Number">getExtent()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="getMinimum"></a><h3>getMinimum</h3><code class="method_synopsis">public function <strong class="method_name">getMinimum</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Returns the minimum acceptable value.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#getMinimum" title="public function getMinimum():Number">getMinimum()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="getMaximum"></a><h3>getMaximum</h3><code class="method_synopsis">public function <strong class="method_name">getMaximum</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Returns the model's maximum.  Note that the upper
+ limit on the model's value is (maximum - extent).
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#getMaximum" title="public function getMaximum():Number">getMaximum()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="setValue"></a><h3>setValue</h3><code class="method_synopsis">public function <strong class="method_name">setValue</strong>(n:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Sets the model's current value to <code>newValue</code> if <code>newValue</code>
+ satisfies the model's constraints. Those constraints are:
+ <pre>
+ minimum <= value <= value+extent <= maximum
+ </pre>
+ Otherwise, if <code>newValue</code> is less than <code>minimum</code> 
+ it's set to <code>minimum</code>, if its greater than 
+ <code>maximum</code> then it's set to <code>maximum</code>, and 
+ if it's greater than <code>value+extent</code> then it's set to 
+ <code>value+extent</code>.
+ <p>
+ When a BoundedRange model is used with a scrollbar the value
+ specifies the origin of the scrollbar knob (aka the "thumb" or
+ "elevator").  The value usually represents the origin of the 
+ visible part of the object being scrolled.
+ <p>
+ Notifies any listeners if the model changes.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setValue" title="public function setValue(newValue:Number):Void">setValue()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="setExtent"></a><h3>setExtent</h3><code class="method_synopsis">public function <strong class="method_name">setExtent</strong>(n:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Sets the model's extent.  The <I>newExtent</I> is forced to 
+ be greater than or equal to zero and less than or equal to
+ maximum - value.   
+ <p>
+ When a BoundedRange model is used with a scrollbar the extent
+ defines the length of the scrollbar knob (aka the "thumb" or
+ "elevator").  The extent usually represents how much of the 
+ object being scrolled is visible. When used with a slider,
+ the extent determines how much the value can "jump", for
+ example when the user presses PgUp or PgDn.
+ <p>
+ Notifies any listeners if the model changes.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setExtent" title="public function setExtent(newExtent:Number):Void">setExtent()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="setMinimum"></a><h3>setMinimum</h3><code class="method_synopsis">public function <strong class="method_name">setMinimum</strong>(n:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Sets the model's minimum to <I>newMinimum</I>.   The 
+ other three properties may be changed as well, to ensure 
+ that:
+ <pre>
+ minimum <= value <= value+extent <= maximum
+ </pre>
+ <p>
+ Notifies any listeners if the model changes.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setMinimum" title="public function setMinimum(newMinimum:Number):Void">setMinimum()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="setMaximum"></a><h3>setMaximum</h3><code class="method_synopsis">public function <strong class="method_name">setMaximum</strong>(n:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Sets the model's maximum to <I>newMaximum</I>. The other 
+ three properties may be changed as well, to ensure that
+ <pre>
+ minimum <= value <= value+extent <= maximum
+ </pre>
+ <p>
+ Notifies any listeners if the model changes.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setMaximum" title="public function setMaximum(newMaximum:Number):Void">setMaximum()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="setValueIsAdjusting"></a><h3>setValueIsAdjusting</h3><code class="method_synopsis">public function <strong class="method_name">setValueIsAdjusting</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ This attribute indicates that any upcoming changes to the value
+ of the model should be considered a single event. This attribute
+ will be set to true at the start of a series of changes to the value,
+ and will be set to false when the value has finished changing.  Normally
+ this allows a listener to only take action when the final value change in
+ committed, instead of having to do updates for all intermediate values.
+ <p>
+ Sliders and scrollbars use this property when a drag is underway.
+ 
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setValueIsAdjusting" title="public function setValueIsAdjusting(b:Boolean):Void">setValueIsAdjusting()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="getValueIsAdjusting"></a><h3>getValueIsAdjusting</h3><code class="method_synopsis">public function <strong class="method_name">getValueIsAdjusting</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ Returns true if the current changes to the value property are part 
+ of a series of changes.
+ 
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#getValueIsAdjusting" title="public function getValueIsAdjusting():Boolean">getValueIsAdjusting()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="setRangeProperties"></a><h3>setRangeProperties</h3><code class="method_synopsis">public function <strong class="method_name">setRangeProperties</strong>(newValue:<span class="unresolved_type_name">Number</span>, newExtent:<span class="unresolved_type_name">Number</span>, newMin:<span class="unresolved_type_name">Number</span>, newMax:<span class="unresolved_type_name">Number</span>, adjusting:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ This method sets all of the model's data with a single method call.
+ The method results in a single change event being generated. This is
+ convenient when you need to adjust all the model data simultaneously and
+ do not want individual change events to occur.
+
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#setRangeProperties" title="public function setRangeProperties(value:Number, extent:Number, min:Number, max:Number, adjusting:Boolean):Void">setRangeProperties()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details"><a name="addChangeListener"></a><h3>addChangeListener</h3><code class="method_synopsis">public function <strong class="method_name">addChangeListener</strong>(func:<span class="unresolved_type_name">Function</span>, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p class="inherited_docs">Description copied from <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">BoundedRangeModel</a></p><p>
+ addChangeListener(func:Function)<br>
+ addChangeListener(func:Function, obj:Object)
+ <p>
+ Add a listener to listen the Model's change event.
+ <p>
+ The state is all about:
+ <ul>
+ <li>value
+ <li>extent
+ <li>min
+ <li>max
+ <li>adjusting
+ </ul>
+<br>
+ onStateChanged(source:BoundedRangeModel)
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../org/aswing/BoundedRangeModel.html#addChangeListener" title="public function addChangeListener(func:Function, obj:Object):Object">addChangeListener()</a> in <a href="../../org/aswing/BoundedRangeModel.html" class="interface_name" title="Interface org.aswing.BoundedRangeModel">org.aswing.BoundedRangeModel</a></p></div></div><div class="method_details alt_row"><a name="fireStateChanged"></a><h3>fireStateChanged</h3><code class="method_synopsis">public function <strong class="method_name">fireStateChanged</strong>():<span class="void_name">Void</span></code><div class="method_info"></div></div><div class="method_details"><a name="toString"></a><h3>toString</h3><code class="method_synopsis">public function <strong class="method_name">toString</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

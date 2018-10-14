@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.resizer.ResizerController - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.resizer" rel="up"/><link href="../../../org/aswing/resizer/ResizeStrategy.html" title="Interface org.aswing.resizer.ResizeStrategy" rel="prev"/><link href="../../../org/aswing/resizer/Resizer.html" title="Interface org.aswing.resizer.Resizer" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.resizer.ResizerController</h1><div class="type_hierachy"><ul><li><strong>org.aswing.resizer.ResizerController</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ ResizerController make manage resizer feature easily.
+ 
+ <pre>
+  <span class="key">var</span> button : JButton = <span class="key">new</span> JButton(<span class="str_const">"click"</span>);
+  button.setSize( <span class="num_const">100</span>,<span class="num_const">25</span> );
+ 	button.setLocation( <span class="num_const">100</span>, <span class="num_const">100</span> );
+ 	
+ 	<span class="key">var</span> label1 : JLabel = <span class="key">new</span> JLabel(<span class="str_const">"avoid resizing"</span>);
+ 	label1.setSize(<span class="num_const">100</span>, <span class="num_const">25</span>);
+ 	label1.setLocation( <span class="num_const">200</span>, <span class="num_const">50</span> );
+ 	
+  <span class="key">var</span> label2 : JLabel = <span class="key">new</span> JLabel(<span class="str_const">"ok for resizing"</span>);
+ 	label2.setSize(<span class="num_const">100</span>, <span class="num_const">25</span>);
+ 	label2.setLocation( <span class="num_const">50</span>, <span class="num_const">50</span> );
+ 	label2.setOpaque( <span class="key">true</span> );
+ 
+ 	<span class="key">try</span>
+ 	{
+ 		<span class="comment">// Direct affectation</span>
+ 		<span class="key">var</span> resizer : ResizerController = ResizerController.init( button );
+ 		
+ 		<span class="comment">// Simple call to #init method</span>
+ 		ResizerController.init( label1 );
+ 		ResizerController.init( label2 );
+ 	}
+ 	<span class="key">catch</span>( e : Error )
+ 	{
+ 		<span class="comment">// log error message</span>
+ 	}
+ 	
+ 	<span class="comment">//We can retreive ResizerController for a specific component like :</span>
+ 	<span class="key">var</span> labelResizer : ResizerController = ResizerController.getController( label1 );
+ 	labelResizer.setResizable( <span class="key">false</span> );
+ 	
+ 	resizer.setResizeDirectly( <span class="key">true</span> );
+ 	
+ 	<span class="comment">// content must have a layout set to EmptyLayout to allow correct resizing</span>
+ 	content.append( button );
+ 	content.append( label1 );
+ 	content.append( label2 );
+ </pre>
+ <p>
+ Many thanks Romain Ecarnot, this class is based on his ResizerController, and all resizer implement 
+ are inspired by him.
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#getComponent" title="public function getComponent():Component">getComponent()</a>, <a href="#getController" title="static public function getController(comp:Component):ResizerController">getController()</a>, <a href="#getResizer" title="public function getResizer():Resizer">getResizer()</a>, <a href="#init" title="static public function init(comp:Component, resizer:Resizer):ResizerController">init()</a>, <a href="#isResizable" title="public function isResizable():Boolean">isResizable()</a>, <a href="#isResizeDirectly" title="public function isResizeDirectly():Boolean">isResizeDirectly()</a>, <a href="#isUnderResizerControl" title="static public function isUnderResizerControl(comp:Component):Boolean">isUnderResizerControl()</a>, <a href="#remove" title="static public function remove(comp:Component):Void">remove()</a>, <a href="#setResizable" title="public function setResizable(b:Boolean):Void">setResizable()</a>, <a href="#setResizeDirectly" title="public function setResizeDirectly(b:Boolean):Void">setResizeDirectly()</a>, <a href="#setResizer" title="public function setResizer(r:Resizer):Void">setResizer()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="getController"></a><h3>getController</h3><code class="method_synopsis">static public function <strong class="method_name">getController</strong>(comp:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<a href="../../../org/aswing/resizer/ResizerController.html" class="class_name" title="Class org.aswing.resizer.ResizerController">ResizerController</a></code><div class="method_info"><p>
+ Returns <a href="../../../org/aswing/resizer/ResizerController.html" class="class_name" title="Class org.aswing.resizer.ResizerController">ResizerController</a> associated to passed-in <code> component</code>
+ 
+ </p><h4>Return</h4><p class="extra_info"> <a href="../../../org/aswing/resizer/ResizerController.html" class="class_name" title="Class org.aswing.resizer.ResizerController">ResizerController</a> instance
+	 </p></div></div><div class="method_details"><a name="isUnderResizerControl"></a><h3>isUnderResizerControl</h3><code class="method_synopsis">static public function <strong class="method_name">isUnderResizerControl</strong>(comp:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Indicates if passed-in component is under a ResizerController control.
+	 </p></div></div><div class="method_details alt_row"><a name="init"></a><h3>init</h3><code class="method_synopsis">static public function <strong class="method_name">init</strong>(comp:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, resizer:<a href="../../../org/aswing/resizer/Resizer.html" class="interface_name" title="Interface org.aswing.resizer.Resizer">Resizer</a>):<a href="../../../org/aswing/resizer/ResizerController.html" class="class_name" title="Class org.aswing.resizer.ResizerController">ResizerController</a></code><div class="method_info"><p>
+ init( comp : Component)<br>
+ init( comp : Component , resizer:Resizer)
+ <p>
+ Applies resizing behaviour to passed-in component.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>comp</code></td><td>the component which need to be resizable
+ </td></tr><tr><td><code>resizer</code></td><td>(optional)the resizer, default there will be a DefaultResizer instance created.
+	 </td></tr></table></div></div><div class="method_details"><a name="remove"></a><h3>remove</h3><code class="method_synopsis">static public function <strong class="method_name">remove</strong>(comp:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes the resizer from a component 
+	 </p></div></div><div class="method_details alt_row"><a name="getComponent"></a><h3>getComponent</h3><code class="method_synopsis">public function <strong class="method_name">getComponent</strong>():<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a></code><div class="method_info"><p>
+ Returns reference to the real used component.
+	 </p></div></div><div class="method_details"><a name="isResizable"></a><h3>isResizable</h3><code class="method_synopsis">public function <strong class="method_name">isResizable</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether this component is resizable by the user.
+ 
+ <p>By default, all components are initially resizable. 
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setResizable">setResizable()</a></li></ul></div></div><div class="method_details alt_row"><a name="setResizable"></a><h3>setResizable</h3><code class="method_synopsis">public function <strong class="method_name">setResizable</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether this component is resizable by the user.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td><code> <span class="key">true</span></code> user can resize the component by 
+ drag to scale the component, <code> <span class="key">false</span></code> user can't.
+ 
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#isResizable">isResizable()</a></li></ul></div></div><div class="method_details"><a name="getResizer"></a><h3>getResizer</h3><code class="method_synopsis">public function <strong class="method_name">getResizer</strong>():<a href="../../../org/aswing/resizer/Resizer.html" class="interface_name" title="Interface org.aswing.resizer.Resizer">Resizer</a></code><div class="method_info"><p>
+ Returns the resizer controller defined in <a href="#setResizer">setResizer</a>.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setResizer">setResizer</a></li></ul></div></div><div class="method_details alt_row"><a name="setResizer"></a><h3>setResizer</h3><code class="method_synopsis">public function <strong class="method_name">setResizer</strong>(r:<a href="../../../org/aswing/resizer/Resizer.html" class="interface_name" title="Interface org.aswing.resizer.Resizer">Resizer</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <a href="../../../org/aswing/resizer/Resizer.html" class="interface_name" title="Interface org.aswing.resizer.Resizer">Resizer</a> controller.
+ 
+ <p>By default, use <code> Frame.resizer</code> one.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>r</code></td><td><a href="../../../org/aswing/resizer/Resizer.html" class="interface_name" title="Interface org.aswing.resizer.Resizer">Resizer</a> instance
+ 
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getResizer">getResizer</a></li></ul></div></div><div class="method_details"><a name="isResizeDirectly"></a><h3>isResizeDirectly</h3><code class="method_synopsis">public function <strong class="method_name">isResizeDirectly</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Return whether need resize widget directly when drag the resizer arrow.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setResizeDirectly">setResizeDirectly()</a></li></ul></div></div><div class="method_details alt_row"><a name="setResizeDirectly"></a><h3>setResizeDirectly</h3><code class="method_synopsis">public function <strong class="method_name">setResizeDirectly</strong>(b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Indicate whether need resize widget directly when drag the resizer arrow.
+ 
+ <p>if set to <code> <span class="key">false</span></code>, there will be a rectange to represent then size what 
+ will be resized to.
+ 
+ <p>if set to <code> <span class="key">true</span></code>, the widget will be resize directly when drag, but this 
+ is need more cpu counting.<br>
+ 
+ <p>Default is .
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li>org.aswing.Resizer#setResizeDirectly()</li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.resizer" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.ButtonGroup - AsWing A2 API</title><script src="../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../index-files";
+//--></script><link href="../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing" rel="up"/><link href="../../org/aswing/ButtonModel.html" title="Interface org.aswing.ButtonModel" rel="prev"/><link href="../../org/aswing/BoxLayout.html" title="Class org.aswing.BoxLayout" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.ButtonGroup</h1><div class="type_hierachy"><ul><li><strong>org.aswing.ButtonGroup</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#ButtonGroup" title="public function ButtonGroup()">ButtonGroup()</a></code></div><a href="#append" title="public function append(b:AbstractButton):Void">append()</a>, <a href="#contains" title="public function contains(b:AbstractButton):Boolean">contains()</a>, <a href="#getButtonCount" title="public function getButtonCount():Number">getButtonCount()</a>, <a href="#getElements" title="public function getElements():Array">getElements()</a>, <a href="#getSelection" title="public function getSelection():ButtonModel">getSelection()</a>, <a href="#isSelected" title="public function isSelected(m:ButtonModel):Boolean">isSelected()</a>, <a href="#remove" title="public function remove(b:AbstractButton):Void">remove()</a>, <a href="#setSelected" title="public function setSelected(m:ButtonModel, b:Boolean):Void">setSelected()</a></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="ButtonGroup"></a><h3>ButtonGroup</h3><code class="method_synopsis">public function <strong class="method_name">ButtonGroup</strong>()</code><div class="method_info"><p>
+ Creates a new <code>ButtonGroup</code>.
+	 </p></div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="append"></a><h3>append</h3><code class="method_synopsis">public function <strong class="method_name">append</strong>(b:<a href="../../org/aswing/AbstractButton.html" class="class_name" title="Class org.aswing.AbstractButton">AbstractButton</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds the button to the group.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>the button to be added
+	 </td></tr></table></div></div><div class="method_details"><a name="remove"></a><h3>remove</h3><code class="method_synopsis">public function <strong class="method_name">remove</strong>(b:<a href="../../org/aswing/AbstractButton.html" class="class_name" title="Class org.aswing.AbstractButton">AbstractButton</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes the button from the group.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>b</code></td><td>the button to be removed
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="contains"></a><h3>contains</h3><code class="method_synopsis">public function <strong class="method_name">contains</strong>(b:<a href="../../org/aswing/AbstractButton.html" class="class_name" title="Class org.aswing.AbstractButton">AbstractButton</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether the group contains the button.
+ </p><h4>Return</h4><p class="extra_info"> true if the group contains the button, false otherwise
+     </p></div></div><div class="method_details"><a name="getElements"></a><h3>getElements</h3><code class="method_synopsis">public function <strong class="method_name">getElements</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns all the buttons that are participating in this group.
+ 
+ </p><h4>Return</h4><p class="extra_info"> an <code>Array</code> of the buttons in this group
+	 </p></div></div><div class="method_details alt_row"><a name="getSelection"></a><h3>getSelection</h3><code class="method_synopsis">public function <strong class="method_name">getSelection</strong>():<a href="../../org/aswing/ButtonModel.html" class="interface_name" title="Interface org.aswing.ButtonModel">ButtonModel</a></code><div class="method_info"><p>
+ Returns the model of the selected button.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the selected button model
+	 </p></div></div><div class="method_details"><a name="setSelected"></a><h3>setSelected</h3><code class="method_synopsis">public function <strong class="method_name">setSelected</strong>(m:<a href="../../org/aswing/ButtonModel.html" class="interface_name" title="Interface org.aswing.ButtonModel">ButtonModel</a>, b:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the selected value for the <code>ButtonModel</code>. Only one
+ button in the group may be selected at a time.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>m</code></td><td>the <code>ButtonModel</code>
+ </td></tr><tr><td><code>b</code></td><td><code>true</code> if this button is to be selected,
+            otherwise <code>false</code>
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="isSelected"></a><h3>isSelected</h3><code class="method_synopsis">public function <strong class="method_name">isSelected</strong>(m:<a href="../../org/aswing/ButtonModel.html" class="interface_name" title="Interface org.aswing.ButtonModel">ButtonModel</a>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns whether a <code>ButtonModel</code> is selected.
+ 
+ </p><h4>Return</h4><p class="extra_info"> <code>true</code> if the button is selected, otherwise returns
+         <code>false</code>
+	 </p></div></div><div class="method_details"><a name="getButtonCount"></a><h3>getButtonCount</h3><code class="method_synopsis">public function <strong class="method_name">getButtonCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of buttons in the group.
+ 
+ </p><h4>Return</h4><p class="extra_info"> the button count
+	 </p></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

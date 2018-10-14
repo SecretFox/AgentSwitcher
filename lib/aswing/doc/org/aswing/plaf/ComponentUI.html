@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.plaf.ComponentUI - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.plaf" rel="up"/><link href="../../../org/aswing/plaf/InsetsUIResource.html" title="Class org.aswing.plaf.InsetsUIResource" rel="prev"/><link href="../../../org/aswing/plaf/ComboBoxUI.html" title="Class org.aswing.plaf.ComboBoxUI" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.plaf.ComponentUI</h1><div class="type_hierachy"><ul><li><strong>org.aswing.plaf.ComponentUI</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ The base class for all UI delegate objects in the Swing pluggable look and feel architecture. 
+ The UI delegate object for a Swing component is responsible for implementing 
+ the aspects of the component that depend on the look and feel. The JComponent 
+ class invokes methods from this class in order to delegate operations (painting, 
+ layout calculations, etc.) that may vary depending on the look and feel installed. 
+ <b>Client programs should not invoke methods on this class directly.</b>
+ 
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#ComponentUI" title="public function ComponentUI()">ComponentUI()</a></code></div><a href="#clearFocus" title="public function clearFocus(c:Component):Void">clearFocus()</a>, <a href="#create" title="public function create(c:Component):Void">create()</a>, <a href="#fillRectBackGround" title="static public function fillRectBackGround(c:Component, g:Graphics, b:Rectangle):Void">fillRectBackGround()</a>, <a href="#getMaximumSize" title="public function getMaximumSize(c:Component):Dimension">getMaximumSize()</a>, <a href="#getMinimumSize" title="public function getMinimumSize(c:Component):Dimension">getMinimumSize()</a>, <a href="#getPreferredSize" title="public function getPreferredSize(c:Component):Dimension">getPreferredSize()</a>, <a href="#installUI" title="public function installUI(c:Component):Void">installUI()</a>, <a href="#paint" title="public function paint(c:Component, g:Graphics, b:Rectangle):Void">paint()</a>, <a href="#paintFocus" title="public function paintFocus(c:Component, g:Graphics):Void">paintFocus()</a>, <a href="#uninstallUI" title="public function uninstallUI(c:Component):Void">uninstallUI()</a></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="ComponentUI"></a><h3>ComponentUI</h3><code class="method_synopsis">public function <strong class="method_name">ComponentUI</strong>()</code><div class="method_info"><p>
+ Sole constructor. (For invocation by subclass constructors,
+ typically implicit.)
+     </p></div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="fillRectBackGround"></a><h3>fillRectBackGround</h3><code class="method_synopsis">static public function <strong class="method_name">fillRectBackGround</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, g:<a href="../../../org/aswing/graphics/Graphics.html" class="class_name" title="Class org.aswing.graphics.Graphics">Graphics</a>, b:<a href="../../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Utils method to paint the background of the component with the background 
+ color in the component rect.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component whose background being painted.
+ </td></tr><tr><td><code>g</code></td><td>the Graphics context in which to paint.
+ </td></tr><tr><td><code>b</code></td><td>the bounds to paint background in.
+     </td></tr></table></div></div><div class="method_details"><a name="installUI"></a><h3>installUI</h3><code class="method_synopsis">public function <strong class="method_name">installUI</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Configures the specified component appropriate for the look and feel.
+ This method is invoked when the <code>ComponentUI</code> instance is being installed
+ as the UI delegate on the specified component.  This method should
+ completely configure the component for the look and feel,
+ including the following:
+ <ol>
+ <li>Install any default property values for color, fonts, borders,
+     icons, opacity, etc. on the component.  Whenever possible, 
+     property values initialized by the client program should <i>not</i> 
+     be overridden.
+ <li>Install a <code>LayoutManager</code> on the component if necessary.
+ <li>Create/add any required sub-components to the component.
+ <li>Create/install event listeners on the component.
+ <li>Install keyboard UI (mnemonics, traversal, etc.) on the component.
+ <li>Initialize any appropriate instance data.
+ </ol>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component where this UI delegate is being installed
+
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#uninstallUI">uninstallUI</a></li><li><a href="../../../org/aswing/Component.html#setUI">org.aswing.Component.setUI</a></li><li><a href="../../../org/aswing/Component.html#updateUI">org.aswing.Component.updateUI</a></li></ul></div></div><div class="method_details alt_row"><a name="uninstallUI"></a><h3>uninstallUI</h3><code class="method_synopsis">public function <strong class="method_name">uninstallUI</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Reverses configuration which was done on the specified component during
+ <code>installUI</code>.  This method is invoked when this 
+ <code>ComponentUI</code> instance is being removed as the UI delegate 
+ for the specified component.  This method should undo the
+ configuration performed in <code>installUI</code>, being careful to 
+ leave the <code>Component</code> instance in a clean state (no 
+ extraneous listeners, look-and-feel-specific property objects, etc.).
+ This should include the following:
+ <ol>
+ <li>Remove any UI-set borders from the component.
+ <li>Remove any UI-set layout managers on the component.
+ <li>Remove any UI-added sub-components from the component.
+ <li>Remove any UI-added event listeners from the component.
+ <li>Remove any UI-installed keyboard UI from the component.
+ <li>Remove any UI-added MCs from this component.
+ <li>Nullify any allocated instance data objects to allow for GC.
+ </ol>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component from which this UI delegate is being removed;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components
+
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#installUI">installUI</a></li><li><a href="../../../org/aswing/Component.html#updateUI">org.aswing.Component.updateUI</a></li></ul></div></div><div class="method_details"><a name="create"></a><h3>create</h3><code class="method_synopsis">public function <strong class="method_name">create</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Notifies this UI delegate that it's time to create the specified
+ component's ui MCs.  This method is invoked by <code>Component</code> 
+ when the specified component is being created.
+
+ <p>In general this method need not be overridden by subclasses;
+ all look-and-feel ui creating code should reside in this method.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component being painted;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components
+ 
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/Component.html#create">org.aswing.Component.create</a></li></ul></div></div><div class="method_details alt_row"><a name="paint"></a><h3>paint</h3><code class="method_synopsis">public function <strong class="method_name">paint</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, g:<a href="../../../org/aswing/graphics/Graphics.html" class="class_name" title="Class org.aswing.graphics.Graphics">Graphics</a>, b:<a href="../../../org/aswing/geom/Rectangle.html" class="class_name" title="Class org.aswing.geom.Rectangle">Rectangle</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Notifies this UI delegate that it's time to paint the specified
+ component.  This method is invoked by <code>Component</code> 
+ when the specified component is being painted.
+
+ <p>In general this method need be overridden by subclasses;
+ all look-and-feel rendering code should reside in this method.
+ And there is a default background paint method, you should call
+ it in your overridden paint method.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component being painted;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components.
+ </td></tr><tr><td><code>g</code></td><td>the Graphics context in which to paint.
+ </td></tr><tr><td><code>b</code></td><td>the bounds to paint UI in.
+ 
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/Component.html#paint">org.aswing.Component.paint</a></li><li><a href="#paintBackGround">paintBackGround</a></li></ul></div></div><div class="method_details"><a name="paintFocus"></a><h3>paintFocus</h3><code class="method_synopsis">public function <strong class="method_name">paintFocus</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>, g:<a href="../../../org/aswing/graphics/Graphics.html" class="class_name" title="Class org.aswing.graphics.Graphics">Graphics</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Paints focus representation to the component.
+     </p></div></div><div class="method_details alt_row"><a name="clearFocus"></a><h3>clearFocus</h3><code class="method_synopsis">public function <strong class="method_name">clearFocus</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Clears the focus representation of the component.
+     </p></div></div><div class="method_details"><a name="getPreferredSize"></a><h3>getPreferredSize</h3><code class="method_synopsis">public function <strong class="method_name">getPreferredSize</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<a href="../../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ Returns the specified component's preferred size appropriate for
+ the look and feel.  If <code>null</code> is returned, the preferred
+ size will be calculated by the component's layout manager instead 
+ (this is the preferred approach for any component with a specific
+ layout manager installed).  The default implementation of this 
+ method returns <code>null</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component whose preferred size is being queried;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components
+
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/Component.html#getPreferredSize">org.aswing.Component.getPreferredSize</a></li><li><a href="../../../org/aswing/LayoutManager.html#preferredLayoutSize">org.aswing.LayoutManager.preferredLayoutSize</a></li></ul></div></div><div class="method_details alt_row"><a name="getMinimumSize"></a><h3>getMinimumSize</h3><code class="method_synopsis">public function <strong class="method_name">getMinimumSize</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<a href="../../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ Returns the specified component's minimum size appropriate for
+ the look and feel.  If <code>null</code> is returned, the minimum
+ size will be calculated by the component's layout manager instead 
+ (this is the preferred approach for any component with a specific
+ layout manager installed).  The default implementation of this 
+ method invokes <code>getPreferredSize</code> and returns that value.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component whose minimum size is being queried;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components
+
+ </td></tr></table><h4>Return</h4><p class="extra_info"> a <code>Dimension</code> object or <code>null</code>
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/Component.html#getMinimumSize">org.aswing.Component.getMinimumSize</a></li><li><a href="../../../org/aswing/LayoutManager.html#minimumLayoutSize">org.aswing.LayoutManager.minimumLayoutSize</a></li><li><a href="#getPreferredSize">getPreferredSize</a></li></ul></div></div><div class="method_details"><a name="getMaximumSize"></a><h3>getMaximumSize</h3><code class="method_synopsis">public function <strong class="method_name">getMaximumSize</strong>(c:<a href="../../../org/aswing/Component.html" class="class_name" title="Class org.aswing.Component">Component</a>):<a href="../../../org/aswing/geom/Dimension.html" class="class_name" title="Class org.aswing.geom.Dimension">Dimension</a></code><div class="method_info"><p>
+ Returns the specified component's maximum size appropriate for
+ the look and feel.  If <code>null</code> is returned, the maximum
+ size will be calculated by the component's layout manager instead 
+ (this is the preferred approach for any component with a specific
+ layout manager installed).  The default implementation of this 
+ method invokes <code>getPreferredSize</code> and returns that value.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>c</code></td><td>the component whose maximum size is being queried;
+          this argument is often ignored,
+          but might be used if the UI object is stateless
+          and shared by multiple components
+ </td></tr></table><h4>Return</h4><p class="extra_info"> a <code>Dimension</code> object or <code>null</code>
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/Component.html#getMaximumSize">org.aswing.Component.getMaximumSize</a></li><li><a href="../../../org/aswing/LayoutManager.html#maximumLayoutSize">org.aswing.LayoutManager.maximumLayoutSize</a></li><li><a href="#getPreferredSize">getPreferredSize</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.plaf" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

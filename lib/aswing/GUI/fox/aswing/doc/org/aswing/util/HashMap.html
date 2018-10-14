@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.util.HashMap - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.util" rel="up"/><link href="../../../org/aswing/util/Impulser.html" title="Interface org.aswing.util.Impulser" rel="prev"/><link href="../../../org/aswing/util/EnterFrameImpulser.html" title="Class org.aswing.util.EnterFrameImpulser" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.util.HashMap</h1><div class="type_hierachy"><ul><li><strong>org.aswing.util.HashMap</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ To successfully store and retrieve (key->value) mapping from a HashMap.
+ HashMap accept any type of object to be the key: number, string, Object etc... 
+ But it is only get fast accessing with string type keys. Others are slow.
+ <p>
+ ----------------------------------------------------------
+ This example creates a HashMap of friends. It uses the number of the friends as keys:
+ <pre>
+     function person(name,age,sex){
+         this.name=name;
+         this.age=age;
+         this.sex=sex;
+     }
+     var friends = new HashMap();
+     friends.put("one", new person("iiley",21,"M"));
+     friends.put("two", new person("gothic man",22,"M"));
+     friends.put("three", new person("rock girl",19,"F"));
+ </pre>
+ <p>To retrieve a friends, use the following code:
+
+ <pre>
+     var thisperson = friends.get("two");
+     if (thisperson != null) {
+         trace("two name is "+thisperson.name);
+         trace("two age is "+thisperson.age);
+         trace("two sex is "+thisperson.sex);
+     }else{
+         trace("two is not in friends!");
+     }
+ </pre>
+
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#HashMap" title="public function HashMap()">HashMap()</a></code></div><a href="#clear" title="public function clear():Void">clear()</a>, <a href="#clone" title="public function clone():HashMap">clone()</a>, <a href="#containsKey" title="public function containsKey(key):Boolean">containsKey()</a>, <a href="#containsValue" title="public function containsValue(value):Boolean">containsValue()</a>, <a href="#get" title="public function get(key)">get()</a>, <a href="#isEmpty" title="public function isEmpty():Boolean">isEmpty()</a>, <a href="#keys" title="public function keys():Array">keys()</a>, <a href="#put" title="public function put(key, value)">put()</a>, <a href="#putArray" title="public function putArray(Arr:Array, key:String):Void">putArray()</a>, <a href="#remove" title="public function remove(key)">remove()</a>, <a href="#size" title="public function size():Number">size()</a>, <a href="#toString" title="public function toString():String">toString()</a>, <a href="#values" title="public function values():Array">values()</a></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="HashMap"></a><h3>HashMap</h3><code class="method_synopsis">public function <strong class="method_name">HashMap</strong>()</code><div class="method_info"></div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="size"></a><h3>size</h3><code class="method_synopsis">public function <strong class="method_name">size</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of keys in this HashMap.
+  	 </p></div></div><div class="method_details"><a name="isEmpty"></a><h3>isEmpty</h3><code class="method_synopsis">public function <strong class="method_name">isEmpty</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns if this HashMap maps no keys to values.
+  	 </p></div></div><div class="method_details alt_row"><a name="keys"></a><h3>keys</h3><code class="method_synopsis">public function <strong class="method_name">keys</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns an Array of the keys in this HashMap.
+  	 </p></div></div><div class="method_details"><a name="values"></a><h3>values</h3><code class="method_synopsis">public function <strong class="method_name">values</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns an Array of the values in this HashMap.
+  	 </p></div></div><div class="method_details alt_row"><a name="containsValue"></a><h3>containsValue</h3><code class="method_synopsis">public function <strong class="method_name">containsValue</strong>(value):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Tests if some key maps into the specified value in this HashMap. 
+ This operation is more expensive than the containsKey method.
+  	 </p></div></div><div class="method_details"><a name="containsKey"></a><h3>containsKey</h3><code class="method_synopsis">public function <strong class="method_name">containsKey</strong>(key):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Tests if the specified object is a key in this HashMap.
+ This operation is very fast if it is a string.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>The key whose presence in this map is to be tested
+ </td></tr></table><h4>Return</h4><p class="extra_info"> <tt>true</tt> if this map contains a mapping for the specified
+  	 </p></div></div><div class="method_details alt_row"><a name="get"></a><h3>get</h3><code class="method_synopsis">public function <strong class="method_name">get</strong>(key)</code><div class="method_info"><p>
+ Returns the value to which the specified key is mapped in this HashMap.
+ Return null if the key is not mapped to any value in this HashMap.
+ This operation is very fast if the key is a string.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>the key whose associated value is to be returned.
+ </td></tr></table><h4>Return</h4><p class="extra_info">  the value to which this map maps the specified key, or
+          <tt>null</tt> if the map contains no mapping for this key
+           or it is null value originally.
+ 	 </p></div></div><div class="method_details"><a name="put"></a><h3>put</h3><code class="method_synopsis">public function <strong class="method_name">put</strong>(key, value)</code><div class="method_info"><p>
+ Associates the specified value with the specified key in this map. 
+ If the map previously contained a mapping for this key, the old value is replaced. 
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>key with which the specified value is to be associated.
+ </td></tr><tr><td><code>value</code></td><td>value to be associated with the specified key.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> previous value associated with specified key, or <tt>null</tt>
+	       if there was no mapping for key.  A <tt>null</tt> return can
+	       also indicate that the HashMap previously associated
+	       <tt>null</tt> with the specified key.
+  	 </p></div></div><div class="method_details alt_row"><a name="remove"></a><h3>remove</h3><code class="method_synopsis">public function <strong class="method_name">remove</strong>(key)</code><div class="method_info"><p>
+ Removes the mapping for this key from this map if present.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>key</code></td><td>key whose mapping is to be removed from the map.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> previous value associated with specified key, or <tt>null</tt>
+	       if there was no mapping for key.  A <tt>null</tt> return can
+	       also indicate that the map previously associated <tt>null</tt>
+	       with the specified key.
+  	 </p></div></div><div class="method_details"><a name="putArray"></a><h3>putArray</h3><code class="method_synopsis">public function <strong class="method_name">putArray</strong>(Arr:<span class="unresolved_type_name">Array</span>, key:<span class="unresolved_type_name">String</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ put a array's all element into the HashMap, 
+ key+index will be the key
+  	 </p></div></div><div class="method_details alt_row"><a name="clear"></a><h3>clear</h3><code class="method_synopsis">public function <strong class="method_name">clear</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Clears this HashMap so that it contains no keys no values.
+ 	 </p></div></div><div class="method_details"><a name="clone"></a><h3>clone</h3><code class="method_synopsis">public function <strong class="method_name">clone</strong>():<a href="../../../org/aswing/util/HashMap.html" class="class_name" title="Class org.aswing.util.HashMap">HashMap</a></code><div class="method_info"><p>
+ Return a same copy of HashMap object
+ 	 </p></div></div><div class="method_details alt_row"><a name="toString"></a><h3>toString</h3><code class="method_synopsis">public function <strong class="method_name">toString</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.util" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.util.AbstractImpulser - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.util" rel="up"/><link href="../../../org/aswing/util/AdvancedColor.html" title="Class org.aswing.util.AdvancedColor" rel="prev"/><link href="../../../org/aswing/UIManager.html" title="Class org.aswing.UIManager" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.util.AbstractImpulser</h1><div class="type_hierachy"><ul><li><a href="../../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">org.aswing.EventDispatcher</a><ul><li><strong>org.aswing.util.AbstractImpulser</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ Provides common routines for classes implemented
+ <span class="unresolved_type_name">org.aswing.util.Impulse</span> interface. 
+
+ </p></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><h4>Inherited from <a href="../../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../../org/aswing/EventDispatcher.html#ON_ACT" title="static public ON_ACT:String">ON_ACT</a></div></div><div class="method_index"><h2>Method Index</h2><a href="#addActionListener" title="public function addActionListener(func:Function, obj:Object):Object">addActionListener()</a>, <a href="#getDelay" title="public function getDelay():Number">getDelay()</a>, <a href="#getInitialDelay" title="public function getInitialDelay():Number">getInitialDelay()</a>, <a href="#isRepeats" title="public function isRepeats():Boolean">isRepeats()</a>, <a href="#setDelay" title="public function setDelay(delay:Number):Void">setDelay()</a>, <a href="#setInitialDelay" title="public function setInitialDelay(initialDelay:Number):Void">setInitialDelay()</a>, <a href="#setRepeats" title="public function setRepeats(flag:Boolean):Void">setRepeats()</a><h4>Inherited from <a href="../../../org/aswing/EventDispatcher.html" class="class_name" title="Class org.aswing.EventDispatcher">EventDispatcher</a></h4><div class="extra_info"><a href="../../../org/aswing/EventDispatcher.html#addEventListener" title="public function addEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">addEventListener()</a>, <a href="../../../org/aswing/EventDispatcher.html#createEventListener" title="static public function createEventListener(eventTypeOrLis:Object, func:Function, obj:Object):Object">createEventListener()</a>, <a href="../../../org/aswing/EventDispatcher.html#dispatchEvent" title="public function dispatchEvent(name:Object, event:Event):Void">dispatchEvent()</a>, <a href="../../../org/aswing/EventDispatcher.html#fireActionEvent" title="public function fireActionEvent():Void">fireActionEvent()</a>, <a href="../../../org/aswing/EventDispatcher.html#isEventDispatchingEnabled" title="public function isEventDispatchingEnabled():Boolean">isEventDispatchingEnabled()</a>, <a href="../../../org/aswing/EventDispatcher.html#removeEventListener" title="public function removeEventListener(listener:Object):Void">removeEventListener()</a>, <a href="../../../org/aswing/EventDispatcher.html#setEventDispatchingEnabled" title="public function setEventDispatchingEnabled(e:Boolean):Void">setEventDispatchingEnabled()</a></div></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="addActionListener"></a><h3>addActionListener</h3><code class="method_synopsis">public function <strong class="method_name">addActionListener</strong>(func:<span class="unresolved_type_name">Function</span>, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ addActionListener(fuc:Function, obj:Object)<br>
+ addActionListener(fuc:Function)<br>
+ 
+ Adds an action listener to the <code>AbstractImpulser</code>
+ instance.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>obj</code></td><td>which context to run in by the func.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the listener just added.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="../../../org/aswing/EventDispatcher.html#addEventListener">org.aswing.EventDispatcher.addEventListener()</a></li><li><a href="../../../org/aswing/EventDispatcher.html#ON_ACT">org.aswing.EventDispatcher.ON_ACT</a></li></ul></div></div><div class="method_details"><a name="setDelay"></a><h3>setDelay</h3><code class="method_synopsis">public function <strong class="method_name">setDelay</strong>(delay:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <code>AbstractImpulser</code>'s delay between 
+ fired events.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>delay</code></td><td>the delay
+ </td></tr></table><h4>Throws</h4><table class="exceptions extra_info" summary=""><tr><td><span class="unresolved_type_name">Error</span></td><td>when set delay <= 0 or delay == null
+     </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setInitialDelay">setInitialDelay()</a></li></ul></div></div><div class="method_details alt_row"><a name="getDelay"></a><h3>getDelay</h3><code class="method_synopsis">public function <strong class="method_name">getDelay</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the delay between firings of events.
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setDelay">setDelay()</a></li><li><a href="#getInitialDelay">getInitialDelay()</a></li></ul></div></div><div class="method_details"><a name="setInitialDelay"></a><h3>setInitialDelay</h3><code class="method_synopsis">public function <strong class="method_name">setInitialDelay</strong>(initialDelay:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <code>AbstractImpulser</code>'s initial delay,
+ which by default is the same as the between-event delay.
+ This is used only for the first action event.
+ Subsequent events are spaced using the delay property.
+ 
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>initialDelay</code></td><td>the delay 
+                     between the invocation of the <code>start</code>
+                     method and the first event
+                     fired by this impulser
+
+ </td></tr></table><h4>Throws</h4><table class="exceptions extra_info" summary=""><tr><td><span class="unresolved_type_name">Error</span></td><td>when set initialDelay <= 0 or initialDelay == null
+     </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setDelay">setDelay()</a></li></ul></div></div><div class="method_details alt_row"><a name="getInitialDelay"></a><h3>getInitialDelay</h3><code class="method_synopsis">public function <strong class="method_name">getInitialDelay</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the <code>AbstractImpulser</code>'s initial delay.
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setInitialDelay">setInitialDelay()</a></li><li><a href="#setDelay">setDelay()</a></li></ul></div></div><div class="method_details"><a name="setRepeats"></a><h3>setRepeats</h3><code class="method_synopsis">public function <strong class="method_name">setRepeats</strong>(flag:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ If <code>flag</code> is <code>false</code>,
+ instructs the <code>AbstractImpulser</code> to send only once
+ action event to its listeners after a start.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>flag</code></td><td>specify <code>false</code> to make the impulser
+             stop after sending its first action event.
+             Default value is true.
+	 </td></tr></table></div></div><div class="method_details alt_row"><a name="isRepeats"></a><h3>isRepeats</h3><code class="method_synopsis">public function <strong class="method_name">isRepeats</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns <code>true</code> (the default)
+ if the <code>AbstractImpulser</code> will send
+ an action event to its listeners multiple times.
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setRepeats">setRepeats()</a></li></ul></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.util" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

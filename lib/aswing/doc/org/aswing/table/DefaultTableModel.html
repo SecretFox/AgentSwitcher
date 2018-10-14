@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.table.DefaultTableModel - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.table" rel="up"/><link href="../../../org/aswing/table/DefaultTextCell.html" title="Class org.aswing.table.DefaultTextCell" rel="prev"/><link href="../../../org/aswing/table/DefaultTableColumnModel.html" title="Class org.aswing.table.DefaultTableColumnModel" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.table.DefaultTableModel</h1><div class="type_hierachy"><ul><li><a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a><ul><li><strong>org.aswing.table.DefaultTableModel</strong></li></ul></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><div><code>new <a href="#DefaultTableModel" title="public function DefaultTableModel()">DefaultTableModel()</a></code></div><a href="#addColumn" title="public function addColumn(columnName:Object, columnData:Array):Void">addColumn()</a>, <a href="#addRow" title="public function addRow(rowData:Array):Void">addRow()</a>, <a href="#clearRows" title="public function clearRows():Void">clearRows()</a>, <a href="#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a>, <a href="#getColumnName" title="public function getColumnName(column:Number):String">getColumnName()</a>, <a href="#getData" title="public function getData():Array">getData()</a>, <a href="#getRowCount" title="public function getRowCount():Number">getRowCount()</a>, <a href="#getValueAt" title="public function getValueAt(row:Number, column:Number)">getValueAt()</a>, <a href="#initWithDataNames" title="public function initWithDataNames(data:Array, columnNames:Array):DefaultTableModel">initWithDataNames()</a>, <a href="#initWithNamesRowcount" title="public function initWithNamesRowcount(columnNames:Array, rowCount:Number):DefaultTableModel">initWithNamesRowcount()</a>, <a href="#initWithRowcountColumncount" title="public function initWithRowcountColumncount(rowCount:Number, columnCount:Number):DefaultTableModel">initWithRowcountColumncount()</a>, <a href="#insertRow" title="public function insertRow(row:Number, rowData:Array):Void">insertRow()</a>, <a href="#isCellEditable" title="public function isCellEditable(row:Number, column:Number):Boolean">isCellEditable()</a>, <a href="#isColumnEditable" title="public function isColumnEditable(column:Number):Boolean">isColumnEditable()</a>, <a href="#moveRow" title="public function moveRow(start:Number, end:Number, to:Number):Void">moveRow()</a>, <a href="#newDataAvailable" title="public function newDataAvailable(event:TableModelEvent):Void">newDataAvailable()</a>, <a href="#newRowsAdded" title="public function newRowsAdded(e:TableModelEvent):Void">newRowsAdded()</a>, <a href="#removeRow" title="public function removeRow(row:Number):Void">removeRow()</a>, <a href="#rowsRemoved" title="public function rowsRemoved(e:TableModelEvent):Void">rowsRemoved()</a>, <a href="#setAllCellEditable" title="public function setAllCellEditable(editable:Boolean):Void">setAllCellEditable()</a>, <a href="#setColumnCount" title="public function setColumnCount(columnCount:Number):Void">setColumnCount()</a>, <a href="#setColumnEditable" title="public function setColumnEditable(column:Number, editable:Boolean):Void">setColumnEditable()</a>, <a href="#setColumnNames" title="public function setColumnNames(columnNames:Array):Void">setColumnNames()</a>, <a href="#setData" title="public function setData(dataArray:Array):Void">setData()</a>, <a href="#setDataNames" title="public function setDataNames(dataArray:Array, columnNames:Array):Void">setDataNames()</a>, <a href="#setNumRows" title="public function setNumRows(rowCount:Number):Void">setNumRows()</a>, <a href="#setRowCount" title="public function setRowCount(rowCount:Number):Void">setRowCount()</a>, <a href="#setValueAt" title="public function setValueAt(aValue, row:Number, column:Number):Void">setValueAt()</a>, <a href="#toString" title="public function toString():String">toString()</a><h4>Inherited from <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">AbstractTableModel</a></h4><div class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#addTableModelListener" title="public function addTableModelListener(l:TableModelListener):Void">addTableModelListener()</a>, <a href="../../../org/aswing/table/AbstractTableModel.html#findColumn" title="public function findColumn(columnName:String):Number">findColumn()</a>, <a href="../../../org/aswing/table/AbstractTableModel.html#getColumnClass" title="public function getColumnClass(columnIndex:Number):String">getColumnClass()</a>, <a href="../../../org/aswing/table/AbstractTableModel.html#getTableModelListeners" title="public function getTableModelListeners():Array">getTableModelListeners()</a>, <a href="../../../org/aswing/table/AbstractTableModel.html#removeTableModelListener" title="public function removeTableModelListener(l:TableModelListener):Void">removeTableModelListener()</a>, <a href="../../../org/aswing/table/AbstractTableModel.html#setColumnClass" title="public function setColumnClass(columnIndex:Number, className:String):Void">setColumnClass()</a></div></div></div><div class="type_details"><div class="constructor_detail_list"><h2>Constructor Detail</h2><div class="method_details"><a name="DefaultTableModel"></a><h3>DefaultTableModel</h3><code class="method_synopsis">public function <strong class="method_name">DefaultTableModel</strong>()</code><div class="method_info"><p>
+ Constructs a default <code>DefaultTableModel</code> 
+ which is a table of zero columns and zero rows.
+ <p>
+ You must call init method after constructing.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#initWithRowcountColumncount">initWithRowcountColumncount()</a></li><li><a href="#initWithNamesRowcount">initWithNamesRowcount()</a></li><li><a href="#initWithDataNames">initWithDataNames()</a></li></ul></div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="initWithRowcountColumncount"></a><h3>initWithRowcountColumncount</h3><code class="method_synopsis">public function <strong class="method_name">initWithRowcountColumncount</strong>(rowCount:<span class="unresolved_type_name">Number</span>, columnCount:<span class="unresolved_type_name">Number</span>):<a href="../../../org/aswing/table/DefaultTableModel.html" class="class_name" title="Class org.aswing.table.DefaultTableModel">DefaultTableModel</a></code><div class="method_info"><p>
+  Initializes a <code>DefaultTableModel</code> with
+  <code>rowCount</code> and <code>columnCount</code> of
+  <code>null</code> object values.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>rowCount</code></td><td>the number of rows the table holds
+ </td></tr><tr><td><code>columnCount</code></td><td>the number of columns the table holds
+
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setValueAt">setValueAt()</a></li></ul></div></div><div class="method_details"><a name="initWithNamesRowcount"></a><h3>initWithNamesRowcount</h3><code class="method_synopsis">public function <strong class="method_name">initWithNamesRowcount</strong>(columnNames:<span class="unresolved_type_name">Array</span>, rowCount:<span class="unresolved_type_name">Number</span>):<a href="../../../org/aswing/table/DefaultTableModel.html" class="class_name" title="Class org.aswing.table.DefaultTableModel">DefaultTableModel</a></code><div class="method_info"><p>
+  Initializes a <code>DefaultTableModel</code> with as many
+  columns as there are elements in <code>columnNames</code>
+  and <code>rowCount</code> of <code>null</code>
+  object values.  Each column's name will be taken from
+  the <code>columnNames</code> array.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnNames</code></td><td><code>array</code> containing the names
+				of the new columns; if this is
+                          <code>null</code> then the model has no columns
+ </td></tr><tr><td><code>rowCount</code></td><td>the number of rows the table holds
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setDataArray">setDataArray()</a></li><li><a href="#setValueAt">setValueAt()</a></li></ul></div></div><div class="method_details alt_row"><a name="initWithDataNames"></a><h3>initWithDataNames</h3><code class="method_synopsis">public function <strong class="method_name">initWithDataNames</strong>(data:<span class="unresolved_type_name">Array</span>, columnNames:<span class="unresolved_type_name">Array</span>):<a href="../../../org/aswing/table/DefaultTableModel.html" class="class_name" title="Class org.aswing.table.DefaultTableModel">DefaultTableModel</a></code><div class="method_info"><p>
+  Initializes a <code>DefaultTableModel</code>
+  by passing <code>data</code> and <code>columnNames</code>
+  to the <code>setDataArray</code>
+  method. The first index in the <code>[][]</code> array is
+  the row index and the second is the column index.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>data</code></td><td>the data of the table
+ </td></tr><tr><td><code>columnNames</code></td><td>the names of the columns
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setDataArray">setDataArray()</a></li></ul></div></div><div class="method_details"><a name="getData"></a><h3>getData</h3><code class="method_synopsis">public function <strong class="method_name">getData</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+  Returns the <code>Array</code> of <code>Arrays</code>
+  that contains the table's
+  data values.  The arrays contained in the outer array are
+  each a single row of values.  In other words, to get to the cell
+  at row 1, column 5: <p>
+
+  <code>getDataVector()[1][5];</code><p>
+
+ </p><h4>Return</h4><p class="extra_info">  the array of arrays containing the tables data values
+
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#newDataAvailable">newDataAvailable()</a></li><li><a href="#newRowsAdded">newRowsAdded()</a></li><li><a href="#setDataArray">setDataArray()</a></li></ul></div></div><div class="method_details alt_row"><a name="setData"></a><h3>setData</h3><code class="method_synopsis">public function <strong class="method_name">setData</strong>(dataArray:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Replaces the current <code>dataArray</code> instance variable 
+  with the new <code>Vector</code> of rows, <code>dataArray</code>.
+  Each row is represented in <code>dataArray</code> as a
+  <code>Vector</code> of <code>Object</code> values.
+  <p>Note that passing in a <code>null</code> value for
+  <code>dataArray</code> results in unspecified behavior,
+  an possibly an exception.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>dataArray</code></td><td>the new data vector
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getData">getData()</a></li></ul></div></div><div class="method_details"><a name="setDataNames"></a><h3>setDataNames</h3><code class="method_synopsis">public function <strong class="method_name">setDataNames</strong>(dataArray:<span class="unresolved_type_name">Array</span>, columnNames:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Replaces the current <code>dataArray</code> instance variable 
+  with the new <code>Vector</code> of rows, <code>dataArray</code>.
+  Each row is represented in <code>dataArray</code> as a
+  <code>Vector</code> of <code>Object</code> values.
+  
+  <p><code>columnNames</code> are the names of the new 
+  columns.  The first name in <code>columnNames</code> is
+  mapped to column 0 in <code>dataArray</code>. Each row in
+  <code>dataArray</code> is adjusted to match the number of 
+  columns in <code>columnNames</code>
+  either by truncating the <code>Vector</code> if it is too long,
+  or adding <code>null</code> values if it is too short.
+  
+  <p>Note that passing in a <code>null</code> value for
+  <code>dataArray</code> results in unspecified behavior,
+  an possibly an exception.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>dataArray</code></td><td>the new data vector
+ </td></tr><tr><td><code>columnNames</code></td><td>the names of the columns
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getData">getData()</a></li></ul></div></div><div class="method_details alt_row"><a name="newDataAvailable"></a><h3>newDataAvailable</h3><code class="method_synopsis">public function <strong class="method_name">newDataAvailable</strong>(event:<a href="../../../org/aswing/event/TableModelEvent.html" class="class_name" title="Class org.aswing.event.TableModelEvent">TableModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Equivalent to <code>fireTableChanged</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>event</code></td><td>the change event 
+
+     </td></tr></table></div></div><div class="method_details"><a name="newRowsAdded"></a><h3>newRowsAdded</h3><code class="method_synopsis">public function <strong class="method_name">newRowsAdded</strong>(e:<a href="../../../org/aswing/event/TableModelEvent.html" class="class_name" title="Class org.aswing.event.TableModelEvent">TableModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Ensures that the new rows have the correct number of columns.
+  This is accomplished by  using the <code>setSize</code> method in
+  <code>Vector</code> which truncates vectors
+  which are too long, and appends <code>null</code>s if they
+  are too short.
+  This method also sends out a <code>tableChanged</code>
+  notification message to all the listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>e</code></td><td>this <code>TableModelEvent</code> describes 
+                           where the rows were added. 
+				 If <code>null</code> it assumes
+                           all the rows were newly added
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getData">getData()</a></li></ul></div></div><div class="method_details alt_row"><a name="rowsRemoved"></a><h3>rowsRemoved</h3><code class="method_synopsis">public function <strong class="method_name">rowsRemoved</strong>(e:<a href="../../../org/aswing/event/TableModelEvent.html" class="class_name" title="Class org.aswing.event.TableModelEvent">TableModelEvent</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Equivalent to <code>fireTableChanged</code>.
+
+  @param e the change event
+
+     </p></div></div><div class="method_details"><a name="setNumRows"></a><h3>setNumRows</h3><code class="method_synopsis">public function <strong class="method_name">setNumRows</strong>(rowCount:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Obsolete as of Java 2 platform v1.3.  Please use <code>setRowCount</code> instead.
+     </p></div></div><div class="method_details alt_row"><a name="setRowCount"></a><h3>setRowCount</h3><code class="method_synopsis">public function <strong class="method_name">setRowCount</strong>(rowCount:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Sets the number of rows in the model.  If the new size is greater
+  than the current size, new rows are added to the end of the model
+  If the new size is less than the current size, all
+  rows at index <code>rowCount</code> and greater are discarded. <p>
+
+  @see #setColumnCount()
+     </p></div></div><div class="method_details"><a name="addRow"></a><h3>addRow</h3><code class="method_synopsis">public function <strong class="method_name">addRow</strong>(rowData:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Adds a row to the end of the model.  The new row will contain
+  <code>null</code> values unless <code>rowData</code> is specified.
+  Notification of the row being added will be generated.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>rowData</code></td><td>optional data of the row being added
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="insertRow"></a><h3>insertRow</h3><code class="method_synopsis">public function <strong class="method_name">insertRow</strong>(row:<span class="unresolved_type_name">Number</span>, rowData:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Inserts a row at <code>row</code> in the model.  The new row
+  will contain <code>null</code> values unless <code>rowData</code>
+  is specified.  Notification of the row being added will be generated.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>row</code></td><td>the row index of the row to be inserted
+ </td></tr><tr><td><code>rowData</code></td><td>optional data of the row being added
+     </td></tr></table></div></div><div class="method_details"><a name="moveRow"></a><h3>moveRow</h3><code class="method_synopsis">public function <strong class="method_name">moveRow</strong>(start:<span class="unresolved_type_name">Number</span>, end:<span class="unresolved_type_name">Number</span>, to:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Moves one or more rows from the inclusive range <code>start</code> to 
+  <code>end</code> to the <code>to</code> position in the model. 
+  After the move, the row that was at index <code>start</code> 
+  will be at index <code>to</code>. 
+  This method will send a <code>tableChanged</code> notification
+  message to all the listeners. <p>
+
+  <pre>
+  Examples of moves:
+  <p>
+  1. moveRow(1,3,5);
+          a|B|C|D|e|f|g|h|i|j|k   - before
+          a|e|f|g|h|B|C|D|i|j|k   - after
+  <p>
+  2. moveRow(6,7,1);
+          a|b|c|d|e|f|G|H|i|j|k   - before
+          a|G|H|b|c|d|e|f|i|j|k   - after
+  <p> 
+  </pre>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>start</code></td><td>the starting row index to be moved
+ </td></tr><tr><td><code>end</code></td><td>the ending row index to be moved
+ </td></tr><tr><td><code>to</code></td><td>the destination of the rows to be moved
+ 
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="removeRow"></a><h3>removeRow</h3><code class="method_synopsis">public function <strong class="method_name">removeRow</strong>(row:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes the row at <code>row</code> from the model.  Notification
+ of the row being removed will be sent to all the listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>row</code></td><td>the row index of the row to be removed
+     </td></tr></table></div></div><div class="method_details"><a name="clearRows"></a><h3>clearRows</h3><code class="method_synopsis">public function <strong class="method_name">clearRows</strong>():<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes the all the rows .  Notification
+ of the rows being removed will be sent to all the listeners.
+     </p></div></div><div class="method_details alt_row"><a name="setColumnNames"></a><h3>setColumnNames</h3><code class="method_synopsis">public function <strong class="method_name">setColumnNames</strong>(columnNames:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Replaces the column names in the model.  If the number of
+ <code>columnNames</code>s is greater than the current number
+ of columns, new columns are added to the end of each row in the model.
+ If the number of <code>columnNames</code>s is less than the current
+ number of columns, all the extra columns at the end of a row are
+ discarded. <p>
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnNames</code></td><td>array of column names. 
+				If <code>null</code>, set
+                          the model to zero columns
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#setNumRows">setNumRows()</a></li></ul></div></div><div class="method_details"><a name="setColumnCount"></a><h3>setColumnCount</h3><code class="method_synopsis">public function <strong class="method_name">setColumnCount</strong>(columnCount:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Sets the number of columns in the model.  If the new size is greater
+  than the current size, new columns are added to the end of the model 
+  with <code>null</code> cell values.
+  If the new size is less than the current size, all columns at index
+  <code>columnCount</code> and greater are discarded. 
+
+  @param columnCount  the new number of columns in the model
+
+  @see #setColumnCount()
+     </p></div></div><div class="method_details alt_row"><a name="addColumn"></a><h3>addColumn</h3><code class="method_synopsis">public function <strong class="method_name">addColumn</strong>(columnName:<span class="unresolved_type_name">Object</span>, columnData:<span class="unresolved_type_name">Array</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ addColumn(columnName:Object, columnData:Array)<br>
+ addColumn(columnName:Object)
+ <p>
+ 
+  Adds a column to the model.  The new column will have the
+  name <code>columnName</code>.  <code>columnData</code> is the
+  optional array of data for the column.  If it is <code>null</code>
+  the column is filled with <code>null</code> values.  Otherwise,
+  the new data will be added to model starting with the first
+  element going to row 0, etc.  This method will send a
+  <code>tableChanged</code> notification message to all the listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnName</code></td><td>the name of the column being added
+ </td></tr><tr><td><code>columnData</code></td><td>optional data of the column being added
+     </td></tr></table></div></div><div class="method_details"><a name="getRowCount"></a><h3>getRowCount</h3><code class="method_synopsis">public function <strong class="method_name">getRowCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of rows in this data table.
+ </p><h4>Return</h4><p class="extra_info"> the number of rows in the model
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getRowCount" title="public function getRowCount():Number">getRowCount()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#getRowCount" title="public function getRowCount():Number">getRowCount()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p></div></div><div class="method_details alt_row"><a name="getColumnCount"></a><h3>getColumnCount</h3><code class="method_synopsis">public function <strong class="method_name">getColumnCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of columns in this data table.
+ </p><h4>Return</h4><p class="extra_info"> the number of columns in the model
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p></div></div><div class="method_details"><a name="getColumnName"></a><h3>getColumnName</h3><code class="method_synopsis">public function <strong class="method_name">getColumnName</strong>(column:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">String</span></code><div class="method_info"><p>
+ Returns the column name.
+
+ </p><h4>Return</h4><p class="extra_info"> a name for this column using the string value of the
+ appropriate member in <code>columnNames</code>.
+ If <code>columnNames</code> does not have an entry 
+ for this index, returns the default
+ name provided by the superclass
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getColumnName" title="public function getColumnName(columnIndex:Number):String">getColumnName()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#getColumnName" title="public function getColumnName(column:Number):String">getColumnName()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p></div></div><div class="method_details alt_row"><a name="isCellEditable"></a><h3>isCellEditable</h3><code class="method_synopsis">public function <strong class="method_name">isCellEditable</strong>(row:<span class="unresolved_type_name">Number</span>, column:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns is the row column editable, default is true.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>row</code></td><td>the row whose value is to be queried
+ </td></tr><tr><td><code>column</code></td><td>the column whose value is to be queried
+ </td></tr></table><h4>Return</h4><p class="extra_info">                  is the row column editable, default is true.
+ </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#isCellEditable" title="public function isCellEditable(rowIndex:Number, columnIndex:Number):Boolean">isCellEditable()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#isCellEditable" title="public function isCellEditable(rowIndex:Number, columnIndex:Number):Boolean">isCellEditable()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p><h4>See Also</h4><ul class="extra_info"><li><a href="#setValueAt">setValueAt()</a></li><li><a href="#setCellEditable">setCellEditable()</a></li><li><a href="#setAllCellEditable">setAllCellEditable()</a></li></ul></div></div><div class="method_details"><a name="isColumnEditable"></a><h3>isColumnEditable</h3><code class="method_synopsis">public function <strong class="method_name">isColumnEditable</strong>(column:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns is the column editable, default is true.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>column</code></td><td>the column whose value is to be queried
+ </td></tr></table><h4>Return</h4><p class="extra_info">                  is the column editable, default is true.
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setValueAt">setValueAt()</a></li><li><a href="#setCellEditable">setCellEditable()</a></li><li><a href="#setAllCellEditable">setAllCellEditable()</a></li></ul></div></div><div class="method_details alt_row"><a name="setColumnEditable"></a><h3>setColumnEditable</h3><code class="method_synopsis">public function <strong class="method_name">setColumnEditable</strong>(column:<span class="unresolved_type_name">Number</span>, editable:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets spcecifed column editable or not.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>column</code></td><td>the column whose value is to be queried
+ </td></tr><tr><td><code>editable</code></td><td>editable or not
+     </td></tr></table></div></div><div class="method_details"><a name="setAllCellEditable"></a><h3>setAllCellEditable</h3><code class="method_synopsis">public function <strong class="method_name">setAllCellEditable</strong>(editable:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets all cells editable or not.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>editable</code></td><td>editable or not
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="getValueAt"></a><h3>getValueAt</h3><code class="method_synopsis">public function <strong class="method_name">getValueAt</strong>(row:<span class="unresolved_type_name">Number</span>, column:<span class="unresolved_type_name">Number</span>)</code><div class="method_info"><p>
+ Returns an attribute value for the cell at <code>row</code>
+ and <code>column</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>row</code></td><td>the row whose value is to be queried
+ </td></tr><tr><td><code>column</code></td><td>the column whose value is to be queried
+ </td></tr></table><h4>Return</h4><p class="extra_info">                  the value Object at the specified cell
+     </p><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#getValueAt" title="public function getValueAt(rowIndex:Number, columnIndex:Number)">getValueAt()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#getValueAt" title="public function getValueAt(rowIndex:Number, columnIndex:Number)">getValueAt()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p></div></div><div class="method_details"><a name="setValueAt"></a><h3>setValueAt</h3><code class="method_synopsis">public function <strong class="method_name">setValueAt</strong>(aValue, row:<span class="unresolved_type_name">Number</span>, column:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the object value for the cell at <code>column</code> and
+ <code>row</code>.  <code>aValue</code> is the new value.  This method
+ will generate a <code>tableChanged</code> notification.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aValue</code></td><td>the new value; this can be null
+ </td></tr><tr><td><code>row</code></td><td>the row whose value is to be changed
+ </td></tr><tr><td><code>column</code></td><td>the column whose value is to be changed
+     </td></tr></table><h4>Specified By</h4><p class="extra_info"><a href="../../../org/aswing/table/TableModel.html#setValueAt" title="public function setValueAt(aValue, rowIndex:Number, columnIndex:Number):Void">setValueAt()</a> in <a href="../../../org/aswing/table/TableModel.html" class="interface_name" title="Interface org.aswing.table.TableModel">org.aswing.table.TableModel</a></p><h4>Overrides</h4><p class="extra_info"><a href="../../../org/aswing/table/AbstractTableModel.html#setValueAt" title="public function setValueAt(aValue, rowIndex:Number, columnIndex:Number):Void">setValueAt()</a> in <a href="../../../org/aswing/table/AbstractTableModel.html" class="class_name" title="Class org.aswing.table.AbstractTableModel">org.aswing.table.AbstractTableModel</a></p></div></div><div class="method_details alt_row"><a name="toString"></a><h3>toString</h3><code class="method_synopsis">public function <strong class="method_name">toString</strong>():<span class="unresolved_type_name">String</span></code><div class="method_info"></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.table" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.util.EnterFrameEventDispatcher - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.util" rel="up"/><link href="../../../org/aswing/util/EnterFrameImpulser.html" title="Class org.aswing.util.EnterFrameImpulser" rel="prev"/><link href="../../../org/aswing/util/DepthManager.html" title="Class org.aswing.util.DepthManager" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Class org.aswing.util.EnterFrameEventDispatcher</h1><div class="type_hierachy"><ul><li><strong>org.aswing.util.EnterFrameEventDispatcher</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ </p></div><div class="type_indexes"><div class="field_index"><h2>Field Index</h2><a href="#ON_ENTER_FRAME" title="static public ON_ENTER_FRAME:String">ON_ENTER_FRAME</a></div><div class="method_index"><h2>Method Index</h2><a href="#addEventListener" title="static public function addEventListener(funcOrLis, obj:Object):Object">addEventListener()</a>, <a href="#removeEventListener" title="static public function removeEventListener(listener:Object):Void">removeEventListener()</a></div></div><div class="type_details"><div class="field_detail_list"><h2>Field Detail</h2><a name="ON_ENTER_FRAME"></a><h3>ON_ENTER_FRAME</h3><div class="field_details"><code class="field_synopsis">static public <strong class="field_name">ON_ENTER_FRAME</strong>:<span class="unresolved_type_name">String</span></code><div class="field_info">
+ When enter frame event occurs.
+<br>
+ onEnterFrame(enterFrameEventDispatcher:Function)
+	 </div></div></div><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="addEventListener"></a><h3>addEventListener</h3><code class="method_synopsis">static public function <strong class="method_name">addEventListener</strong>(funcOrLis, obj:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Object</span></code><div class="method_info"><p>
+ addEventListener(listener:Object)<br>
+ addEventListener(func:Function, obj:Object)<br>
+ addEventListener(func:Function)<br>
+ 
+ Adds a event listener. If you add event listener by the first way, add the
+ listener of the parameter and return it. You can remove the listener later.
+ But if you added by the last two ways, the returned value is a new object of
+ listener, so when you want to remove it, you should use the returned value.
+ <p>
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>funcOrLis</code></td><td>it can be listener instance have the listener method,
+ and can be a function which want to handler the event
+ </td></tr><tr><td><code>obj</code></td><td>which context to run in by the func.
+ </td></tr></table><h4>Return</h4><p class="extra_info"> the listener just be added. If you add event listener by function, the return is a 
+ new object of listener, if you add event listener by a listener object, the return 
+ is listener object itself.
+ 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#removeEventListener">removeEventListener()</a></li></ul></div></div><div class="method_details"><a name="removeEventListener"></a><h3>removeEventListener</h3><code class="method_synopsis">static public function <strong class="method_name">removeEventListener</strong>(listener:<span class="unresolved_type_name">Object</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes the specified event listener.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>listener</code></td><td>the listener which will be removed.
+	 </td></tr></table></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.util" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>

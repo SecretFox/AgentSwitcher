@@ -1,0 +1,1 @@
+mtasc -header 800:600:20 -swf build/ItsTest.swf -cp ../../AsWing/src -cp src -cp test -main ImageThumbStripTest

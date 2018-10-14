@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aw:aswing xmlns:aw="http://awml.aswing.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://awml.aswing.org ../awml.xsd ">
+    <frame id="frame" namespace="main" owner="_root" modal="true" enabled="true" width="500" height="400" closable="false" title="Test Title" resizable="true">
+        <its orientation="horizontal" scroll-bar-position="bottom" preferrred-width="180" preferred-height="450" id="thumb" opaque="true" highlight-enabled="true" use-url-as-title="false" />
+    </frame>
+</aw:aswing>

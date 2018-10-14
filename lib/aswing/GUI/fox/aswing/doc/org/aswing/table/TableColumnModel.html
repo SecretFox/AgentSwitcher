@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html><head><title>org.aswing.table.TableColumnModel - AsWing A2 API</title><script src="../../../quicknav.js" type="text/javascript"></script><script><!--
+document.quicknavBasePath="../../../index-files";
+//--></script><link href="../../../style.css" title="JavaDoc" rel="stylesheet" type="text/css"/><link href="../../../unnatural.css" title="Unnatural" rel="alternate stylesheet" type="text/css"/><link href="../../../overview-summary.html" title="Overview" rel="top"/><link href="package-summary.html" title="Package org.aswing.table" rel="up"/><link href="../../../org/aswing/table/TableColumnModelEvent.html" title="Class org.aswing.table.TableColumnModelEvent" rel="prev"/><link href="../../../org/aswing/table/TableColumn.html" title="Class org.aswing.table.TableColumn" rel="next"/><meta name="generator" content="http://www.badgers-in-foil.co.uk/projects/as2api/"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/></head><body><h1>Interface org.aswing.table.TableColumnModel</h1><div class="type_hierachy"><ul><li><strong>org.aswing.table.TableColumnModel</strong></li></ul></div><div class="type_description"><h2>Description</h2><p>
+ Defines the requirements for a table column model object suitable for
+ use with <code>JTable</code>.
+ </p></div><div class="type_indexes"><div class="method_index"><h2>Method Index</h2><a href="#addColumn" title="public function addColumn(aColumn:TableColumn):Void">addColumn()</a>, <a href="#addColumnModelListener" title="public function addColumnModelListener(x:TableColumnModelListener):Void">addColumnModelListener()</a>, <a href="#getColumn" title="public function getColumn(columnIndex:Number):TableColumn">getColumn()</a>, <a href="#getColumnCount" title="public function getColumnCount():Number">getColumnCount()</a>, <a href="#getColumnIndex" title="public function getColumnIndex(columnIdentifier:Object):Number">getColumnIndex()</a>, <a href="#getColumnIndexAtX" title="public function getColumnIndexAtX(xPosition:Number):Number">getColumnIndexAtX()</a>, <a href="#getColumnMargin" title="public function getColumnMargin():Number">getColumnMargin()</a>, <a href="#getColumns" title="public function getColumns():Array">getColumns()</a>, <a href="#getColumnSelectionAllowed" title="public function getColumnSelectionAllowed():Boolean">getColumnSelectionAllowed()</a>, <a href="#getSelectedColumnCount" title="public function getSelectedColumnCount():Number">getSelectedColumnCount()</a>, <a href="#getSelectedColumns" title="public function getSelectedColumns():Array">getSelectedColumns()</a>, <a href="#getSelectionModel" title="public function getSelectionModel():ListSelectionModel">getSelectionModel()</a>, <a href="#getTotalColumnWidth" title="public function getTotalColumnWidth():Number">getTotalColumnWidth()</a>, <a href="#moveColumn" title="public function moveColumn(columnIndex:Number, newIndex:Number):Void">moveColumn()</a>, <a href="#removeColumn" title="public function removeColumn(column:TableColumn):Void">removeColumn()</a>, <a href="#removeColumnModelListener" title="public function removeColumnModelListener(x:TableColumnModelListener):Void">removeColumnModelListener()</a>, <a href="#setColumnMargin" title="public function setColumnMargin(newMargin:Number):Void">setColumnMargin()</a>, <a href="#setColumnSelectionAllowed" title="public function setColumnSelectionAllowed(flag:Boolean):Void">setColumnSelectionAllowed()</a>, <a href="#setSelectionModel" title="public function setSelectionModel(newModel:ListSelectionModel):Void">setSelectionModel()</a></div></div><div class="type_details"><div class="method_detail_list"><h2>Method Detail</h2><div class="method_details alt_row"><a name="addColumn"></a><h3>addColumn</h3><code class="method_synopsis">public function <strong class="method_name">addColumn</strong>(aColumn:<a href="../../../org/aswing/table/TableColumn.html" class="class_name" title="Class org.aswing.table.TableColumn">TableColumn</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Appends <code>aColumn</code> to the end of the
+  <code>tableColumns</code> array.
+  This method posts a <code>columnAdded</code>
+  event to its listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>aColumn</code></td><td>the <code>TableColumn</code> to be added
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#removeColumn">removeColumn</a></li></ul></div></div><div class="method_details"><a name="removeColumn"></a><h3>removeColumn</h3><code class="method_synopsis">public function <strong class="method_name">removeColumn</strong>(column:<a href="../../../org/aswing/table/TableColumn.html" class="class_name" title="Class org.aswing.table.TableColumn">TableColumn</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+  Deletes the <code>TableColumn</code> <code>column</code> from the 
+  <code>tableColumns</code> array.  This method will do nothing if 
+  <code>column</code> is not in the table's column list.
+  This method posts a <code>columnRemoved</code>
+  event to its listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>column</code></td><td>the <code>TableColumn</code> to be removed
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#addColumn">addColumn</a></li></ul></div></div><div class="method_details alt_row"><a name="moveColumn"></a><h3>moveColumn</h3><code class="method_synopsis">public function <strong class="method_name">moveColumn</strong>(columnIndex:<span class="unresolved_type_name">Number</span>, newIndex:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Moves the column and its header at <code>columnIndex</code> to
+ <code>newIndex</code>.  The old column at <code>columnIndex</code>
+ will now be found at <code>newIndex</code>.  The column that used
+ to be at <code>newIndex</code> is shifted left or right
+ to make room.  This will not move any columns if
+ <code>columnIndex</code> equals <code>newIndex</code>.  This method 
+ posts a <code>columnMoved</code> event to its listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnIndex</code></td><td>the index of column to be moved
+ </td></tr><tr><td><code>newIndex</code></td><td>index of the column's new location
+ </td></tr></table><h4>Throws</h4><table class="exceptions extra_info" summary=""><tr><td><span class="unresolved_type_name">IllegalArgumentException</span></td><td>if <code>columnIndex</code> or 
+                                          <code>newIndex</code>
+                                          are not in the valid range
+     </td></tr></table></div></div><div class="method_details"><a name="setColumnMargin"></a><h3>setColumnMargin</h3><code class="method_synopsis">public function <strong class="method_name">setColumnMargin</strong>(newMargin:<span class="unresolved_type_name">Number</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the <code>TableColumn</code>'s column margin to
+ <code>newMargin</code>.  This method posts
+ a <code>columnMarginChanged</code> event to its listeners.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newMargin</code></td><td>the width, in pixels, of the new column margins
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getColumnMargin">getColumnMargin</a></li></ul></div></div><div class="method_details alt_row"><a name="getColumnCount"></a><h3>getColumnCount</h3><code class="method_synopsis">public function <strong class="method_name">getColumnCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p> 
+ Returns the number of columns in the model.
+ </p><h4>Return</h4><p class="extra_info"> the number of columns in the model
+     </p></div></div><div class="method_details"><a name="getColumns"></a><h3>getColumns</h3><code class="method_synopsis">public function <strong class="method_name">getColumns</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p> 
+ Returns an <code>Array</code> of all the columns in the model.
+ </p><h4>Return</h4><p class="extra_info"> an <code>Array</code> of all the columns in the model
+     </p></div></div><div class="method_details alt_row"><a name="getColumnIndex"></a><h3>getColumnIndex</h3><code class="method_synopsis">public function <strong class="method_name">getColumnIndex</strong>(columnIdentifier:<span class="unresolved_type_name">Object</span>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the index of the first column in the table
+ whose identifier is equal to <code>identifier</code>,
+ when compared using <code>equals</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnIdentifier</code></td><td>the identifier object
+ </td></tr></table><h4>Return</h4><p class="extra_info">          the index of the first table column
+                  whose identifier is equal to <code>identifier</code>
+ </p><h4>Throws</h4><table class="exceptions extra_info" summary=""><tr><td><span class="unresolved_type_name">IllegalArgumentException</span></td><td>if <code>identifier</code>
+				is <code>null</code>, or no
+				<code>TableColumn</code> has this
+				<code>identifier</code>
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getColumn">getColumn</a></li></ul></div></div><div class="method_details"><a name="getColumn"></a><h3>getColumn</h3><code class="method_synopsis">public function <strong class="method_name">getColumn</strong>(columnIndex:<span class="unresolved_type_name">Number</span>):<a href="../../../org/aswing/table/TableColumn.html" class="class_name" title="Class org.aswing.table.TableColumn">TableColumn</a></code><div class="method_info"><p>
+ Returns the <code>TableColumn</code> object for the column at
+ <code>columnIndex</code>.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>columnIndex</code></td><td>the index of the desired column 
+ </td></tr></table><h4>Return</h4><p class="extra_info">  the <code>TableColumn</code> object for
+				the column at <code>columnIndex</code>
+     </p></div></div><div class="method_details alt_row"><a name="getColumnMargin"></a><h3>getColumnMargin</h3><code class="method_synopsis">public function <strong class="method_name">getColumnMargin</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p> 
+ Returns the width between the cells in each column. 
+ </p><h4>Return</h4><p class="extra_info"> the margin, in pixels, between the cells
+     </p></div></div><div class="method_details"><a name="getColumnIndexAtX"></a><h3>getColumnIndexAtX</h3><code class="method_synopsis">public function <strong class="method_name">getColumnIndexAtX</strong>(xPosition:<span class="unresolved_type_name">Number</span>):<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the index of the column that lies on the 
+ horizontal point, <code>xPosition</code>;
+ or -1 if it lies outside the any of the column's bounds.
+
+ In keeping with Swing's separable model architecture, a
+ TableColumnModel does not know how the table columns actually appear on
+ screen.  The visual presentation of the columns is the responsibility
+ of the view/controller object using this model (typically JTable).  The
+ view/controller need not display the columns sequentially from left to
+ right.  For example, columns could be displayed from right to left to
+ accomodate a locale preference or some columns might be hidden at the
+ request of the user.  Because the model does not know how the columns
+ are laid out on screen, the given <code>xPosition</code> should not be
+ considered to be a coordinate in 2D graphics space.  Instead, it should
+ be considered to be a width from the start of the first column in the
+ model.  If the column index for a given X coordinate in 2D space is
+ required, <code>JTable.columnAtPoint</code> can be used instead.
+
+ </p><h4>Return</h4><p class="extra_info">  the index of the column; or -1 if no column is found
+ </p><h4>See Also</h4><ul class="extra_info"><li>javax.swing.JTable#columnAtPoint</li></ul></div></div><div class="method_details alt_row"><a name="getTotalColumnWidth"></a><h3>getTotalColumnWidth</h3><code class="method_synopsis">public function <strong class="method_name">getTotalColumnWidth</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p> 
+ Returns the total width of all the columns. 
+ </p><h4>Return</h4><p class="extra_info"> the total computed width of all columns
+     </p></div></div><div class="method_details"><a name="setColumnSelectionAllowed"></a><h3>setColumnSelectionAllowed</h3><code class="method_synopsis">public function <strong class="method_name">setColumnSelectionAllowed</strong>(flag:<span class="unresolved_type_name">Boolean</span>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets whether the columns in this model may be selected.
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>flag</code></td><td>true if columns may be selected; otherwise false
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getColumnSelectionAllowed">getColumnSelectionAllowed</a></li></ul></div></div><div class="method_details alt_row"><a name="getColumnSelectionAllowed"></a><h3>getColumnSelectionAllowed</h3><code class="method_synopsis">public function <strong class="method_name">getColumnSelectionAllowed</strong>():<span class="unresolved_type_name">Boolean</span></code><div class="method_info"><p>
+ Returns true if columns may be selected.
+ </p><h4>Return</h4><p class="extra_info"> true if columns may be selected
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setColumnSelectionAllowed">setColumnSelectionAllowed</a></li></ul></div></div><div class="method_details"><a name="getSelectedColumns"></a><h3>getSelectedColumns</h3><code class="method_synopsis">public function <strong class="method_name">getSelectedColumns</strong>():<span class="unresolved_type_name">Array</span></code><div class="method_info"><p>
+ Returns an array of indicies of all selected columns.
+ </p><h4>Return</h4><p class="extra_info"> an array of integers containing the indicies of all
+		selected columns; or an empty array if nothing is selected
+     </p></div></div><div class="method_details alt_row"><a name="getSelectedColumnCount"></a><h3>getSelectedColumnCount</h3><code class="method_synopsis">public function <strong class="method_name">getSelectedColumnCount</strong>():<span class="unresolved_type_name">Number</span></code><div class="method_info"><p>
+ Returns the number of selected columns.
+
+ </p><h4>Return</h4><p class="extra_info"> the number of selected columns; or 0 if no columns are selected
+     </p></div></div><div class="method_details"><a name="setSelectionModel"></a><h3>setSelectionModel</h3><code class="method_synopsis">public function <strong class="method_name">setSelectionModel</strong>(newModel:<a href="../../../org/aswing/ListSelectionModel.html" class="interface_name" title="Interface org.aswing.ListSelectionModel">ListSelectionModel</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Sets the selection model.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>newModel</code></td><td>a <code>ListSelectionModel</code> object
+ </td></tr></table><h4>See Also</h4><ul class="extra_info"><li><a href="#getSelectionModel">getSelectionModel</a></li></ul></div></div><div class="method_details alt_row"><a name="getSelectionModel"></a><h3>getSelectionModel</h3><code class="method_synopsis">public function <strong class="method_name">getSelectionModel</strong>():<a href="../../../org/aswing/ListSelectionModel.html" class="interface_name" title="Interface org.aswing.ListSelectionModel">ListSelectionModel</a></code><div class="method_info"><p>
+ Returns the current selection model.
+
+ </p><h4>Return</h4><p class="extra_info"> a <code>ListSelectionModel</code> object 
+ </p><h4>See Also</h4><ul class="extra_info"><li><a href="#setSelectionModel">setSelectionModel</a></li></ul></div></div><div class="method_details"><a name="addColumnModelListener"></a><h3>addColumnModelListener</h3><code class="method_synopsis">public function <strong class="method_name">addColumnModelListener</strong>(x:<a href="../../../org/aswing/table/TableColumnModelListener.html" class="interface_name" title="Interface org.aswing.table.TableColumnModelListener">TableColumnModelListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Adds a listener for table column model events.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>x</code></td><td>a <code>TableColumnModelListener</code> object
+     </td></tr></table></div></div><div class="method_details alt_row"><a name="removeColumnModelListener"></a><h3>removeColumnModelListener</h3><code class="method_synopsis">public function <strong class="method_name">removeColumnModelListener</strong>(x:<a href="../../../org/aswing/table/TableColumnModelListener.html" class="interface_name" title="Interface org.aswing.table.TableColumnModelListener">TableColumnModelListener</a>):<span class="void_name">Void</span></code><div class="method_info"><p>
+ Removes a listener for table column model events.
+
+ </p><h4>Parameters</h4><table class="arguments extra_info" summary=""><tr><td><code>x</code></td><td>a <code>TableColumnModelListener</code> object
+     </td></tr></table></div></div></div></div><ul class="main_nav" id="main_nav"><li><a href="../../../overview-summary.html" title="Overview of AsWing A2 API" class="button">Overview</a></li><li><a href="package-summary.html" title="Overview of package org.aswing.table" class="button">Package</a></li><li><span class="button nav_current">Class</span></li><li><a href="../../../index-files/index.html" title="Alpabetical index of types and members" class="button">Index</a></li></ul><div class="footer"><a href="http://www.badgers-in-foil.co.uk/projects/as2api/" title="ActionScript 2 API Documentation Generator">as2api</a></div></body></html>
