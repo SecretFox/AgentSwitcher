@@ -55,6 +55,10 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		show();
 		pack();
 		bringToTopDepth();
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	}
+	public function tryToClose():Void{
+		m_parent.OpenSettingsDval.SetValue(false);	
 	}
 	private function __ActiveChanged(box:JCheckBox){
 		m_parent.ActiveDval.SetValue(box.isSelected());
