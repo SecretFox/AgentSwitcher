@@ -1,14 +1,17 @@
+import GUI.fox.aswing.JPanel;
+import GUI.fox.aswing.JPopup;
+import GUI.fox.aswing.SoftBoxLayout;
 import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.CharacterBase;
-import com.GameInterface.UtilsBase;
 import com.Utils.Archive;
 import com.Utils.Colors;
 import com.Utils.Draw;
 import com.Utils.GlobalSignal;
 import com.Utils.ID32;
+import com.fox.AgentSwitcher.QuickSelectButton;
 import com.fox.AgentSwitcher.Settings;
 import flash.geom.Point;
 import com.fox.Utils.Common;
@@ -31,7 +34,18 @@ class com.fox.AgentSwitcher.Main {
 
 	private var DefaultAgent:Number;
 	private var m_Player:Character;
-	static var RacialAgents:Array = [2746, 2749, 2743, 2748, 2744, 2750, 2745, 2741, 2747, 2742];
+	static var RacialAgents:Array = [
+		[2746,"Construct"],
+		[2749,"Cybernetic"],
+		[2743,"Demon"],
+		[2748,"Aquatic"],
+		[2744,"Filth"],
+		[2750,"Human"],
+		[2745,"Spirit"],
+		[2741,"Supernatural"],
+		[2747,"Undead"],
+		[2742,"Animal"]
+	];
 	private var DestinationSlot:Number;
 	private var DefaultTimeout;
 	private var LastSelectedName:String;
@@ -42,6 +56,8 @@ class com.fox.AgentSwitcher.Main {
 	private var m_settings:Settings;
 	private var m_Icon:MovieClip;
 	private var iconPos:Point;
+	private var QuickSelect:JPopup;
+	private var RecentAgents:Array;
 	
 
 	public static function main(swfRoot:MovieClip):Void {
@@ -72,7 +88,12 @@ class com.fox.AgentSwitcher.Main {
 		DefaultAgent = config.FindEntry("Default", 0);
 		iconPos = config.FindEntry("iconPos", new Point(200, 50));
 		ActiveDval.SetValue(config.FindEntry("Active", true));
+		RecentAgents = config.FindEntryArray("RecentAgents");
 		if (DefaultAgent == 0) DefaultAgent = GetCurrentAgent().m_AgentId;
+		if (!RecentAgents){
+			RecentAgents = new Array();
+			RecentAgents.push(DefaultAgent);
+		}
 		CreateTopIcon();
 	}
 
@@ -85,6 +106,9 @@ class com.fox.AgentSwitcher.Main {
 		config.AddEntry("Default", DefaultAgent);
 		config.AddEntry("iconPos", iconPos);
 		config.AddEntry("Active", ActiveDval.GetValue());
+		for (var i = 0; i < RecentAgents.length;i++ ){
+			config.AddEntry("RecentAgents", RecentAgents[i]);
+		}
 		return config
 	}
 
@@ -120,9 +144,7 @@ class com.fox.AgentSwitcher.Main {
 			iconPos = Common.getOnScreen(m_Icon);
 			m_Icon._x = iconPos.x;
 			m_Icon._y = iconPos.y;
-			m_Icon.onPress = Delegate.create(this, function() {
-				this.ActiveDval.SetValue(!this.ActiveDval.GetValue());
-			});
+			m_Icon.onPress = Delegate.create(this, OpenQuickSelect);
 			m_Icon.onPressAux = Delegate.create(this, function() {
 				this.OpenSettingsDval.SetValue(!this.OpenSettingsDval.GetValue());
 			});
@@ -151,14 +173,58 @@ class com.fox.AgentSwitcher.Main {
 	}
 	private function OpenSettings(dv:DistributedValue){
 		if (dv.GetValue()){
-			if(m_settings) m_settings.dispose();
-			m_settings = new Settings(m_Icon._x, m_Icon._y, this);
+			if (m_settings) m_settings.dispose();
+			QuickSelect.dispose();
+			QuickSelect = undefined;
+			m_settings = new Settings(m_Icon._x, m_Icon._y + m_Icon._height+5, this);
 		}else{
 			if (m_settings){
 				m_settings.dispose();
 				m_settings = undefined;
 			}
-}
+		}
+	}
+	private function __AgentButtonClicked(button:QuickSelectButton){
+		var current:AgentSystemAgent = GetCurrentAgent();
+		if (current.m_AgentId != button.AgentData.m_AgentId){
+			SwitchToAgent(button.AgentData.m_AgentId);
+		}
+		button.CloseTooltip();
+		CloseSettings();
+	}
+	private function OpenQuickSelect(){
+		QuickSelect.dispose();
+		OpenSettingsDval.SetValue(false);
+		QuickSelect = new JPopup();
+		QuickSelect.setX(m_Icon._x);
+		QuickSelect.setY(m_Icon._y + m_Icon._height+5);
+		var panel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS));
+		for (var i in RecentAgents){
+			if (AgentSystem.HasAgent(RecentAgents[i])){
+				var Agent:AgentSystemAgent = AgentSystem.GetAgentById(RecentAgents[i]);
+				if (Agent.m_Level == 50){
+					var AgentButton:QuickSelectButton = new QuickSelectButton(Agent.m_Name)
+					AgentButton.SetData(Agent);
+					AgentButton.addActionListener(__AgentButtonClicked, this);
+					panel.append(AgentButton);
+				}
+			}
+		}
+		
+		for (var i in RacialAgents){
+			if (AgentSystem.HasAgent(RacialAgents[i][0])){
+				var Agent:AgentSystemAgent = AgentSystem.GetAgentById(RacialAgents[i][0]);
+				if (Agent.m_Level == 50){
+					var AgentButton:QuickSelectButton = new QuickSelectButton(RacialAgents[i][1])
+					AgentButton.SetData(Agent);
+					AgentButton.addActionListener(__AgentButtonClicked, this);
+					panel.append(AgentButton);
+				}
+			}
+		}
+		QuickSelect.append(panel);
+		QuickSelect.pack();
+		QuickSelect.setVisible(true);
 	}
 	public function CreateTopIcon() {
 		if (!m_Icon) {
@@ -180,6 +246,8 @@ class com.fox.AgentSwitcher.Main {
 	
 	private function CloseSettings(){
 		OpenSettingsDval.SetValue(false);
+		QuickSelect.dispose();
+		QuickSelect = undefined;
 	}
 	
 	private function SlotDestionationChanged(dv:DistributedValue) {
@@ -312,7 +380,7 @@ class com.fox.AgentSwitcher.Main {
 
 	private function isRacialAgent(id) {
 		for (var i = 0; i < RacialAgents.length; i++) {
-			if (RacialAgents[i] == id) {
+			if (RacialAgents[i][0] == id) {
 				return true
 			}
 		}
@@ -358,6 +426,18 @@ class com.fox.AgentSwitcher.Main {
 				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(DestinationSlot);//Crashes if invalid slot
 				if (DefaultAgent != SlotAgent.m_AgentId && !isRacialAgent(SlotAgent.m_AgentId)) {
 					DefaultAgent = SlotAgent.m_AgentId;
+					var found;
+					for (var i in RecentAgents){
+						if (RecentAgents[i] == SlotAgent.m_AgentId) found = true;
+					}
+					if (!found){
+						if (RecentAgents.length == 3){
+							RecentAgents.shift();
+							RecentAgents.push(DefaultAgent);
+						}else{
+							RecentAgents.push(DefaultAgent);
+						}
+					}
 					//com.GameInterface.UtilsBase.PrintChatText("New default " + SlotAgent.m_Name + "(" + SlotAgent.m_AgentId +")");
 				}
 			}
