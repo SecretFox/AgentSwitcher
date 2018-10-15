@@ -120,6 +120,7 @@ class com.fox.AgentSwitcher.Main {
 		OpenSettingsDval.SignalChanged.Connect(OpenSettings, this);
 		ActiveDval.SignalChanged.Connect(StateChanged, this);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
+		m_settingsRoot.removeMovieClip();
 		m_settingsRoot = m_swfRoot.createEmptyMovieClip("m_settingsRoot", m_swfRoot.getNextHighestDepth());
 		ASWingUtils.setRootMovieClip(m_settingsRoot);
 		var laf:TswLookAndFeel = new TswLookAndFeel();

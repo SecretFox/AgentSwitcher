@@ -15,7 +15,7 @@ class com.fox.AgentSwitcher.QuickSelectButton extends JButton{
 	private var Tooltip:TooltipInterface;
 	public function QuickSelectButton(text){
 		super(text);
-		var font:ASFont = new ASFont(ASFont.DEFAULT_NAME, 16, false, false, false, true);
+		var font:ASFont = new ASFont("_StandardFont", 16, false, false, false, true);
 		setFont(font);
 	}
 	
