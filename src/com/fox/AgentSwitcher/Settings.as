@@ -26,7 +26,7 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		m_parent = parent;
 		setResizable(false);
 		setDragable(false);
-		setLocation(x, y + 21);
+		setLocation(x, y);
 		var icon:Icon = new Icon();//Empty icon
 		setIcon(icon);
 		setBorder(new BevelBorder(undefined, BevelBorder.RAISED, new ASColor(0xD8D8D8), new ASColor(0x7C7C7C), new ASColor(0x000000), new ASColor(0x373737), 3));
