@@ -202,12 +202,10 @@ class com.fox.AgentSwitcher.Main {
 		for (var i in RecentAgents){
 			if (AgentSystem.HasAgent(RecentAgents[i])){
 				var Agent:AgentSystemAgent = AgentSystem.GetAgentById(RecentAgents[i]);
-				if (Agent.m_Level == 50){
-					var AgentButton:QuickSelectButton = new QuickSelectButton(Agent.m_Name)
-					AgentButton.SetData(Agent);
-					AgentButton.addActionListener(__AgentButtonClicked, this);
-					panel.append(AgentButton);
-				}
+				var AgentButton:QuickSelectButton = new QuickSelectButton(Agent.m_Name)
+				AgentButton.SetData(Agent);
+				AgentButton.addActionListener(__AgentButtonClicked, this);
+				panel.append(AgentButton);
 			}
 		}
 		
