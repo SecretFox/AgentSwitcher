@@ -14,15 +14,15 @@ Agent used:
 * Animal : Finn Mulligan  
 * Others : Default  
 	
-Use `/option AgentSwitcher_Slot x` command to set which passive slot is used.  
-When player targets enemy, which they don't have levelled agent for, default agent will be used.  
-Default agent is automatically set when changing builds(works with boobuilds too) or manually switching agents.  
+Right-click the icon (same icon as agent window) to access mod settings.  
+Left click icon to open quickselect menu, which has 3 last used agents and all lvl 50 druid agents.  
+Icon can be moved while in GUI-Edit mode.  
 
-Use `AgentSwitcher_DefaultOnCombatEnd true`(default false) to enable agent defaulting when combat ends, and you are not targeting anything.  
-Unfortunately each time agent gets changed a sounds will be played, so if you use this option i recommend setting low interface audio volume.
+*Mod Options*  
+Enable : Enables/Disables mod, also changes icon color to indicate whether the mod is on or not, quickselect will still work with the mod off.  
+Debug :  prints enemy race/species on system chat channel.  
+Default on Combat End : Attempts to switch to default agent shortly after exiting combat, i recommend turning off Interface sounds if you use this option, agent switching is rather noisy.  
 
-`AgentSwitcher_DefaultDelay x` controls delay of previous option, by default it is set to 2000 (2 seconds).  
-Too low values and your agent might get changed between attacking mobs.
 
-
-Use `/option AgentSwitcher_Debug true` to enable debug mode, when debug is enabled targets name and type will be printed on system chat channel.
+Delay : Delay before switching to default agent (only used with defaul option enabled).  
+Slot : Which agent to switch, by default 2nd passive slot will be used.  
