@@ -22,6 +22,7 @@ Icon can be moved while in GUI-Edit mode.
 Enable : Enables/Disables mod, also changes icon color to indicate whether the mod is on or not, quickselect will still work with the mod off.  
 Debug :  prints enemy race/species on system chat channel.  
 Default on Combat End : Attempts to switch to default agent shortly after exiting combat, i recommend turning off Interface sounds if you use this option, agent switching is rather noisy.  
+Show Active Agent : Creates small moveable(while in guiedit) textfield that displays agent currently equipped in the switch slot
 
 
 Delay : Delay before switching to default agent (only used with defaul option enabled).  

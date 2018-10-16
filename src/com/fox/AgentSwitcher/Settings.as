@@ -17,6 +17,7 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 	private var Debug:JCheckBox;
 	private var Active:JCheckBox;
 	private var Default:JCheckBox;
+	private var Display:JCheckBox;
 	private var Delay:JTextField;
 	private var Slot:JTextField;
 	private var m_parent:Main;
@@ -32,10 +33,11 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		setBorder(new BevelBorder(undefined, BevelBorder.RAISED, new ASColor(0xD8D8D8), new ASColor(0x7C7C7C), new ASColor(0x000000), new ASColor(0x373737), 3));
 		
 		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0));
-		var settingsPanel:JPanel = new JPanel(new GridLayout(7, 1, 2, 2));
+		var settingsPanel:JPanel = new JPanel(new GridLayout(8, 1, 2, 2));
 		settingsPanel.append(GetActive());
 		settingsPanel.append(GetDebug());
 		settingsPanel.append(GetDefault());
+		settingsPanel.append(GetDisplay());
 		
 		var tf1:JTextField = new JTextField("Default Delay", 10);
 		tf1.setBorder(null);
@@ -69,6 +71,9 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 	private function __DefaultChanged(box:JCheckBox){
 		m_parent.SwitchDval.SetValue(box.isSelected());
 	}
+	private function __DisplayChanged(box:JCheckBox){
+		m_parent.DisplayDval.SetValue(box.isSelected());
+	}
 	private function GetActive(){
 		if (Active == null){
 			Active = new JCheckBox("Enabled");
@@ -93,7 +98,14 @@ class com.fox.AgentSwitcher.Settings extends JFrame  {
 		}
 		return Default;
 	}
-
+	private function GetDisplay(){
+		if (Display == null){
+			Display = new JCheckBox("Show active agent");
+			Display.setSelected(m_parent.DisplayDval.GetValue());
+			Display.addActionListener(__DisplayChanged, this);
+		}
+		return Display;
+	}
 	private function __DelayChanged(field:JTextField){
 		var input:String = field.getText();
 		if (input.length > 4){

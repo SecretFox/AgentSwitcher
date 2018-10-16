@@ -11,6 +11,7 @@ import com.Utils.Colors;
 import com.Utils.Draw;
 import com.Utils.GlobalSignal;
 import com.Utils.ID32;
+import com.fox.AgentSwitcher.AgentDisplay;
 import com.fox.AgentSwitcher.QuickSelectButton;
 import com.fox.AgentSwitcher.Settings;
 import flash.geom.Point;
@@ -30,6 +31,7 @@ class com.fox.AgentSwitcher.Main {
 	public var SwitchDval:DistributedValue;
 	public var DefaultDelayDval:DistributedValue;
 	public var OpenSettingsDval:DistributedValue;
+	public var DisplayDval:DistributedValue;
 	public var ActiveDval:DistributedValue;
 
 	private var DefaultAgent:Number;
@@ -53,9 +55,11 @@ class com.fox.AgentSwitcher.Main {
 	
 	private var m_swfRoot:MovieClip;
 	private var m_settingsRoot:MovieClip;
+	private var m_AgentDisplay:AgentDisplay;
 	private var m_settings:Settings;
 	private var m_Icon:MovieClip;
 	private var iconPos:Point;
+	private var DisplayPos:Point;
 	private var QuickSelect:JPopup;
 	private var RecentAgents:Array;
 	
@@ -75,8 +79,10 @@ class com.fox.AgentSwitcher.Main {
 		SwitchDval = DistributedValue.Create("AgentSwitcher_DefaultOnCombatEnd");
 		DefaultDelayDval = DistributedValue.Create("AgentSwitcher_DefaultDelay");
 		OpenSettingsDval = DistributedValue.Create("AgentSwitcher_OpenSettings");
+		DisplayDval = DistributedValue.Create("AgentSwitcher_Display");
 		ActiveDval = DistributedValue.Create("AgentSwitcher_Enabled");
 		OpenSettingsDval.SetValue(false);
+		DisplayDval.SetValue(false);
 	}
 
 	public function LoadSettings(config: Archive):Void {
@@ -85,6 +91,8 @@ class com.fox.AgentSwitcher.Main {
 		DebugDval.SetValue(config.FindEntry("Debug", false));
 		SwitchDval.SetValue(config.FindEntry("Switch", false));
 		DefaultDelayDval.SetValue(config.FindEntry("Delay", 2000));
+		DisplayPos = config.FindEntry("DisplayPos", new Point(300,50));
+		DisplayDval.SetValue(config.FindEntry("Display", false));
 		DefaultAgent = config.FindEntry("Default", 0);
 		iconPos = config.FindEntry("iconPos", new Point(200, 50));
 		ActiveDval.SetValue(config.FindEntry("Active", true));
@@ -106,6 +114,8 @@ class com.fox.AgentSwitcher.Main {
 		config.AddEntry("Default", DefaultAgent);
 		config.AddEntry("iconPos", iconPos);
 		config.AddEntry("Active", ActiveDval.GetValue());
+		config.AddEntry("Display", DisplayDval.GetValue());
+		config.AddEntry("DisplayPos", DisplayPos);
 		for (var i = 0; i < RecentAgents.length;i++ ){
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}
@@ -119,6 +129,7 @@ class com.fox.AgentSwitcher.Main {
 		SlotDval.SignalChanged.Connect(SlotDestionationChanged, this);
 		OpenSettingsDval.SignalChanged.Connect(OpenSettings, this);
 		ActiveDval.SignalChanged.Connect(StateChanged, this);
+		DisplayDval.SignalChanged.Connect(DisplayAgents, this);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 		m_settingsRoot.removeMovieClip();
 		m_settingsRoot = m_swfRoot.createEmptyMovieClip("m_settingsRoot", m_swfRoot.getNextHighestDepth());
@@ -136,6 +147,7 @@ class com.fox.AgentSwitcher.Main {
 		SlotDval.SignalChanged.Disconnect(SlotDestionationChanged, this);
 		OpenSettingsDval.SignalChanged.Disconnect(OpenSettings, this);
 		ActiveDval.SignalChanged.Disconnect(StateChanged, this);
+		DisplayDval.SignalChanged.Disconnect(DisplayAgents, this);
 		m_settingsRoot.removeMovieClip();
 		CharacterBase.SignalCharacterEnteredReticuleMode.Disconnect(CloseSettings, this);
 	}
@@ -172,13 +184,29 @@ class com.fox.AgentSwitcher.Main {
 			Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
 		}
 	}
+	private function DisplayAgents(dv:DistributedValue){
+		if (m_AgentDisplay){
+			m_AgentDisplay.SignalMoved.Disconnect(SaveDisplayPosition, this);
+			m_AgentDisplay.Destroy();
+			m_AgentDisplay = undefined;
+		}
+		if (dv.GetValue()){
+			m_AgentDisplay = new AgentDisplay(m_swfRoot,DisplayPos);
+			m_AgentDisplay.SignalMoved.Connect(SaveDisplayPosition, this);
+		}
+	}
+	private function SaveDisplayPosition(newPos:Point){
+		DisplayPos = newPos;
+	}
 	private function OpenSettings(dv:DistributedValue){
 		if (dv.GetValue()){
+			m_AgentDisplay.Hide();
 			if (m_settings) m_settings.dispose();
 			QuickSelect.dispose();
 			QuickSelect = undefined;
 			m_settings = new Settings(m_Icon._x, m_Icon._y + m_Icon._height+5, this);
 		}else{
+			m_AgentDisplay.Show();
 			if (m_settings){
 				m_settings.dispose();
 				m_settings = undefined;
@@ -195,6 +223,7 @@ class com.fox.AgentSwitcher.Main {
 	}
 	private function OpenQuickSelect(){
 		QuickSelect.dispose();
+		m_AgentDisplay.Hide();
 		OpenSettingsDval.SetValue(false);
 		QuickSelect = new JPopup();
 		QuickSelect.setX(m_Icon._x);
@@ -249,6 +278,7 @@ class com.fox.AgentSwitcher.Main {
 		OpenSettingsDval.SetValue(false);
 		QuickSelect.dispose();
 		QuickSelect = undefined;
+		m_AgentDisplay.Show();
 	}
 	
 	private function SlotDestionationChanged(dv:DistributedValue) {
