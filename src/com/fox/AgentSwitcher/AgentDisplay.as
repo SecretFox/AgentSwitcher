@@ -4,6 +4,7 @@ import com.GameInterface.DistributedValue;
 import com.Utils.Draw;
 import com.Utils.GlobalSignal;
 import com.Utils.Signal;
+import com.fox.AgentSwitcher.AgentHelper;
 import com.fox.Utils.Common;
 import flash.geom.Point;
 import mx.utils.Delegate;
@@ -54,12 +55,14 @@ class com.fox.AgentSwitcher.AgentDisplay{
 		m_Display._visible = true;
 	}
 	private function ChangeText(slotID){
-		if (slotID == TargetSlot-1){
-			var spellId:Number = AgentSystem.GetPassiveInSlot(slotID);
-			if (spellId != 0) {;
-				var SlotAgent:AgentSystemAgent = AgentSystem.GetAgentForPassiveSlot(slotID);
+		if (slotID == TargetSlot - 1){
+			var SlotAgent:AgentSystemAgent = AgentHelper.GetAgentInSlot(slotID);
+			if (SlotAgent){
 				m_Display.TargetAgent.text = SlotAgent.m_Name;
-				Draw.DrawRectangle(m_Display.m_BG, 0, 0, m_Display.TargetAgent._width + 10,  m_Display.TargetAgent._height + 10, 0x000000, 20, [8, 8, 8, 8]);
+				Draw.DrawRectangle(m_Display.m_BG, 0, 0, m_Display.TargetAgent._width + 10,  m_Display.TargetAgent._height + 10, 0x000000, 0, [8, 8, 8, 8]);
+				Show();
+			}else{
+				Hide();
 			}
 		}
 	}
