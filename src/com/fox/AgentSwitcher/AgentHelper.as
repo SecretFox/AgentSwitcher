@@ -28,6 +28,7 @@ class com.fox.AgentSwitcher.AgentHelper{
 		var name = string(mob.GetName());
 		var agent = 0;
 
+		//Should this be added to Druids array?
 		switch (stat) {
 			case 6:
 			case 12:
