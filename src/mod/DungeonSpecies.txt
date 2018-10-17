@@ -1,0 +1,78 @@
+The Polaris:
+	Bosses:
+		Haugbui Jarl : Aquatic
+		Blarbane Sorceress : Aquatic
+		The Varangian : Aquatic
+		Haugbui Mother : Aquatic / Sea Horror : Aquatic
+		Primordial Dweller : Aquatic
+		The Ur-Draug : Aquatic
+	Other:
+		Haugbui Sentry : Aquatic
+		Sea Burial : Undead
+		Deep-Sea Pod : Aquatic
+		Volatile Host : None
+		Weed-Wreathed Pod : Aquatic
+
+
+
+Hell Raised:
+	Bosses:
+		Antimony Ministrix : Demon
+		Corroder : Demon
+		Hardwired Fleshtank : Demon
+		Traumadriver : Demon
+		Recursia, Many-in-One : Demon
+		Machine Tyrant : Demon
+	Other:
+		Hellbeast Master : Demon
+		Sister of the Shear : Demon
+		Rakshasa Cur : Demon
+
+The Darkness War:
+	Bosses:
+		Batab Crusher : Human
+		Xibalban Bloodhound : Filth
+		Dark House Sorcerer : Human
+		Unbound Akab : Animal
+		Chilam Psychopomp : Human
+		Wayeb-Xul, the Hound of the Nameless Days : Filth
+	Other:
+		Akab Hatchling : Animal
+		Mayan Battle Mage : Human
+		Nacom Warcaller : Human
+		Balam Bloodletter : Human
+
+
+The Ankh:
+	Bosses:
+		Squalid Hekaturgist : Undead
+		Doctor Klein : None
+		Dimensional Arachnid : Filth
+		Orochi Dead Ops : Filth
+		The Colossus, Melothat : None (5th boss)
+		Doctor Klein : Filth / The Colossus, Melothat : Undead  (last boss)
+	Other:
+		Metamorphosing Orochi Agent : Filth
+		Wretched Receptacle : Undead
+		Research Assistant : None
+		Disembalmed Atenist : Undead
+		Gate : Unassigned
+		Wretched Receptacle : None
+		Pit Dweller : Filth
+
+
+Hell Eternal:
+	Bosses:
+		Archaean Seismocratist : Demon
+		Lustrehunter : Demon
+		Prime Maker : Construct
+		Flagellatrix Superior : Demon
+		Cassius, Hadean Guard : Demon
+		The Iscariot, Hadean Guard : Demon
+		Brutus, Hadean Guard : Demon
+		Eblis, Dominus Inferni In Profondis : Demon
+	Other:
+		Dynast of the Seep : Demon
+		Infernal Overwatch : Demon
+		Inured : Demon
+		Piston Predator : Demon
