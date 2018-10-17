@@ -1,0 +1,33 @@
+Construct:
+  Golem, Familiar, Scarecrow
+  agent : Nuala Magorian
+Cybernetic:
+  Orochi Men, Orochi Drone, Turret, Orochi Robot
+  agent : Fearghas Abernathy
+Demon:
+  Jinn, Raksasha, Hellspawn, Oni, Hell Soldier, Demon Children
+  agent : Laughing Jenny
+Aquatic:
+  Ghost, Deep One, Draug Pod
+  agent : Brann Mac Diarmada
+Filth:
+  Shade, Fungus, Guardian, Sasquatch, Filthy Human, Shade Stalker, Fungal Filth, Evolved Filth, Congo Fungal Filth, Congo Ape
+  agent : Francis Rowan
+Human:
+  Human, Bogieman, Mayan, Viking, Cursed Cultist, Morninglight Favoured
+  agent : Lady of Mists
+Spirit:
+  Spectre, Ghost, Wraith, Revenant, Spirit, Tokyo Spectre, Kishi
+  agent : Amelia Bindings
+Supernatural:
+  Ghoul, Werewolf, Troll, Wendigo, Wisp, Fata Paduri, Jack'o'lantern, Faun, Komainu, Kongamato
+  agent : Sif Minervudottir
+Undead:
+  Mummy, Draug, Zombie, Jiang-Shi
+  agent : Lynch
+Animal:
+  Locust, Scorpion, Akab, Animal, Dino-Mammal
+  agent : Finn Mulligan
+Vampire:
+  Vampire, Supersoldier
+  agent: None
