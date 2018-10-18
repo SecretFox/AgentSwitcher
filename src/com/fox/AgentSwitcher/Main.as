@@ -298,7 +298,14 @@ class com.fox.AgentSwitcher.Main {
 		QuickSelect.pack();
 		QuickSelect.setVisible(true);
 	}
-	
+	private function __AgentButtonClicked(button:QuickSelectButton){
+		var current:AgentSystemAgent = AgentHelper.GetAgentInSlot(DestinationSlot);
+		if (current.m_AgentId != button.AgentData.m_AgentId){
+			SwitchToAgent(button.AgentData.m_AgentId);
+		}
+		button.CloseTooltip();
+		CloseSettings();
+	}
 //Settings
 	private function OpenSettings(dv:DistributedValue){
 		if (dv.GetValue()){
@@ -336,13 +343,5 @@ class com.fox.AgentSwitcher.Main {
 	}
 	private function SaveDisplayPosition(newPos:Point){
 		DisplayPos = newPos;
-	}
-	private function __AgentButtonClicked(button:QuickSelectButton){
-		var current:AgentSystemAgent = AgentHelper.GetAgentInSlot(DestinationSlot);
-		if (current.m_AgentId != button.AgentData.m_AgentId){
-			SwitchToAgent(button.AgentData.m_AgentId);
-		}
-		button.CloseTooltip();
-		CloseSettings();
 	}
 }
