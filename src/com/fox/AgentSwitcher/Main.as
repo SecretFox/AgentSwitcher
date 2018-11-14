@@ -163,7 +163,9 @@ class com.fox.AgentSwitcher.Main {
 
 	// There's delay when changing audio, otherwise i would mute inteface sounds here.
 	private function SwitchToAgent(agentID:Number) {
-		AgentSystem.EquipPassive(agentID, DestinationSlot);
+		if(AgentSystem.HasAgent(agentID)){
+			AgentSystem.EquipPassive(agentID, DestinationSlot);
+		}
 	}
 	
 	// Passive Changed, make this the new default agent and push it to recent agents
