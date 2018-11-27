@@ -1,0 +1,2 @@
+for compiling put gfxfontlib.swf and topbarIcon.png here.
+for the icon im using agentlogo.png from AgentSystem.fla, with 1% black background(for hitbox)
