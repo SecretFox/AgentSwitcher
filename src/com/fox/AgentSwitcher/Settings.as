@@ -1,155 +1,132 @@
-import GUI.fox.aswing.ASColor;
-import GUI.fox.aswing.GridLayout;
-import GUI.fox.aswing.Icon;
-import GUI.fox.aswing.JCheckBox;
-import GUI.fox.aswing.JFrame;
-import GUI.fox.aswing.JPanel;
-import GUI.fox.aswing.JTextField;
-import GUI.fox.aswing.SoftBoxLayout;
-import GUI.fox.aswing.border.BevelBorder;
-import com.fox.AgentSwitcher.Main;
-/**
- * ...
- * @author fox
- */
-class com.fox.AgentSwitcher.Settings extends JFrame  {
-	
-	private var Debug:JCheckBox;
-	private var Active:JCheckBox;
-	private var Default:JCheckBox;
-	private var Display:JCheckBox;
-	private var Delay:JTextField;
-	private var Slot:JTextField;
-	private var m_parent:Main;
-	
-	public function Settings(x,y,parent) {
-		super("Settings");
-		m_parent = parent;
-		setResizable(false);
-		setDragable(false);
-		setLocation(x, y);
-		var icon:Icon = new Icon();//Empty icon
-		setIcon(icon);
-		setBorder(new BevelBorder(undefined, BevelBorder.RAISED, new ASColor(0xD8D8D8), new ASColor(0x7C7C7C), new ASColor(0x000000), new ASColor(0x373737), 3));
-		
-		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0));
-		var settingsPanel:JPanel = new JPanel(new GridLayout(8, 1, 2, 2));
-		settingsPanel.append(GetActive());
-		settingsPanel.append(GetDebug());
-		settingsPanel.append(GetDefault());
-		settingsPanel.append(GetDisplay());
-		
-		var tf1:JTextField = new JTextField("Default Delay", 10);
-		tf1.setBorder(null);
-		tf1.setEnabled(false);
-		tf1.setEditable(false);
-		settingsPanel.append(tf1);
-		settingsPanel.append(GetDelay());
-		var tf2:JTextField = new JTextField("Agent Slot", 10);
-		tf2.setBorder(null);
-		tf2.setEnabled(false);
-		tf2.setEditable(false);
-		settingsPanel.append(tf2);
-		settingsPanel.append(GetSlot());
-		content.append(settingsPanel);
-		setContentPane(content);
+import com.GameInterface.Chat;
+import com.GameInterface.DistributedValue;
+import com.GameInterface.DistributedValueBase;
+import com.fox.Utils.AgentHelper;
+import com.Utils.Archive;
+import com.Utils.LDBFormat;
+import flash.geom.Point;
+import mx.utils.Delegate;
+/*
+* ...
+* @author fox
+*/
+class com.fox.AgentSwitcher.Settings{
+	public var settingDval:DistributedValue;
+	public var agentDisplayDval:DistributedValue;
+	public var settingDebug:Boolean;
+	public var settingDefault:Boolean;
+	public var settingDefaultDelay:Number;
+	public var settingEnabled:Boolean;
+	public var settingDisableOnSwitch:Boolean;
+	public var settingDefaultAgent:Number;
+	public var settingRange:String;
+	public var settingSlot:Number;
+	public var settingPriority:Array;
+	public var settingProximityEnabled:Boolean;
+	public var settingQuickselectName:Boolean;
+	public var settingDisplayName:Boolean;
+	public var settingUpdateRate:Number;
+	public var settingRealSlot:Number;
 
-		show();
-		pack();
-		bringToTopDepth();
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	private var m_swfRoot:MovieClip;
+	public var DisplayPos:Point;
+	public var iconPos:Point;
+	public var RecentAgents:Array;
+	
+	public function Settings(swfRoot:MovieClip) {
+		m_swfRoot = swfRoot;
+		settingDval = DistributedValue.Create("AgentSwitcher_Settings");
+		settingDval.SetValue(false);
+		agentDisplayDval = DistributedValue.Create("AgentSwitcher_Display");
+		agentDisplayDval.SetValue(false);
 	}
-	public function tryToClose():Void{
-		m_parent.OpenSettingsDval.SetValue(false);	
+	
+	public function GetDestinationSlot() {
+		settingRealSlot = settingSlot - 1;
 	}
-	private function __ActiveChanged(box:JCheckBox){
-		m_parent.ActiveDval.SetValue(box.isSelected());
-	}
-	private function __DebugChanged(box:JCheckBox){
-		m_parent.DebugDval.SetValue(box.isSelected());
-	}
-	private function __DefaultChanged(box:JCheckBox){
-		m_parent.SwitchDval.SetValue(box.isSelected());
-	}
-	private function __DisplayChanged(box:JCheckBox){
-		m_parent.DisplayDval.SetValue(box.isSelected());
-	}
-	private function GetActive(){
-		if (Active == null){
-			Active = new JCheckBox("Enabled");
-			Active.setSelected(m_parent.ActiveDval.GetValue());
-			Active.addActionListener(__ActiveChanged, this);
-		}
-		return Active;
-	}
-	private function GetDebug(){
-		if (Debug == null){
-			Debug = new JCheckBox("Debug");
-			Debug.setSelected(m_parent.DebugDval.GetValue());
-			Debug.addActionListener(__DebugChanged, this);
-		}
-		return Debug;
-	}
-	private function GetDefault(){
-		if (Default == null){
-			Default = new JCheckBox("Default on combat end");
-			Default.setSelected(m_parent.SwitchDval.GetValue());
-			Default.addActionListener(__DefaultChanged, this);
-		}
-		return Default;
-	}
-	private function GetDisplay(){
-		if (Display == null){
-			Display = new JCheckBox("Show active agent");
-			Display.setSelected(m_parent.DisplayDval.GetValue());
-			Display.addActionListener(__DisplayChanged, this);
-		}
-		return Display;
-	}
-	private function __DelayChanged(field:JTextField){
-		var input:String = field.getText();
-		if (input.length > 4){
-			input = "9999";
-			field.setText(input);
-		}
-		else if (!input){
-			return
-		}
-		m_parent.DefaultDelayDval.SetValue(Number(input));
+	
+	public function LoadConfigs(config: Archive):Void {
+		settingSlot = config.FindEntry("Slot", 1);
+		GetDestinationSlot();
+
+		settingDebug = config.FindEntry("Debug", false);
+		settingDefault = config.FindEntry("Switch", false);
+		settingDefaultDelay = config.FindEntry("Delay", 2000);
+		settingDisableOnSwitch = config.FindEntry("DisableOnSwitch", true);
+		settingEnabled = config.FindEntry("Active", true);
+		settingDefaultAgent = config.FindEntry("Default", 0);
+		iconPos = config.FindEntry("iconPos", new Point(200, 50));
+		settingRange = config.FindEntry("Range", "40");
+		settingUpdateRate = config.FindEntry("UpdateRate", 500);
+		settingProximityEnabled = config.FindEntry("PriorityEnable", true);
+		DisplayPos = config.FindEntry("DisplayPos", new Point(300,50));
+		agentDisplayDval.SetValue(config.FindEntry("Display", false));
+		settingDisplayName = config.FindEntry("DisplayName", false);
+		settingQuickselectName = config.FindEntry("QuickName", false);
 		
+		if (settingProximityEnabled){
+			if (!DistributedValueBase.GetDValue("ShowVicinityNPCNametags")){
+				setTimeout(Delegate.create(this,EmitError), 5000, "AgentSwitcher /option ShowVicinityNPCNametags must be set to true for proximity targeting");
+			}
+		}
+
+		if (settingDefaultAgent == 0) {
+			settingDefaultAgent = AgentHelper.GetAgentInSlot(settingRealSlot).m_AgentId | 0;
+		}
+
+		RecentAgents = config.FindEntryArray("RecentAgents");
+		if (!RecentAgents) {
+			RecentAgents = new Array();
+			if (settingDefaultAgent) RecentAgents.push(settingDefaultAgent);
+		}
+		settingPriority = config.FindEntryArray("Priority");
+		if (!settingPriority && !config.FindEntry("DefaultsGenerated")) {
+			// localized name | override agent | override range
+			settingPriority = new Array(
+				LDBFormat.LDBGetText(51000, 32030) + "|Default|100", // The Unutterable Lurker
+				LDBFormat.LDBGetText(51000, 28731) + "|Filth|45", // Xibalban Bloodhound,
+				LDBFormat.LDBGetText(51000, 30582) + "|Animal|onKill", // Dark House Sorcerer,
+				LDBFormat.LDBGetText(51000, 30590) + "|Filth|onKill", // Mayan Battle Mage,
+				LDBFormat.LDBGetText(51000, 30586) + "|Animal|100", // Ak'ab Hatchling
+				LDBFormat.LDBGetText(51000, 28875) + "|Filth|40", // Chilam Psychopomp, override these to filth for Wayeb
+				LDBFormat.LDBGetText(51000, 19280) + "|Construct|50", // Prime Maker
+				LDBFormat.LDBGetText(51000, 30654) + "|Default|onKill",//Dimensional arcachnid
+				LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
+				//LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
+				LDBFormat.LDBGetText(51000, 18180) + "|Default|40" // Klein
+			);
+		}
 	}
-	private function __SlotChanged(field:JTextField){
-		var input:String = field.getText();
-		if (input.length > 1){
-			input = "9";
-			field.setText(input);
-		}
-		else if (!input){
-			return
-		}
-		m_parent.SlotDval.SetValue(Number(input));
-		
+	
+	private function EmitError(msg:String){
+		Chat.SignalShowFIFOMessage.Emit("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
 	}
 
-	private function GetDelay(){
-		if (Delay == null){
-			Delay = new JTextField(m_parent.DefaultDelayDval.GetValue(), 1);
-			Delay.setEditable(true);
-			Delay.setRestrict("0123456789");
-			Delay.addEventListener(JTextField.ON_TEXT_CHANGED, __DelayChanged, this);
-			Delay.setFocusable(false);
+	public function SaveConfigs():Archive {
+		var config:Archive = new Archive();
+		config.AddEntry("Slot", settingSlot);
+		config.AddEntry("Debug", settingDebug);
+		config.AddEntry("Switch", settingDefault);
+		config.AddEntry("Delay", settingDefaultDelay);
+		config.AddEntry("DisableOnSwitch", settingDisableOnSwitch);
+		config.AddEntry("Active", settingEnabled);
+		config.AddEntry("Display", agentDisplayDval.GetValue());
+		config.AddEntry("Range", settingRange);
+		config.AddEntry("DefaultsGenerated", true);
+		config.AddEntry("Default", settingDefaultAgent);
+		config.AddEntry("iconPos", iconPos);
+		config.AddEntry("DisplayPos", DisplayPos);
+		config.AddEntry("UpdateRate", settingUpdateRate);
+		config.AddEntry("PriorityEnable", settingProximityEnabled);
+		config.AddEntry("DisplayName", settingDisplayName);
+		config.AddEntry("QuickName", settingQuickselectName);
+
+		for (var i = 0; i < RecentAgents.length; i++ ) {
+			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}
-		return Delay;
-	}
-	
-	private function GetSlot(){
-		if (Slot == null){
-			Slot = new JTextField(m_parent.SlotDval.GetValue(), 1);
-			Slot.setRestrict("0123456789");
-			Slot.setEditable(true);
-			Slot.addEventListener(JTextField.ON_TEXT_CHANGED, __SlotChanged, this);
-			Slot.setFocusable(false);
+		for (var i = 0; i < settingPriority.length; i++ ) {
+			config.AddEntry("Priority", settingPriority[i]);
 		}
-		return Slot;
+		return config
 	}
 }

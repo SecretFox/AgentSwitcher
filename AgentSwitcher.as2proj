@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="bin\AgentSwitcher.swf" />
     <movie fps="30" />
-    <movie width="1000" />
-    <movie height="800" />
+    <movie width="300" />
+    <movie height="450" />
     <movie version="8" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
@@ -39,8 +39,8 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <asset path="src\assets\AgentTopBar.png" bitmap="False" />
     <asset path="src\assets\gfxfontlib.swf" />
+    <asset path="src\assets\topbarIcon.png" bitmap="False" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
