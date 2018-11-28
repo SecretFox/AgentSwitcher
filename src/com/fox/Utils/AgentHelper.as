@@ -290,6 +290,7 @@ class com.fox.Utils.AgentHelper {
 				race =  "Uknown (" + stat+"), report to mod author";
 				break;
 		}
+		//com.GameInterface.UtilsBase.PrintChatText(string(stat))
 		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
 	

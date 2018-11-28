@@ -99,7 +99,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 
 	//Proximity settings
-		var tf3:JTextField = new JTextField("Proximity Targeting(?)");
+		var tf3:JTextField = new JTextField("Proximity Switching(?)");
 		tf3.addEventListener(Component.ON_ROLLOVER,OpenProximityTooltip,this);
 		tf3.addEventListener(Component.ON_ROLLOUT,CloseProximityTooltip,this);
 		tf3.setBorder(null);
@@ -145,7 +145,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function OpenProximityTooltip() {
 		var m_TooltipData:TooltipData = new TooltipData();
-		m_TooltipData.m_Title = "<font size='14'><b>Proximity Targeting</b></font>";
+		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
 		m_TooltipData.m_Color = 0xFFFFFF;
 		m_TooltipData.m_MaxWidth = 400;
 		m_TooltipData.AddDescription(
