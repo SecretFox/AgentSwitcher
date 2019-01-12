@@ -25,7 +25,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var m_Controller:Controller;
 	
 	private var Active:JCheckBox;
-	private var Debug:JCheckBox;
+	private var DebugChat:JCheckBox;
+	private var DebugFifo:JCheckBox;
 	private var slotText:JTextField;
 	private var Slot:JTextField;
 	
@@ -79,8 +80,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		slotPanel.append(slotText);
 		slotPanel.append(GetSlot());
 		content.append(slotPanel);
-		//Print target
-		content.append(GetDebug());
+		//Print target on chat
+		content.append(GetDebugChat());
+		//Print target on fifo
+		content.append(GetDebugFifo());
 		//Disable on switch
 		content.append(GetDisable());
 		//Delay field
@@ -180,8 +183,12 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		m_Controller.m_Icon.StateChanged(box.isSelected());
 		m_Controller.SettingChanged();
 	}
-	private function __DebugChanged(box:JCheckBox) {
-		m_Controller.settingDebug = box.isSelected();
+	private function __DebugChatChanged(box:JCheckBox) {
+		m_Controller.settingDebugChat = box.isSelected();
+		m_Controller.SettingChanged();
+	}
+	private function __DebugFifoChanged(box:JCheckBox) {
+		m_Controller.settingDebugFifo = box.isSelected();
 		m_Controller.SettingChanged();
 	}
 	private function __DefaultChanged(box:JCheckBox) {
@@ -217,13 +224,21 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		}
 		return Active;
 	}
-	private function GetDebug() {
-		if (Debug == null) {
-			Debug = new JCheckBox("Print target race");
-			Debug.setSelected(m_Controller.settingDebug);
-			Debug.addActionListener(__DebugChanged, this);
+	private function GetDebugChat() {
+		if (DebugChat == null) {
+			DebugChat = new JCheckBox("Print target race on chat");
+			DebugChat.setSelected(m_Controller.settingDebugChat);
+			DebugChat.addActionListener(__DebugChatChanged, this);
 		}
-		return Debug;
+		return DebugChat;
+	}
+	private function GetDebugFifo() {
+		if (DebugFifo == null) {
+			DebugFifo = new JCheckBox("Print target race on FIFO");
+			DebugFifo.setSelected(m_Controller.settingDebugFifo);
+			DebugFifo.addActionListener(__DebugFifoChanged, this);
+		}
+		return DebugFifo;
 	}
 	private function GetDefault() {
 		if (Default == null) {

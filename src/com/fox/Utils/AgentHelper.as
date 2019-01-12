@@ -277,13 +277,16 @@ class com.fox.Utils.AgentHelper {
 			case 100:
 				race =  "None(Custodian)";
 				break
+			case 59:
+				race = "None?";
+				break
 			case 0:
 				// Unassigned?
-				race =  "Unassigned";
+				race =  "None";
 				break;
 			case 999:
 				// No Race Defined
-				race = "None";
+				race = "No Race Defined";
 				break
 			default:
 				// Anything that shows here probably needs to be added somewhere above

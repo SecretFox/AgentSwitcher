@@ -140,7 +140,7 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 	}
 
 	public function SettingChanged(){
-		m_Targeting.SetState(settingEnabled, settingDebug);
+		m_Targeting.SetState(settingEnabled, settingDebugChat, settingDebugFifo);
 		m_Default.SetState(settingDefault);
 		m_Proximity.SetState(settingProximityEnabled);
 	}

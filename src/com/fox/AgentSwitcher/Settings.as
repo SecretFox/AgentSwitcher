@@ -13,7 +13,8 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.Settings{
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
-	public var settingDebug:Boolean;
+	public var settingDebugChat:Boolean;
+	public var settingDebugFifo:Boolean;
 	public var settingDefault:Boolean;
 	public var settingDefaultDelay:Number;
 	public var settingEnabled:Boolean;
@@ -48,8 +49,9 @@ class com.fox.AgentSwitcher.Settings{
 	public function LoadConfigs(config: Archive):Void {
 		settingSlot = config.FindEntry("Slot", 1);
 		GetDestinationSlot();
-
-		settingDebug = config.FindEntry("Debug", false);
+		
+		settingDebugChat = config.FindEntry("DebugChat", false);
+		settingDebugFifo = config.FindEntry("DebugFifo", false);
 		settingDefault = config.FindEntry("Switch", false);
 		settingDefaultDelay = config.FindEntry("Delay", 2000);
 		settingDisableOnSwitch = config.FindEntry("DisableOnSwitch", true);
@@ -105,7 +107,8 @@ class com.fox.AgentSwitcher.Settings{
 	public function SaveConfigs():Archive {
 		var config:Archive = new Archive();
 		config.AddEntry("Slot", settingSlot);
-		config.AddEntry("Debug", settingDebug);
+		config.AddEntry("DebugChat", settingDebugChat);
+		config.AddEntry("DebugFifo", settingDebugFifo);
 		config.AddEntry("Switch", settingDefault);
 		config.AddEntry("Delay", settingDefaultDelay);
 		config.AddEntry("DisableOnSwitch", settingDisableOnSwitch);
