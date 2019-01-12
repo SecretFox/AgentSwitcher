@@ -226,7 +226,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetDebugChat() {
 		if (DebugChat == null) {
-			DebugChat = new JCheckBox("Print target race on chat");
+			DebugChat = new JCheckBox("Print race to chat");
 			DebugChat.setSelected(m_Controller.settingDebugChat);
 			DebugChat.addActionListener(__DebugChatChanged, this);
 		}
@@ -234,7 +234,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetDebugFifo() {
 		if (DebugFifo == null) {
-			DebugFifo = new JCheckBox("Print target race on FIFO");
+			DebugFifo = new JCheckBox("Print race as FIFO");
 			DebugFifo.setSelected(m_Controller.settingDebugFifo);
 			DebugFifo.addActionListener(__DebugFifoChanged, this);
 		}
