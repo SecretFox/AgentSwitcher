@@ -27,6 +27,7 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 	}
 	public function DisplayAgents(dv:DistributedValue) {
 		Destroy();
+		AgentSystem.SignalPassiveChanged.Disconnect(ChangeText, this);
 		if (dv.GetValue()) {
 			DrawDisplay();
 			if (m_Controller.settingDval.GetValue()){

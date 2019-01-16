@@ -4,6 +4,7 @@ import com.GameInterface.DistributedValueBase;
 import com.fox.Utils.AgentHelper;
 import com.Utils.Archive;
 import com.Utils.LDBFormat;
+import com.fox.Utils.Debugger;
 import flash.geom.Point;
 import mx.utils.Delegate;
 /*
@@ -96,12 +97,28 @@ class com.fox.AgentSwitcher.Settings{
 				LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
 				//LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
 				LDBFormat.LDBGetText(51000, 18180) + "|Default|40" // Klein
+				
+				/* 
+				Build switching test cases
+				"Antimony Ministrix|boss1Prox|35",
+				"Antimony Ministrix|boss1Kill|onKill",
+				"Corroder|boss2Prox|30",
+				"Corroder|boss2Kill|onKill",
+				"Hardwired Fleshtank|boss3Prox|40",
+				"Hardwired Fleshtank|boss3Kill|onKill",
+				"Traumadriver|boss4Prox|40",
+				"Traumadriver|boss4Kill|onKill",
+				"Recursia, Many-in-One|boss5Prox|30",
+				"Recursia, Many-in-One|boss5Kill|onKill",
+				"Machine Tyrant|boss6Prox|30",
+				"Machine Tyrant|boss6Kill|onKill"
+				*/
 			);
 		}
 	}
 	
 	private function EmitError(msg:String){
-		Chat.SignalShowFIFOMessage.Emit("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
+		Debugger.ShowFifo("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
 	}
 
 	public function SaveConfigs():Archive {
@@ -127,6 +144,7 @@ class com.fox.AgentSwitcher.Settings{
 		for (var i = 0; i < RecentAgents.length; i++ ) {
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}
+		
 		for (var i = 0; i < settingPriority.length; i++ ) {
 			config.AddEntry("Priority", settingPriority[i]);
 		}

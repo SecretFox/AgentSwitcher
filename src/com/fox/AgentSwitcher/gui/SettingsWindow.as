@@ -15,6 +15,7 @@ import GUI.fox.aswing.JSeparator;
 import GUI.fox.aswing.JTextArea;
 import GUI.fox.aswing.JTextField;
 import GUI.fox.aswing.SoftBoxLayout;
+import com.fox.Utils.Debugger;
 import flash.geom.Point;
 /*
 * ...
@@ -42,12 +43,15 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	
 	private var ProximityToggle:JCheckBox;
 	private var ProximityList:JTextArea;
+	private var ProximityListContent:Array;
 	private var scrollPane:JScrollPane;
 	private var rangeText:JTextField;
 	private var Range:JTextField;
 	private var rateText:JTextField;
 	private var Rate:JTextField;
 	private var Tooltip:TooltipInterface;
+	
+	
 
 	public function SettingsWindow(iconPos:Point, cont:Controller) {
 		// Setup
@@ -118,7 +122,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		scrollbar.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb, this);
 		content.append(scrollPane);
 		
-		rangeText = new JTextField("Range");
+		rangeText = new JTextField("Distance");
 		rangeText.setBorder(null);
 		rangeText.setEnabled(false);
 		rangeText.setEditable(false);
@@ -138,7 +142,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		show();
 		pack();
 		bringToTopDepth();
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);//get pos before closing
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		if (iconPos.y > Stage.height / 2) {
 			setY(iconPos.y - 5 - getHeight());
 		}
@@ -150,17 +154,22 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
 		m_TooltipData.m_Color = 0xFFFFFF;
-		m_TooltipData.m_MaxWidth = 400;
+		m_TooltipData.m_MaxWidth = 600;
 		m_TooltipData.AddDescription(
-			"<font size='12'>When enabled agent will be automatically switched when any of the mobs on the list gets close to the player.\n" +
-			"Format: &lt;Name&gt;|&lt;Agent&gt;|&lt;Distance/Trigger&gt;\n" +
-			"Only &lt;Name&gt; is required\n\n" +
-			" &lt;Agent&gt; overrides the mobtype, allowing you to equip agent meant for other species, this may be helpful when adds and boss are different type\n" +
-			"Valid agent values: Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
-			"If &lt;Distance&gt; is not specified (e.g. Kermit|Animal) then value from Range field is used instead\n"+
-			"Alternatively you can substitute Distance with a trigger.\n" +
-			"Currently there's only one trigger, &quot;onKill&quot;. onKill triggers the switch when specified target is killed\n\n" +
-			"Range sets the default range,in case Distance wasn't specified" +
+			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on distance.\n" +
+			"Some examples:\n" +
+			"&lt;Name&gt;\n" +
+			"&lt;Name&gt;|&lt;Agent&gt;\n" +
+			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
+			"&lt;Name/Zone&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
+			" &lt;Name/Zone&gt; : Monsters full name(exact match) or zoneID\n\n" +
+			" &lt;Agent/Oufit/Build&gt; Either agent override, buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
+			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
+			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
+			"Valid triggers are &quot;onKill&quot; and &quot;onZone&quot;. onKill triggers the switch when specified target is killed and onZone triggers when entering new zone\n\n" +
+			"&lt;Role&gt; : Role is only used by builds and outfits. Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then build will only be changed when players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
+			"----\n" + 
+			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry" +
 			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
 		);
 		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, -1, m_TooltipData);
@@ -176,6 +185,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	public function tryToClose():Void {
 		Tooltip.Close();
+		// Reload proximity list if changed
+		if (ProximityListContent.toString() != ProximityList.getText().split("\n").toString()){
+			m_Controller.ReloadProximityList();
+		}
 		m_Controller.settingDval.SetValue(false);
 	}
 	private function __ActiveChanged(box:JCheckBox) {
@@ -320,7 +333,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			priorities = input.split("\r");
 		}
 		m_Controller.settingPriority = priorities;
-		m_Controller.SettingChanged();
 	}
 	private function __RangeChanged(field:JTextField) {
 		var input:String = field.getText();
@@ -361,7 +373,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetProximityList() {
 		if (ProximityList == null) {
-			ProximityList = new JTextArea(m_Controller.settingPriority.join("\n"), 8, 1);
+			ProximityListContent = m_Controller.settingPriority;
+			ProximityList = new JTextArea(ProximityListContent.join("\n"), 8, 1);
 			ProximityList.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
 			ProximityList.setOpaque(false);
 			ProximityList.setEditable(true);

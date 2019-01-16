@@ -3,6 +3,7 @@ import com.Utils.ID32;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Proximity;
 import com.fox.Utils.AgentHelper;
+import com.fox.Utils.Debugger;
 /*
 * ...
 * @author fox
@@ -38,10 +39,10 @@ class com.fox.AgentSwitcher.Targeting{
 		if (!id.IsNull()) {
 			var data:Object = AgentHelper.GetRace(id);
 			if (ChatPrintEnabled && data.Name + data.Race != LastSelectedName + LastSelectedRace) {
-				com.GameInterface.UtilsBase.PrintChatText(data.Name + " : " + data.Race);
+				Debugger.PrintText(data.Name + " : " + data.Race);
 			}
 			if (FifoPrintEnabled && data.Name + data.Race != LastSelectedName + LastSelectedRace) {
-				com.GameInterface.Chat.SignalShowFIFOMessage.Emit(data.Name + " : " + data.Race, 0);
+				Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
 			}
 			LastSelectedName = data.Name;
 			LastSelectedRace = data.Race;

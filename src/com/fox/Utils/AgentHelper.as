@@ -164,6 +164,7 @@ class com.fox.Utils.AgentHelper {
 	  [2747, "Undead"],
 	  [2742, "Animal"]
 	];
+	
 
 	public static function GetRace(id:ID32):Object {
 		var mob:Character = new Character(id);
@@ -336,7 +337,8 @@ class com.fox.Utils.AgentHelper {
 		return false
 	}
 
-	public static function StringToID(str:String, def:Number):Number {
+	/*
+	public static function StringsToID(str:String, def:Number):Number {
 		if (str.toLowerCase() == "default") {
 			return def;
 		} else {
@@ -346,8 +348,10 @@ class com.fox.Utils.AgentHelper {
 				}
 			}
 		}
+		if (!isNaN(Number(str))) return Number(str);
 		return 0;
 	}
+	*/
 	// There's delay when changing audio settings, otherwise i would mute interface sounds here.
 	public static function SwitchToAgent(agentID:Number, slot:Number) {
 		if(AgentSystem.HasAgent(agentID)){ //just in case

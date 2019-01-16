@@ -2,30 +2,32 @@ import com.GameInterface.Game.Character;
 import com.Utils.ID32;
 import com.Utils.Signal;
 import com.fox.AgentSwitcher.Controller;
+import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.Utils.AgentHelper;
-import com.fox.Utils.CombatTask;
+import com.fox.Utils.Builds;
+import com.fox.Utils.Task;
 import mx.utils.Delegate;
 /**
 * ...
 * @author fox
 */
-class com.fox.AgentSwitcher.trigger.ProximityTrigger{
-	private var ID:ID32;
-	private var Agent:String;
+class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger{
 	private var Range:Number;
-	public var Char:Character;
-	public var SignalDestruct:Signal;
 	public var EnteredRangeSignal:Signal;
 	private var refreshInterval:Number;
 	
-	public function ProximityTrigger(id:ID32, agent:String, range:Number) {
+	public function ProximityTrigger(id:ID32, agent:String, range:Number, isbuild:Boolean) {
+		super();
 		ID = id;
 		Agent = agent;
 		Range = range;
 		Char = new Character(ID);
 		SignalDestruct = new Signal();
+		isBuild = isbuild;
 	}
 	public function kill(){
+		Disconnect();
+		clearTimeout(switchTimeout);
 		Char.SignalCharacterDestructed.Disconnect(Destructed, this);
 		clearInterval(refreshInterval);
 	}
@@ -51,31 +53,64 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger{
 		}
 		if (distance < Range){
 			clearInterval(refreshInterval);
-			if (!CombatTask.HasTaskType(CombatTask.OutTask)){
-				var f:Function = Delegate.create(this, EnteredRange);
-				CombatTask.AddTask(CombatTask.OutTask, f);
+			if (!isBuild){
+				if(!Task.HasTaskType(Task.OutCombatTask)){
+					var f:Function = Delegate.create(this, EquipAgent)
+					Task.AddTask(Task.OutCombatTask, f, kill);
+				}
+			} 
+			else {
+				Task.RemoveTasksByType(Task.BuildTask);
+				var f:Function = Delegate.create(this, EquipBuild)
+				Task.AddTask(Task.BuildTask, f, kill);
 			}
 		}
 	}
 	public function InRange(){
-		if (Char.GetDistanceToPlayer() < Range && Char.GetStat(27)) {
+		if (Char.GetDistanceToPlayer() < Range && Char.GetStat(27) && !isBuild) {
 			return true
 		}
 	}
-	public function EnteredRange() {
-		if (Agent) {
-			var agentID:Number = AgentHelper.StringToID(Agent, Controller.m_Controller.settingDefaultAgent);
-			if(agentID){
-				agentID = AgentHelper.GetSwitchAgent(agentID, Controller.m_Controller.settingRealSlot, 0);
-				if (agentID) {
-					AgentHelper.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+	private function AgentChanged(slotID:Number){
+		// Changing build can also changes agents
+		// Switch back druid agent if it gets changed
+		clearTimeout(disconnectTimeout);
+		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
+		if (slotID == Controller.m_Controller.settingRealSlot){
+			var SlotAgent:com.GameInterface.AgentSystemAgent = AgentHelper.GetAgentInSlot(slotID);
+			if (SlotAgent) {
+				if (SlotAgent.m_AgentId != Number(currentAgent)){
+					clearTimeout(switchTimeout);
+					Agent = string(currentAgent);
+					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
 				}
+			}
+		}
+	}
+	private function Disconnect(){
+		clearTimeout(disconnectTimeout);
+		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
+	}
+	private function EquipBuild(){
+		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		if (currentAgent){
+			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
+			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+		}
+		Builds.EquipBuild(Agent);
+		Controller.m_Controller.m_Proximity.DisableBuildTrigger(Char.GetName(), Range, Agent);
+	}
+	public function EquipAgent() {
+		if (Agent) {
+			var agentID = AgentHelper.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			if (agentID) {
+				AgentHelper.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
 			}
 		} else {
 			var data:Object = AgentHelper.GetRace(ID);
-			var agent = AgentHelper.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, Controller.m_Controller.settingDefaultAgent);
-			if (agent) {
-				AgentHelper.SwitchToAgent(agent, Controller.m_Controller.settingRealSlot);
+			var agentID = AgentHelper.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, Controller.m_Controller.settingDefaultAgent);
+			if (agentID) {
+				AgentHelper.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
 			}
 		}
 	}

@@ -1,3 +1,4 @@
+import com.GameInterface.Chat;
 import com.GameInterface.Log;
 /*
  * ...
@@ -9,5 +10,8 @@ class com.fox.Utils.Debugger{
 	}
 	static function PrintText(text){
 		com.GameInterface.UtilsBase.PrintChatText(string(text));
+	}
+	static function ShowFifo(text){
+		Chat.SignalShowFIFOMessage.Emit(string(text),0);
 	}
 }

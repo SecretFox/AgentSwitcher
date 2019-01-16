@@ -17,7 +17,7 @@ class com.fox.AgentSwitcher.gui.QuickSelectButton extends JButton {
 	public function QuickSelectButton(text) {
 		super(text);
 		var font:ASFont = new ASFont("_StandardFont", 16, false, false, false, true);
-		setBackground(new ASColor(0x01DE33, 100));
+		setBackground(new ASColor(0x353535, 100));
 		setFont(font);
 	}
 

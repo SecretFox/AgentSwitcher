@@ -104,7 +104,9 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 	}
 
 	private function CloseSettings() {
-		settingDval.SetValue(false);
+		if (m_settings){
+			m_settings.tryToClose();
+		}
 	}
 	
 	private function ToggleGuiEdits(state:Boolean){
@@ -136,6 +138,12 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 					}
 				}
 			}
+		}
+	}
+	
+	public function ReloadProximityList(){
+		if (settingProximityEnabled){
+			m_Proximity.GetPriorityCopy();
 		}
 	}
 
