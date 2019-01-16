@@ -1,4 +1,3 @@
-import com.GameInterface.Chat;
 import com.GameInterface.DistributedValue;
 import com.GameInterface.DistributedValueBase;
 import com.fox.Utils.AgentHelper;

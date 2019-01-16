@@ -47,7 +47,7 @@ class com.fox.AgentSwitcher.gui.Icon{
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher</b></font>";
-		m_TooltipData.m_SubTitle = "<font size='9'>v2.0.0 by Starfox</font>";
+		m_TooltipData.m_SubTitle = "<font size='9'>v2.1.0 by Starfox</font>";
 		m_TooltipData.m_Color = 0xFF8000;
 		m_TooltipData.m_MaxWidth = 220;
 		m_TooltipData.AddDescription("<font size='11'>Left-Click for QuickSelect menu\nRight-Click for settings\nMoveable while in GUIEdit</font>");

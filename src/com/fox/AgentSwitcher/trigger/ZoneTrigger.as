@@ -3,6 +3,7 @@ import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.Utils.AgentHelper;
 import com.fox.Utils.Builds;
+import com.fox.Utils.Task;
 import mx.utils.Delegate;
 /**
  * ...
@@ -24,10 +25,10 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	private function PlayFieldChanged(playfieldID:Number){
 		if (playfieldID == Number(Name) && Builds.IsRightRole(Role)){
 			// Task.RemoveTasksByType(Task.BuildTask);
-			//var f:Function = Delegate.create(this, EquipBuild)
-			//Task.AddTask(Task.BuildTask, f, kill);
-			// Zoning appears to remove ongoing cooldowns, so we can instantly complete this
-			EquipBuild();
+			var f:Function = Delegate.create(this, EquipBuild)
+			Task.AddTask(Task.BuildTask, f, kill);
+			// Trying to switch clothes while zoning crashes you.
+			// Task checks that player is not in loading screen etc
 		}
 	}
 	public function kill(){

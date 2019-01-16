@@ -122,6 +122,11 @@ class com.fox.Utils.Task {
 		if (m_Player.IsThreatened()) SlotToggleCombat2(true);
 	}
 	private function SlotToggleCombat2(state:Boolean) {
+		if (!IsinPlay()){
+			clearTimeout(timeout);
+			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 500);
+			return
+		}
 		if (m_Player.IsInCombat()) {
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 			Callback();

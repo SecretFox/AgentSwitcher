@@ -55,20 +55,22 @@ class com.fox.Utils.Builds {
 			setTimeout(EquipBuild, 1000, buildName, true);
 			return
 		}
-		//Debugger.PrintText("Equipping build " + buildName);
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds){
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name == buildName){
 				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", buildName);
+				//com.fox.Utils.Debugger.PrintText("Equipping build " + buildName);
 				return
 			}
 		}
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits){
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name == buildName){
 				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", buildName);
+				//com.fox.Utils.Debugger.PrintText("Equipping outfit " + buildName);
 				return
 			}
 		}
 		if (GearManager.GetBuild(buildName).m_ItemArray){
+			//com.fox.Utils.Debugger.PrintText("Equipping build " + buildName);
 			GearManager.UseBuild(buildName);
 			return
 		}
