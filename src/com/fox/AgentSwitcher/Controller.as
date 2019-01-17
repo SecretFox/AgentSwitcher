@@ -127,7 +127,7 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 			if (SlotAgent) {
 				if (settingDefaultAgent != SlotAgent.m_AgentId && !AgentHelper.IsDruid(SlotAgent.m_AgentId)) {
 					settingDefaultAgent = SlotAgent.m_AgentId;
-					m_Proximity.GetPriorityCopy();
+					m_Proximity.GetProximitylistCopy();
 					var found;
 					for (var i in RecentAgents) {
 						if (RecentAgents[i] == SlotAgent.m_AgentId) found = true;
@@ -143,7 +143,7 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 	
 	public function ReloadProximityList(){
 		if (settingProximityEnabled){
-			m_Proximity.GetPriorityCopy();
+			m_Proximity.ReloadProximityList();
 		}
 	}
 

@@ -20,16 +20,9 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 		Agent = build;
 		isBuild = true;
 		Role = role;
-		WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 	}
-	private function PlayFieldChanged(playfieldID:Number){
-		if (playfieldID == Number(Name) && Builds.IsRightRole(Role)){
-			// Task.RemoveTasksByType(Task.BuildTask);
-			var f:Function = Delegate.create(this, EquipBuild)
-			Task.AddTask(Task.BuildTask, f, kill);
-			// Trying to switch clothes while zoning crashes you.
-			// Task checks that player is not in loading screen etc
-		}
+	public function StartTrigger(){
+		WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 	}
 	public function kill(){
 		clearTimeout(switchTimeout);
@@ -42,6 +35,15 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	private function Disconnect(){
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
+	}
+	private function PlayFieldChanged(playfieldID:Number){
+		if (playfieldID == Number(Name) && Builds.IsRightRole(Role)){
+			// Task.RemoveTasksByType(Task.BuildTask);
+			var f:Function = Delegate.create(this, EquipBuild)
+			Task.AddTask(Task.BuildTask, f, kill);
+			// Trying to switch clothes while zoning crashes you.
+			// Task checks that player is not in loading screen etc
+		}
 	}
 	private function EquipBuild(){
 		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;

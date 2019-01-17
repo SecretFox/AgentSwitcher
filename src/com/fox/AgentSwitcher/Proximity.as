@@ -19,16 +19,36 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.Proximity{
 	private var m_Controller:Controller;
 	private var Enabled:Boolean;
-	private var ProximityCopy:Array;//Copy of proximity array with underleveled agents removed
-	private var TrackedNametags:Object = new Object();
-	private var TrackedZones:Object = new Object();
+	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
+	private var TrackedNametags:Object = new Object(); // Arrays of triggers with mob name as key
+	private var TrackedZones:Object = new Object(); // Arrays of triggers with zoneID as key
 	public var Lock:Boolean = false;
 
 	public function Proximity(cont:Controller) {
 		m_Controller = cont;
-		WaypointInterface.SignalPlayfieldChanged.Connect(WipeTrackingList, this);
+		WaypointInterface.SignalPlayfieldChanged.Connect(WipeMobTriggers, this);
 	}
-	public function WipeTrackingList(){
+	
+	public function SetState(state:Boolean){
+		if (!Enabled && state){
+			Enabled = true;
+			GetProximitylistCopy();
+			if (ProximityCopy.length > 0){
+				Nametags.SignalNametagAdded.Connect(NametagAdded, this);
+				Nametags.SignalNametagUpdated.Connect(NametagAdded, this);
+				Nametags.RefreshNametags();
+			}
+		}
+		if (Enabled && !state){
+			Enabled = false;
+			Nametags.SignalNametagAdded.Disconnect(NametagAdded, this);
+			Nametags.SignalNametagUpdated.Disconnect(NametagAdded, this);
+			WipeMobTriggers();
+			WipeZoneTriggers();
+		}
+	}
+	
+	public function WipeMobTriggers(){
 		for (var id in TrackedNametags){
 			for (var trigger in TrackedNametags[id]){
 				TrackedNametags[id][trigger].SignalDestruct.Disconnect(RemoveTrigger, this);
@@ -38,40 +58,30 @@ class com.fox.AgentSwitcher.Proximity{
 		}
 		Task.RemoveTasksByType(Task.OutCombatTask);
 		Task.RemoveTasksByType(Task.InCombatTask);
-		if (!Enabled){
-			Task.RemoveTasksByType(Task.BuildTask);
-			for (var i in TrackedZones){
-				TrackedZones[i].kill();
-			}
-			TrackedZones = new Object();
-		}
 		// Build switches can stil be finished after zoning
 		TrackedNametags = new Object();
 		Lock = false;
 		for (var i in ProximityCopy){
 			ProximityCopy[i].disabled = false;
 		}
-		
 	}
-	public function SetState(state:Boolean){
-		if (!Enabled && state){
-			GetPriorityCopy();
-			if (ProximityCopy.length > 0){
-				Enabled = true;
-				Nametags.SignalNametagAdded.Connect(NametagAdded, this);
-				Nametags.SignalNametagUpdated.Connect(NametagAdded, this);
-				Nametags.RefreshNametags();
-			}else{
-				Enabled = false;
+	
+	public function WipeZoneTriggers(){
+		for (var zone in TrackedZones){
+			for (var trigger in TrackedZones[zone]){
+				TrackedZones[zone][trigger].kill();
 			}
 		}
-		if (Enabled && !state){
-			Enabled = false;
-			Nametags.SignalNametagAdded.Disconnect(NametagAdded, this);
-			Nametags.SignalNametagUpdated.Disconnect(NametagAdded, this);
-			WipeTrackingList();
-		}
+		TrackedZones = new Object();
 	}
+
+	public function ReloadProximityList(){
+		WipeMobTriggers();
+		WipeZoneTriggers();
+		GetProximitylistCopy();
+		Nametags.RefreshNametags();
+	}
+	
 	public function inProximity() {
 		if (Lock) return true;
 		for (var id in TrackedNametags) {
@@ -95,10 +105,14 @@ class com.fox.AgentSwitcher.Proximity{
 		Lock = false;
 	}
 	
+	// Updates refresh rates for proximity based triggers
 	public function RangeChanged(old:String) {
-		TrackedNametags = new Object();
+		WipeMobTriggers();
+		GetProximitylistCopy();
 		Nametags.RefreshNametags();
 	}
+	
+	// Updates refresh rates for proximity based triggers
 	public function UpdateRateChanged(){
 		for (var id in TrackedNametags){
 			for (var trigger in TrackedNametags[id]){
@@ -122,10 +136,11 @@ class com.fox.AgentSwitcher.Proximity{
 				break
 			}
 		}
-		
 	}
 	
-	public function GetPriorityCopy() {
+	// Gets copy of ProximityList with underleveled agents removed
+	// Also starts the zone triggers
+	public function GetProximitylistCopy() {
 		ProximityCopy = new Array();
 		for (var prio in m_Controller.settingPriority) {
 			var entry:Array = m_Controller.settingPriority[prio].split("|");
@@ -138,8 +153,11 @@ class com.fox.AgentSwitcher.Proximity{
 			if (entryObj.Range.toLowerCase() == "onzone"){
 				entryObj.isBuild = true;
 				if (!TrackedZones[entryObj.Name]){
-					TrackedZones[entryObj.Name] = new ZoneTrigger(entryObj.Name, entryObj.Agent, entryObj.Role);
+					TrackedZones[entryObj.Name] = new Array();
 				}
+				var Trigger:ZoneTrigger = new ZoneTrigger(entryObj.Name, entryObj.Agent, entryObj.Role);
+				Trigger.StartTrigger();
+				TrackedZones[entryObj.Name].push(Trigger);
 			}
 			else{
 				if (entryObj.Agent.toLowerCase() == "default") {
@@ -221,6 +239,8 @@ class com.fox.AgentSwitcher.Proximity{
 		}
 	}
 	
+	// Removes all triggers belonging to mobID from tracked objects
+	// Task will keep reference to them if they are still doing something
 	private function RemoveTrigger(id:ID32){
 		delete TrackedNametags[id.toString()];
 	}
