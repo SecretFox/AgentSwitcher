@@ -10,14 +10,13 @@ import mx.utils.Delegate;
  */
 class com.fox.Utils.Task {
 	static var Tasks:Array = [];
-	static var Client:Character = Character.GetClientCharacter();
 	static var OutCombatTask:Number = 0;
 	static var InCombatTask:Number = 1;
 	static var BuildTask:Number = 2;
+	static var m_Player:Character;
 
 	public var ID:Number;
 	public var Type:Number;
-	private var m_Player:Character;
 	private var Callback:Function;
 	private var AbortCallback:Function;
 	private var SignalDone:Signal;
@@ -89,12 +88,12 @@ class com.fox.Utils.Task {
 		Callback = undefined;
 	}
 	//Cutscene/dead etc..
-	private function IsinPlay(){
+	static function IsinPlay(){
 		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-		Client.IsDead() ||
-		Client.IsInCinematic() ||
+		m_Player.IsDead() ||
+		m_Player.IsInCinematic() ||
 		_root.fadetoblack.m_BlackScreen._visible ||
-		Client.GetCommandProgress()){
+		m_Player.GetCommandProgress()){
 			return false
 		}
 		return true

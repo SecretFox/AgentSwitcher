@@ -3,6 +3,10 @@ import com.GameInterface.DistributedValueBase;
 import com.GameInterface.Game.Character;
 import com.GameInterface.GearManager;;
 import com.GameInterface.ProjectUtils;
+import com.Utils.Signal;
+import com.fox.Utils.Debugger;
+import com.fox.Utils.Task;
+import mx.utils.Delegate;
 
 /*
 * ...
@@ -10,26 +14,22 @@ import com.GameInterface.ProjectUtils;
 */
 
 class com.fox.Utils.Builds {
-	static var ROLE_TANK = ProjectUtils.GetUint32TweakValue("GroupFinder_Tank_Buff");
-	static var ROLE_HEALER = ProjectUtils.GetUint32TweakValue("GroupFinder_Healer_Buff");
-	static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
-	/*
-	public static function HasBuild(buildName:String){
-		Debugger.PrintText(_root["boobuilds\\boobuilds"].appBuilds.m_builds);
-		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds){
-			Debugger.PrintText(_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name);
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name == buildName){
-				Debugger.PrintText("Has build " + buildName+" on boobuilds");
-				return true
-			}
-		}
-		if (GearManager.GetBuild(buildName).m_ItemArray){
-			Debugger.PrintText("Has build " + buildName + " on gearmangler");
-			return true
-		}
-		return false
+	private static var ROLE_TANK = ProjectUtils.GetUint32TweakValue("GroupFinder_Tank_Buff");
+	private static var ROLE_HEALER = ProjectUtils.GetUint32TweakValue("GroupFinder_Healer_Buff");
+	private static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
+	private static var CANT_UNEQUIP_ENG:String = "You cannot unequip abilities that are recharging";
+	private static var CANT_UNEQUIP_FR:String = "Vous ne pouvez pas vous déséquiper de pouvoirs en train de se recharger";
+	private static var CANT_UNEQUIP_DE:String = "Sie können Kräfte nicht ablegen, während sie aufgeladen werden";
+	static var onGoingEquips:Array = new Array();
+	public var buildName:String;
+	public var BuildEquipped:Signal;
+	private var DisconnecTimeout:Number;
+	
+	public function Builds(build){
+		buildName = build;
+		BuildEquipped = new Signal();
 	}
-	*/
+	
 	public static function IsRightRole(role:String){
 		if (role == "all") return true
 		else{
@@ -49,30 +49,59 @@ class com.fox.Utils.Builds {
 			if (!TankBuff && !DpsBuff && !HealerBuff) return true;
 		}
 	}
-	public static function EquipBuild(buildName:String, ran:Boolean){
-		//if reloaduingUI boobuilds will take a bit to finish loading
-		if (_root["boobuilds\\boobuilds"] && !_root["boobuilds\\boobuilds"].appBuilds.m_builds[0] && !ran){
-			setTimeout(EquipBuild, 1000, buildName, true);
+	
+	public static function Equip(build:String, ran:Boolean) {
+		for (var i in onGoingEquips){
+			if (onGoingEquips[i].buildName == build){
+				return
+			}
+		}
+		var Equipper:Builds = new Builds(build);
+		Equipper.BuildEquipped.Connect(Dispose);
+		onGoingEquips.push(Equipper);
+		Equipper.EquipBuild();
+	}
+	private static function Dispose(Build){
+		for (var i in onGoingEquips){
+			if (onGoingEquips[i] == Build){
+				onGoingEquips.splice(Number(i), 1);
+			}
+		}
+	}
+	private function EquipBuild(ran:Boolean){
+		if ((_root["boobuilds\\boobuilds"] && !_root["boobuilds\\boobuilds"].appBuilds.m_builds[0] && !ran) || !Task.IsinPlay()){
+			setTimeout(Delegate.create(this, EquipBuild), 1000, true);
 			return
 		}
+		com.GameInterface.Chat.SignalShowFIFOMessage.Disconnect(FIFOMessageHandler, this);
+		com.GameInterface.Chat.SignalShowFIFOMessage.Connect(FIFOMessageHandler, this);
+		clearTimeout(DisconnecTimeout);
+		DisconnecTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds){
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name == buildName){
 				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", buildName);
-				//com.fox.Utils.Debugger.PrintText("Equipping build " + buildName);
 				return
 			}
 		}
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits){
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name == buildName){
 				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", buildName);
-				//com.fox.Utils.Debugger.PrintText("Equipping outfit " + buildName);
 				return
 			}
 		}
 		if (GearManager.GetBuild(buildName).m_ItemArray){
-			//com.fox.Utils.Debugger.PrintText("Equipping build " + buildName);
 			GearManager.UseBuild(buildName);
 			return
+		}
+	}
+	private function Disconnect(){
+		com.GameInterface.Chat.SignalShowFIFOMessage.Disconnect(FIFOMessageHandler, this);
+		BuildEquipped.Emit(this);
+	}
+	// From booBuilds
+	private function FIFOMessageHandler(text:String, mode:Number){
+		if (text != null && (text.indexOf(CANT_UNEQUIP_ENG, 0) == 0 || text.indexOf(CANT_UNEQUIP_FR, 0) == 0 || text.indexOf(CANT_UNEQUIP_DE) == 0)) {
+			setTimeout(Delegate.create(this,EquipBuild),500, true);
 		}
 	}
 	

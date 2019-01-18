@@ -73,7 +73,7 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger{
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Builds.EquipBuild(Agent);
+		Builds.Equip(Agent);
 	}
 	private function AgentChanged(slotID:Number){
 		clearTimeout(disconnectTimeout);

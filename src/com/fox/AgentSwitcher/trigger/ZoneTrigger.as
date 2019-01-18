@@ -1,8 +1,10 @@
+import com.GameInterface.AccountManagement;
 import com.GameInterface.WaypointInterface;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.Utils.AgentHelper;
 import com.fox.Utils.Builds;
+import com.fox.Utils.Debugger;
 import com.fox.Utils.Task;
 import mx.utils.Delegate;
 /**
@@ -24,7 +26,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	public function StartTrigger(){
 		WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 	}
-	public function kill(){
+	public function kill() {
 		clearTimeout(switchTimeout);
 		WaypointInterface.SignalPlayfieldChanged.Disconnect(PlayFieldChanged, this);
 		Disconnect();
@@ -38,12 +40,14 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	}
 	private function PlayFieldChanged(playfieldID:Number){
 		if (playfieldID == Number(Name) && Builds.IsRightRole(Role)){
-			// Task.RemoveTasksByType(Task.BuildTask);
-			var f:Function = Delegate.create(this, EquipBuild)
-			Task.AddTask(Task.BuildTask, f, kill);
-			// Trying to switch clothes while zoning crashes you.
-			// Task checks that player is not in loading screen etc
+			setTimeout(Delegate.create(this, StartEquip), 1000);
 		}
+	}
+	private function StartEquip(){
+		// Trying to switch clothes while zoning crashes you.
+		// Task checks that player is not in loading screen etc
+		var f:Function = Delegate.create(this, EquipBuild)
+		Task.AddTask(Task.BuildTask, f, kill);
 	}
 	private function EquipBuild(){
 		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
@@ -51,7 +55,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Builds.EquipBuild(Agent);
+		Builds.Equip(Agent);
 	}
 	private function AgentChanged(slotID:Number){
 		clearTimeout(disconnectTimeout);

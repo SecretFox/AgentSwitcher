@@ -81,7 +81,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger{
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Builds.EquipBuild(Agent);
+		Builds.Equip(Agent);
 		Controller.m_Controller.m_Proximity.DisableBuildTrigger(Char.GetName(), Range, Agent);
 	}
 	private function AgentChanged(slotID:Number){
