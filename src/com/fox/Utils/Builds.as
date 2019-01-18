@@ -4,7 +4,6 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.GearManager;;
 import com.GameInterface.ProjectUtils;
 import com.Utils.Signal;
-import com.fox.Utils.Debugger;
 import com.fox.Utils.Task;
 import mx.utils.Delegate;
 
