@@ -47,7 +47,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	}
 	private function EquipBuild(){
 		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
-		if (currentAgent){
+		if (currentAgent && AgentHelper.IsDruid(currentAgent)){
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}

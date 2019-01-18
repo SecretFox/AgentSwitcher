@@ -71,6 +71,19 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger{
 			return true
 		}
 	}
+	private function Disconnect(){
+		clearTimeout(disconnectTimeout);
+		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
+	}
+	private function EquipBuild(){
+		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		if (currentAgent && AgentHelper.IsDruid(currentAgent)){
+			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
+			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+		}
+		Builds.EquipBuild(Agent);
+		Controller.m_Controller.m_Proximity.DisableBuildTrigger(Char.GetName(), Range, Agent);
+	}
 	private function AgentChanged(slotID:Number){
 		// Changing build can also changes agents
 		// Switch back druid agent if it gets changed
@@ -86,19 +99,6 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger{
 				}
 			}
 		}
-	}
-	private function Disconnect(){
-		clearTimeout(disconnectTimeout);
-		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
-	}
-	private function EquipBuild(){
-		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
-		if (currentAgent){
-			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
-		}
-		Builds.EquipBuild(Agent);
-		Controller.m_Controller.m_Proximity.DisableBuildTrigger(Char.GetName(), Range, Agent);
 	}
 	public function EquipAgent() {
 		if (Agent) {

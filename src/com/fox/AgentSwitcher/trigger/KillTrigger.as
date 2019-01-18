@@ -69,7 +69,7 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger{
 		// Changing build can also changes agents
 		// Switch back druid agent if it gets changed
 		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
-		if (currentAgent){
+		if (currentAgent && AgentHelper.IsDruid(currentAgent)){
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}

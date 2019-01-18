@@ -10,6 +10,7 @@ import mx.utils.Delegate;
  */
 class com.fox.Utils.Task {
 	static var Tasks:Array = [];
+	static var Client:Character = Character.GetClientCharacter();
 	static var OutCombatTask:Number = 0;
 	static var InCombatTask:Number = 1;
 	static var BuildTask:Number = 2;
@@ -90,9 +91,10 @@ class com.fox.Utils.Task {
 	//Cutscene/dead etc..
 	private function IsinPlay(){
 		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-			Character.GetClientCharacter().IsDead() ||
-			Character.GetClientCharacter().IsInCinematic() ||
-			_root.fadetoblack.m_BlackScreen._visible){
+		Client.IsDead() ||
+		Client.IsInCinematic() ||
+		_root.fadetoblack.m_BlackScreen._visible ||
+		Client.GetCommandProgress()){
 			return false
 		}
 		return true
@@ -106,7 +108,7 @@ class com.fox.Utils.Task {
 	private function SlotToggleCombat(state:Boolean) {
 		if (!IsinPlay()){
 			clearTimeout(timeout);
-			timeout = setTimeout(Delegate.create(this,SlotToggleCombat), 1000);
+			timeout = setTimeout(Delegate.create(this,SlotToggleCombat), 200);
 			return
 		}
 		if (!m_Player.IsInCombat()){
@@ -124,7 +126,7 @@ class com.fox.Utils.Task {
 	private function SlotToggleCombat2(state:Boolean) {
 		if (!IsinPlay()){
 			clearTimeout(timeout);
-			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 500);
+			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 200);
 			return
 		}
 		if (m_Player.IsInCombat()) {
@@ -158,7 +160,7 @@ class com.fox.Utils.Task {
 	private function CheckIfCompleted() {
 		if (!IsinPlay()){
 			clearTimeout(timeout);
-			timeout = setTimeout(Delegate.create(this,CheckIfCompleted), 500);
+			timeout = setTimeout(Delegate.create(this,CheckIfCompleted), 200);
 			return
 		}
 		if (!Builds.IsOnCooldown() && !m_Player.IsInCombat()) {

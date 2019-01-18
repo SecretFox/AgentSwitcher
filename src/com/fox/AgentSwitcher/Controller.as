@@ -43,7 +43,7 @@ class com.fox.AgentSwitcher.Controller extends Settings{
 		m_QuickSelect = new QuickSelect(m_swfRoot, this);
 		m_Proximity = new Proximity(this);
 		m_Default = new Defaulting(this, m_Player);
-		m_Targeting = new Targeting(this, m_Player);	
+		m_Targeting = new Targeting(this, m_Player);
 	}
 	
 	public function Load():Void {
