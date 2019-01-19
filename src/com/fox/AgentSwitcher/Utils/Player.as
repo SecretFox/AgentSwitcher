@@ -1,5 +1,5 @@
 import com.GameInterface.AccountManagement;
-import com.GameInterface.Game.CharacterBase;
+import com.GameInterface.Game.Character;
 import com.GameInterface.ProjectUtils;
 import GUI.HUD.AbilitySlot;
 import com.Utils.ID32;
@@ -7,25 +7,25 @@ import com.Utils.ID32;
  * ...
  * @author fox
  */
-class com.fox.AgentSwitcher.Utils.Player extends CharacterBase {
-	private static var m_Player:Player;
+class com.fox.AgentSwitcher.Utils.Player {
+	private static var m_Player:Character;
 	private static var ROLE_TANK = ProjectUtils.GetUint32TweakValue("GroupFinder_Tank_Buff");
 	private static var ROLE_HEALER = ProjectUtils.GetUint32TweakValue("GroupFinder_Healer_Buff");
 	private static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
 	
 	public function Player(id:ID32){
 		super(id);
-		m_Player = this;
+		m_Player = Character.GetClientCharacter();;
 	}
-	public static function GetPlayer(id:ID32):Player{
+	public static function GetPlayer(id:ID32):Character{
 		return m_Player
 	}
-	public function IsRightRole(role:String) {
+	public static function IsRightRole(role:String) {
 		if (role == "all") return true;
 		else {
-			var TankBuff = m_BuffList[ROLE_TANK] != undefined || m_InvisibleBuffList[ROLE_TANK] != undefined;
-			var DpsBuff = m_BuffList[ROLE_DPS] != undefined ||m_InvisibleBuffList[ROLE_DPS] != undefined;
-			var HealerBuff = m_BuffList[ROLE_HEALER] != undefined || m_InvisibleBuffList[ROLE_HEALER] != undefined;
+			var TankBuff = m_Player.m_BuffList[ROLE_TANK] != undefined || m_Player.m_InvisibleBuffList[ROLE_TANK] != undefined;
+			var DpsBuff = m_Player.m_BuffList[ROLE_DPS] != undefined || m_Player.m_InvisibleBuffList[ROLE_DPS] != undefined;
+			var HealerBuff = m_Player.m_BuffList[ROLE_HEALER] != undefined || m_Player.m_InvisibleBuffList[ROLE_HEALER] != undefined;
 			if (role == "tank" && TankBuff) {
 				return true;
 			}
@@ -39,10 +39,10 @@ class com.fox.AgentSwitcher.Utils.Player extends CharacterBase {
 		}
 	}
 	//Cutscene/dead etc..
-	public function IsinPlay():Boolean {
+	public static function IsinPlay():Boolean {
 		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-		IsDead() ||
-		IsInCinematic() ||
+		m_Player.IsDead() ||
+		m_Player.IsInCinematic() ||
 		_root.fadetoblack.m_BlackScreen._visible) {
 			return false
 		}

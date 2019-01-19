@@ -1,6 +1,7 @@
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Proximity;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
+import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.Utils.Debugger;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
@@ -15,9 +16,9 @@ class com.fox.AgentSwitcher.Targeting {
 	private var LastSelectedName:String = "";
 	private var LastSelectedRace:String = "";
 
-	public function Targeting(cont:Controller, player:Character) {
+	public function Targeting(cont:Controller) {
 		m_Controller = cont;
-		m_Player = player;
+		m_Player = Player.GetPlayer();
 		m_Proximity = m_Controller.m_Proximity
 	}
 	public function SetState(state:Boolean, state2:Boolean, state3:Boolean) {

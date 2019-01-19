@@ -216,7 +216,7 @@ class com.fox.AgentSwitcher.Proximity {
 				if (entry.disabled) {
 					continue
 				} else if (entry.Name == char.GetName()) {
-					if (m_Player.IsRightRole(entry.Role) || !entry.isBuild) {
+					if (Player.IsRightRole(entry.Role) || !entry.isBuild) {
 						/*
 						if (entry.isBuild){
 							Debugger.PrintText("Right role for " + entry.Name + " " +entry.Agent);

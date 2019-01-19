@@ -38,7 +38,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
 	private function PlayFieldChanged(playfieldID:Number) {
-		if (playfieldID == Zone && Player.GetPlayer().IsRightRole(Role)) {
+		if (playfieldID == Zone && Player.IsRightRole(Role)) {
 			StartEquip();
 		}
 	}

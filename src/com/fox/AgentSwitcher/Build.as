@@ -64,7 +64,7 @@ class com.fox.AgentSwitcher.Build {
 	private function EquipBuild(ran:Boolean) {
 		clearTimeout(DisconnecTimeout);
 		if ((_root["boobuilds\\boobuilds"] && !_root["boobuilds\\boobuilds"].appBuilds.m_builds[0] && !ran) ||
-		!Player.GetPlayer().IsinPlay() ||
+		!Player.IsinPlay() ||
 		Player.GetPlayer().GetCommandProgress()) {
 			setTimeout(Delegate.create(this, EquipBuild), 250, true);
 			return
@@ -77,6 +77,7 @@ class com.fox.AgentSwitcher.Build {
 				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", BuildName);
 				return
 			}
+			// Quick builds should be loaded regardless of used build
 		}
 		// boobuild
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {

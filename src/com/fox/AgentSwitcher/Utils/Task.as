@@ -1,3 +1,4 @@
+import com.GameInterface.Game.Character;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.GameInterface.Game.Shortcut;
 import com.Utils.Signal;
@@ -18,7 +19,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 	private var AbortCallback:Function;
 	private var SignalDone:Signal;
 	private var timeout:Number;
-	private var m_Player:Player;
+	private var m_Player:Character;
 
 	static function AddTask(type, f, f2) {
 		var id = TaskQueue.length;
@@ -92,7 +93,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		SlotToggleCombat();
 	}
 	private function SlotToggleCombat(state:Boolean) {
-		if (!m_Player.IsinPlay()) {
+		if (!Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat), 200);
 			return
@@ -110,7 +111,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		if (m_Player.IsThreatened()) SlotToggleCombat2(true);
 	}
 	private function SlotToggleCombat2(state:Boolean) {
-		if (!m_Player.IsinPlay()) {
+		if (!Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 200);
 			return
@@ -144,7 +145,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		}
 	}
 	private function CheckIfCompleted() {
-		if (!m_Player.IsinPlay()) {
+		if (!Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,CheckIfCompleted), 200);
 			return

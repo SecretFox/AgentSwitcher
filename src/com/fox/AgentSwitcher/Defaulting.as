@@ -2,6 +2,7 @@ import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
+import com.fox.AgentSwitcher.Utils.Player;
 import mx.utils.Delegate;
 /*
 * ...
@@ -13,9 +14,9 @@ class com.fox.AgentSwitcher.Defaulting {
 	private var DefaultTimeout:Number;
 	private var m_Controller:Controller;
 
-	public function Defaulting(cont:Controller, player:Character) {
+	public function Defaulting(cont:Controller) {
 		m_Controller = cont;
-		m_Player = player;
+		m_Player = Player.GetPlayer();
 	}
 	public function SetState(state) {
 		if (!Enabled && state) {

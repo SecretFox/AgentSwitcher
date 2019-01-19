@@ -8,7 +8,7 @@ import com.Utils.ID32;
 * @author fox
 */
 class com.fox.AgentSwitcher.Utils.DruidSystem {
-	/*
+	
 	public static var Druids:Array = [
 		[2746, "Construct"],
 		[2749, "Cybernetic"],
@@ -21,10 +21,10 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 		[2747, "Undead"],
 		[2742, "Animal"]
 	];
-	*/
-
-	// DEBUG, i dont have lvl 50 druids
+	
+	/*
 	static var Druids:Array = [
+	//Debug
 	  [2701, "Construct"],
 	  [2468, "Cybernetic"],
 	  [2456, "Demon"],
@@ -36,9 +36,11 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 	  [211, "Undead"],
 	  [207, "Animal"]
 	];
+	*/
 	
-	//DEBUG, i dont have lvl 50 druids
+	/*
 	public static function GetRace(id:ID32):Object {
+		//Debug
 		var mob:Character = new Character(id);
 		var stat = mob.GetStat(89);
 		var race = "";
@@ -165,9 +167,8 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 		}
 		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
+	*/
 	
-
-	/*
 	public static function GetRace(id:ID32):Object {
 		var mob:Character = new Character(id);
 		var stat = mob.GetStat(89);
@@ -299,7 +300,8 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 		//com.GameInterface.UtilsBase.PrintChatText(string(stat))
 		return {Name:name, Race:race, Stat:stat, DruidSystem:agent}
 	}
-	*/
+	
+	
 	public static function GetAgentInSlot(slotID:Number):AgentSystemAgent {
 		var spellId:Number = AgentSystem.GetPassiveInSlot(slotID);// 0 if invalid slot
 		if (spellId != 0) {
@@ -340,7 +342,7 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 	}
 
 	public static function SwitchToAgent(agentID:Number, slot:Number) {
-		if (!Player.GetPlayer().IsinPlay()){
+		if (!Player.IsinPlay()){
 			setTimeout(SwitchToAgent, 500, agentID, slot);
 			return
 		}
