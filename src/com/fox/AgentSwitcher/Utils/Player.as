@@ -49,6 +49,18 @@ class com.fox.AgentSwitcher.Utils.Player {
 		return true
 	}
 	// Probably not the best way to check cooldowns
+	public static function GetSkill(slotID:Number):Number {
+		return _root.abilitybar.m_AbilitySlots[slotID].m_Id;
+	}
+	// Probably not the best way to check cooldowns
+	public static function SlotHasCooldown(slotID:Number):Boolean {
+		var slot:AbilitySlot = _root.abilitybar.m_AbilitySlots[slotID];
+		if (slot["m_IsCooldown"]) {
+			return true
+		}
+		return false
+	}
+	// Probably not the best way to check cooldowns
 	public static function HasCooldown():Boolean {
 		for (var i in _root.abilitybar.m_AbilitySlots) {
 			var slot:AbilitySlot = _root.abilitybar.m_AbilitySlots[i];

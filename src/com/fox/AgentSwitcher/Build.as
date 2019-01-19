@@ -74,7 +74,7 @@ class com.fox.AgentSwitcher.Build {
 		// Quick build
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name == BuildName) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", BuildName);
+				DistributedValueBase.SetDValue("BooBuilds_LoadQuickBuild", BuildName);
 				return
 			}
 			// Quick builds should be loaded regardless of used build
@@ -82,29 +82,15 @@ class com.fox.AgentSwitcher.Build {
 		// boobuild
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name == BuildName) {
-				if (_root["boobuilds\\boobuilds"].appBuilds.m_settings.CurrentBuild != _root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_id){
-					DistributedValueBase.SetDValue("BooBuilds_LoadBuild", BuildName);
-					return
-				}
-				// Already using build
-				else{
-					Disconnect();
-					return
-				}
+				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", BuildName);
+				return
 			}
 		}
 		// Boo outfit
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits) {
 			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name == BuildName) {
-				if (_root["boobuilds\\boobuilds"].appBuilds.m_settings.CurrentOutfit != _root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_id){
-					DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", BuildName);
-					return
-				}
-				// Already using build
-				else{
-					Disconnect();
-					return
-				}
+				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", BuildName);
+				return
 			}
 		}
 		// Gear manager
