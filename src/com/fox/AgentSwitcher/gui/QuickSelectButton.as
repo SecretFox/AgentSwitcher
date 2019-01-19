@@ -1,12 +1,12 @@
-import com.GameInterface.AgentSystemAgent;
-import com.GameInterface.Game.Character;
-import com.GameInterface.Tooltip.TooltipInterface;
-import com.GameInterface.Tooltip.TooltipData;
-import com.GameInterface.Tooltip.TooltipManager;
-import com.GameInterface.Tooltip.TooltipDataProvider;
 import GUI.fox.aswing.ASColor;
 import GUI.fox.aswing.ASFont;
 import GUI.fox.aswing.JButton;
+import com.GameInterface.AgentSystemAgent;
+import com.GameInterface.Game.Character;
+import com.GameInterface.Tooltip.TooltipData;
+import com.GameInterface.Tooltip.TooltipDataProvider;
+import com.GameInterface.Tooltip.TooltipInterface;
+import com.GameInterface.Tooltip.TooltipManager;
 /*
 * ...
 * @author fox

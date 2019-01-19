@@ -1,10 +1,10 @@
+import com.fox.AgentSwitcher.Utils.DruidSystem;
+import com.fox.AgentSwitcher.Controller;
+import com.fox.Utils.Common;
 import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.DistributedValue;
 import com.Utils.Draw;
-import com.fox.Utils.AgentHelper;
-import com.fox.AgentSwitcher.Controller;
-import com.fox.Utils.Common;
 import flash.geom.Point;
 import mx.utils.Delegate;
 /*
@@ -15,10 +15,10 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 	private var m_swfRoot:MovieClip;
 	private var m_Controller:Controller;
 	private var m_Display:MovieClip;
-	
+
 	private var DisplayPos:Point;
 	private var TargetSlot:Number;
-	
+
 	//private var clipLoader:MovieClipLoader = new MovieClipLoader();
 
 	public function AgentDisplay(root:MovieClip, cont:Controller) {
@@ -27,10 +27,9 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 	}
 	public function DisplayAgents(dv:DistributedValue) {
 		Destroy();
-		AgentSystem.SignalPassiveChanged.Disconnect(ChangeText, this);
 		if (dv.GetValue()) {
 			DrawDisplay();
-			if (m_Controller.settingDval.GetValue()){
+			if (m_Controller.settingDval.GetValue()) {
 				Hide();
 			}
 		}
@@ -76,13 +75,13 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 	}
 	private function ChangeText(slotID:Number) {
 		if (slotID == TargetSlot) {
-			var SlotAgent:AgentSystemAgent = AgentHelper.GetAgentInSlot(slotID);
+			var SlotAgent:AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
 				var name;
-				for (var i in AgentHelper.Druids){
-					if(!m_Controller.settingDisplayName){
-						if (AgentHelper.Druids[i][0] == SlotAgent.m_AgentId){
-							name = AgentHelper.Druids[i][1];
+				for (var i in DruidSystem.Druids) {
+					if (!m_Controller.settingDisplayName) {
+						if (DruidSystem.Druids[i][0] == SlotAgent.m_AgentId) {
+							name = DruidSystem.Druids[i][1];
 							break
 						}
 					}

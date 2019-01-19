@@ -1,67 +1,77 @@
-import com.GameInterface.WaypointInterface;
+import com.fox.AgentSwitcher.Build;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
-import com.fox.Utils.AgentHelper;
-import com.fox.Utils.Builds;
-import com.fox.Utils.Task;
+import com.fox.AgentSwitcher.Utils.DruidSystem;
+import com.fox.AgentSwitcher.Utils.Player;
+import com.fox.AgentSwitcher.Utils.Task;
+import com.GameInterface.WaypointInterface;
 import mx.utils.Delegate;
 /**
  * ...
  * @author fox
  */
 
- // unused for now
-class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
-	private var Name:String;
+class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
+	private var Zone:Number;
 	private var Role:String;
-	
-	public function ZoneTrigger(name:String, build:String, role:String) {
-		Name = name;
+	private var Age:Number;
+
+	public function ZoneTrigger(zone:String, build:String, role:String, isbuild:Boolean) {
+		Zone = Number(zone);
 		Agent = build;
-		isBuild = true;
+		isBuild = isbuild;
 		Role = role;
 	}
-	public function StartTrigger(){
+	public function StartTrigger() {
 		WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 	}
 	public function kill() {
-		clearTimeout(switchTimeout);
 		WaypointInterface.SignalPlayfieldChanged.Disconnect(PlayFieldChanged, this);
+		clearTimeout(switchTimeout);
 		Disconnect();
 	}
-	private function InRange(){
+	private function InRange() {
 		return false
 	}
-	private function Disconnect(){
+	private function Disconnect() {
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
-	private function PlayFieldChanged(playfieldID:Number){
-		if (playfieldID == Number(Name) && Builds.IsRightRole(Role)){
-			setTimeout(Delegate.create(this, StartEquip), 1000);
+	private function PlayFieldChanged(playfieldID:Number) {
+		if (playfieldID == Zone && Player.GetPlayer().IsRightRole(Role)) {
+			StartEquip();
 		}
 	}
-	private function StartEquip(){
-		// Trying to switch clothes while zoning crashes you.
+	private function StartEquip() {
+		var time:Date = new Date();
+		Age = time.valueOf();
+		if (!isBuild) {
+			Task.RemoveTasksByType(Task.OutCombatTask);
+			var f:Function = Delegate.create(this, EquipAgent);
+			Task.AddTask(Task.OutCombatTask, f, kill);
+		} 
+		// Trying to switch clothes while zoning crashes you, otherwise it would be pretty safe to start equipping right away.
 		// Task checks that player is not in loading screen etc
-		var f:Function = Delegate.create(this, EquipBuild)
-		Task.AddTask(Task.BuildTask, f, kill);
+		else {
+			var f:Function = Delegate.create(this, EquipBuild);
+			Task.AddTask(Task.BuildTask, f, kill);
+		}
 	}
-	private function EquipBuild(){
-		currentAgent = AgentHelper.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
-		if (currentAgent && AgentHelper.IsDruid(currentAgent)){
+	private function EquipBuild() {
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Builds.Equip(Agent);
+		Build.AddToQueue(Agent, Age);
 	}
-	private function AgentChanged(slotID:Number){
+	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);
 		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
-		if (slotID == Controller.m_Controller.settingRealSlot){
-			var SlotAgent:com.GameInterface.AgentSystemAgent = AgentHelper.GetAgentInSlot(slotID);
+		if (slotID == Controller.m_Controller.settingRealSlot) {
+			var SlotAgent:com.GameInterface.AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
-				if (SlotAgent.m_AgentId != Number(currentAgent)){
+				if (SlotAgent.m_AgentId != Number(currentAgent)) {
 					clearTimeout(switchTimeout);
 					Agent = string(currentAgent);
 					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
@@ -73,15 +83,9 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger{
 	}
 	public function EquipAgent() {
 		if (Agent) {
-			var agentID = AgentHelper.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
 			if (agentID) {
-				AgentHelper.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
-			}
-		} else {
-			var data:Object = AgentHelper.GetRace(ID);
-			var agentID = AgentHelper.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, Controller.m_Controller.settingDefaultAgent);
-			if (agentID) {
-				AgentHelper.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
 			}
 		}
 	}

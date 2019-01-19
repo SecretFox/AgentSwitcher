@@ -1,14 +1,14 @@
-import com.GameInterface.Game.Character;
-import com.Utils.ID32;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Proximity;
-import com.fox.Utils.AgentHelper;
+import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.Utils.Debugger;
+import com.GameInterface.Game.Character;
+import com.Utils.ID32;
 /*
 * ...
 * @author fox
 */
-class com.fox.AgentSwitcher.Targeting{
+class com.fox.AgentSwitcher.Targeting {
 	private var m_Controller:Controller;
 	private var m_Player:Character;
 	private var m_Proximity:Proximity;
@@ -20,9 +20,9 @@ class com.fox.AgentSwitcher.Targeting{
 		m_Player = player;
 		m_Proximity = m_Controller.m_Proximity
 	}
-	public function SetState(state:Boolean, state2:Boolean, state3:Boolean){
+	public function SetState(state:Boolean, state2:Boolean, state3:Boolean) {
 		m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
-		if (state || state2 || state3){
+		if (state || state2 || state3) {
 			m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
 			LastSelectedName = "";
 			LastSelectedRace = "";
@@ -30,7 +30,7 @@ class com.fox.AgentSwitcher.Targeting{
 	}
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
-			var data:Object = AgentHelper.GetRace(id);
+			var data:Object = DruidSystem.GetRace(id);
 			if (m_Controller.settingDebugChat && data.Name + data.Race != LastSelectedName + LastSelectedRace) {
 				Debugger.PrintText(data.Name + " : " + data.Race);
 			}
@@ -41,9 +41,9 @@ class com.fox.AgentSwitcher.Targeting{
 			LastSelectedRace = data.Race;
 			if (!m_Controller.settingEnabled) return;
 			if (!m_Player.IsInCombat() && !m_Proximity.Lock && !m_Proximity.inProximity()) {
-				var agent = AgentHelper.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
+				var agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
 				if (agent) {
-					AgentHelper.SwitchToAgent(agent, m_Controller.settingRealSlot);
+					DruidSystem.SwitchToAgent(agent, m_Controller.settingRealSlot);
 				}
 			}
 		}

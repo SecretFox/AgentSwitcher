@@ -1,3 +1,4 @@
+import com.fox.AgentSwitcher.Utils.Player;
 import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.Game.Character;
@@ -6,10 +7,23 @@ import com.Utils.ID32;
 * ...
 * @author fox
 */
-class com.fox.Utils.AgentHelper {
-	
+class com.fox.AgentSwitcher.Utils.DruidSystem {
 	/*
-	//DEBUG, i dont have lvl 50 druids
+	public static var Druids:Array = [
+		[2746, "Construct"],
+		[2749, "Cybernetic"],
+		[2743, "Demon"],
+		[2748, "Aquatic"],
+		[2744, "Filth"],
+		[2750, "Human"],
+		[2745, "Spirit"],
+		[2741, "Supernatural"],
+		[2747, "Undead"],
+		[2742, "Animal"]
+	];
+	*/
+
+	// DEBUG, i dont have lvl 50 druids
 	static var Druids:Array = [
 	  [2701, "Construct"],
 	  [2468, "Cybernetic"],
@@ -22,6 +36,7 @@ class com.fox.Utils.AgentHelper {
 	  [211, "Undead"],
 	  [207, "Animal"]
 	];
+	
 	//DEBUG, i dont have lvl 50 druids
 	public static function GetRace(id:ID32):Object {
 		var mob:Character = new Character(id);
@@ -150,22 +165,9 @@ class com.fox.Utils.AgentHelper {
 		}
 		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
-	*/
-	
-	static var Druids:Array = [
-	  [2746, "Construct"],
-	  [2749, "Cybernetic"],
-	  [2743, "Demon"],
-	  [2748, "Aquatic"],
-	  [2744, "Filth"],
-	  [2750, "Human"],
-	  [2745, "Spirit"],
-	  [2741, "Supernatural"],
-	  [2747, "Undead"],
-	  [2742, "Animal"]
-	];
 	
 
+	/*
 	public static function GetRace(id:ID32):Object {
 		var mob:Character = new Character(id);
 		var stat = mob.GetStat(89);
@@ -295,9 +297,9 @@ class com.fox.Utils.AgentHelper {
 				break;
 		}
 		//com.GameInterface.UtilsBase.PrintChatText(string(stat))
-		return {Name:name, Race:race, Stat:stat, Agent:agent}
+		return {Name:name, Race:race, Stat:stat, DruidSystem:agent}
 	}
-	
+	*/
 	public static function GetAgentInSlot(slotID:Number):AgentSystemAgent {
 		var spellId:Number = AgentSystem.GetPassiveInSlot(slotID);// 0 if invalid slot
 		if (spellId != 0) {
@@ -306,7 +308,7 @@ class com.fox.Utils.AgentHelper {
 		}
 	}
 
-	/* 	
+	/*
 	* Checks if player has the preferred agent at lvl 50 & not equipped
 	* 	Returns 0 if already equipped
 	* 	Returns value of defaultAgent otherwise
@@ -337,24 +339,12 @@ class com.fox.Utils.AgentHelper {
 		return false
 	}
 
-	/*
-	public static function StringsToID(str:String, def:Number):Number {
-		if (str.toLowerCase() == "default") {
-			return def;
-		} else {
-			for (var i in Druids) {
-				if (Druids[i][1].toLowerCase() == str.toLowerCase()) {
-					return Druids[i][0];
-				}
-			}
-		}
-		if (!isNaN(Number(str))) return Number(str);
-		return 0;
-	}
-	*/
-	// There's delay when changing audio settings, otherwise i would mute interface sounds here.
 	public static function SwitchToAgent(agentID:Number, slot:Number) {
-		if(AgentSystem.HasAgent(agentID)){ //just in case
+		if (!Player.GetPlayer().IsinPlay()){
+			setTimeout(SwitchToAgent, 500, agentID, slot);
+			return
+		}
+		if (AgentSystem.HasAgent(agentID)) { //just in case
 			AgentSystem.EquipPassive(agentID, slot);
 		}
 	}

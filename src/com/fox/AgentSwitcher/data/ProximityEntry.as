@@ -2,7 +2,7 @@
  * ...
  * @author fox
  */
-class com.fox.AgentSwitcher.data.ProximityEntry{
+class com.fox.AgentSwitcher.data.ProximityEntry {
 	public var Name:String;
 	public var Agent:String;
 	public var Range:String;

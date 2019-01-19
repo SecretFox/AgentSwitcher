@@ -1,19 +1,16 @@
-import com.GameInterface.AccountManagement;
-import com.GameInterface.Game.Character;
+import com.fox.AgentSwitcher.Utils.Player;
 import com.GameInterface.Game.Shortcut;
 import com.Utils.Signal;
-import com.fox.Utils.Builds;
 import mx.utils.Delegate;
 /**
  * ...
  * @author fox
  */
-class com.fox.Utils.Task {
-	static var Tasks:Array = [];
+class com.fox.AgentSwitcher.Utils.Task {
+	static var TaskQueue:Array = [];
 	static var OutCombatTask:Number = 0;
 	static var InCombatTask:Number = 1;
 	static var BuildTask:Number = 2;
-	static var m_Player:Character;
 
 	public var ID:Number;
 	public var Type:Number;
@@ -21,49 +18,50 @@ class com.fox.Utils.Task {
 	private var AbortCallback:Function;
 	private var SignalDone:Signal;
 	private var timeout:Number;
+	private var m_Player:Player;
 
 	static function AddTask(type, f, f2) {
-		var id = Tasks.length;
+		var id = TaskQueue.length;
 		var task:Task = new Task(id, f, type, f2)
-		Tasks.push(task);
+		TaskQueue.push(task);
 		task.SignalDone.Connect(RemoveTask);
 		task.Start();
 	}
 	static function RemoveTask(id) {
-		Tasks[id].kill();
-		Tasks.splice(id, 1);
-		for (var i = 0; i < Tasks.length; i++ ) {
-			Tasks[i].ID = i;
+		TaskQueue[id].kill();
+		TaskQueue.splice(id, 1);
+		for (var i = 0; i < TaskQueue.length; i++ ) {
+			TaskQueue[i].ID = i;
 		}
 	}
-	static function RemoveTasksByType(type:Number){
+	static function RemoveTasksByType(type:Number) {
 		//Removes existing tasks of this type
-		for (var i in Tasks){
-			if (Tasks[i].Type == type){
-				Tasks[i].kill();
-				Tasks.splice(Number(i), 1);
+		for (var i in TaskQueue) {
+			if (TaskQueue[i].Type == type) {
+				TaskQueue[i].kill();
+				TaskQueue.splice(Number(i), 1);
 			}
 		}
-		for (var i = 0; i < Tasks.length; i++ ) {
-			Tasks[i].ID = i;
+		for (var i = 0; i < TaskQueue.length; i++ ) {
+			TaskQueue[i].ID = i;
 		}
 	}
 	static function RemoveAllTasks() {
-		for (var i in Tasks) {
-			Tasks[i].kill();
+		for (var i in TaskQueue) {
+			TaskQueue[i].kill();
 		}
-		Tasks = new Array();
+		TaskQueue = new Array();
 	}
 	static function HasTaskType(type:Number) {
-		for (var i in Tasks) {
-			if (Tasks[i].type == type) {
+		for (var i in TaskQueue) {
+			if (TaskQueue[i].type == type) {
 				return true;
 			}
 		}
 		return false;
 	}
 	public function Task(id, f, type, f2) {
-		m_Player = Character.GetClientCharacter();
+		m_Player = Player.GetPlayer();
 		Callback = f;
 		AbortCallback = f2;
 		Type = type;
@@ -87,17 +85,6 @@ class com.fox.Utils.Task {
 		clearTimeout(timeout);
 		Callback = undefined;
 	}
-	//Cutscene/dead etc..
-	static function IsinPlay(){
-		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-		m_Player.IsDead() ||
-		m_Player.IsInCinematic() ||
-		_root.fadetoblack.m_BlackScreen._visible ||
-		m_Player.GetCommandProgress()){
-			return false
-		}
-		return true
-	}
 //Tasktype 1
 //Triggers when player exits combat
 	public function StartTask1() {
@@ -105,12 +92,12 @@ class com.fox.Utils.Task {
 		SlotToggleCombat();
 	}
 	private function SlotToggleCombat(state:Boolean) {
-		if (!IsinPlay()){
+		if (!m_Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat), 200);
 			return
 		}
-		if (!m_Player.IsInCombat()){
+		if (!m_Player.IsInCombat()) {
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 			Callback();
 			SignalDone.Emit(ID);
@@ -123,7 +110,7 @@ class com.fox.Utils.Task {
 		if (m_Player.IsThreatened()) SlotToggleCombat2(true);
 	}
 	private function SlotToggleCombat2(state:Boolean) {
-		if (!IsinPlay()){
+		if (!m_Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 200);
 			return
@@ -144,7 +131,7 @@ class com.fox.Utils.Task {
 		m_Player.SignalToggleCombat.Connect(SlotToggleCombat3, this);
 		CheckIfCompleted();
 	}
-	private function CooldownChangedBuffer(itemPos, cooldownStart, cooldownEnd, cooldownFlags){
+	private function CooldownChangedBuffer(itemPos, cooldownStart, cooldownEnd, cooldownFlags) {
 		if (cooldownStart == cooldownEnd) {
 			clearTimeout(timeout);
 			// Ability slot has to update first
@@ -157,12 +144,12 @@ class com.fox.Utils.Task {
 		}
 	}
 	private function CheckIfCompleted() {
-		if (!IsinPlay()){
+		if (!m_Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,CheckIfCompleted), 200);
 			return
 		}
-		if (!Builds.IsOnCooldown() && !m_Player.IsInCombat()) {
+		if (!Player.HasCooldown() && !m_Player.IsInCombat()) {
 			Shortcut.SignalCooldownTime.Disconnect(CooldownChangedBuffer, this);
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat3, this);
 			Callback();

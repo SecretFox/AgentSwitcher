@@ -1,16 +1,16 @@
+import com.fox.AgentSwitcher.Utils.DruidSystem;
+import com.fox.Utils.Debugger;
 import com.GameInterface.DistributedValue;
 import com.GameInterface.DistributedValueBase;
-import com.fox.Utils.AgentHelper;
 import com.Utils.Archive;
 import com.Utils.LDBFormat;
-import com.fox.Utils.Debugger;
 import flash.geom.Point;
 import mx.utils.Delegate;
 /*
 * ...
 * @author fox
 */
-class com.fox.AgentSwitcher.Settings{
+class com.fox.AgentSwitcher.Settings {
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
 	public var settingDebugChat:Boolean;
@@ -33,7 +33,7 @@ class com.fox.AgentSwitcher.Settings{
 	public var DisplayPos:Point;
 	public var iconPos:Point;
 	public var RecentAgents:Array;
-	
+
 	public function Settings(swfRoot:MovieClip) {
 		m_swfRoot = swfRoot;
 		settingDval = DistributedValue.Create("AgentSwitcher_Settings");
@@ -41,15 +41,15 @@ class com.fox.AgentSwitcher.Settings{
 		agentDisplayDval = DistributedValue.Create("AgentSwitcher_Display");
 		agentDisplayDval.SetValue(false);
 	}
-	
+
 	public function GetDestinationSlot() {
 		settingRealSlot = settingSlot - 1;
 	}
-	
-	public function LoadConfigs(config: Archive):Void {
+
+	public function LoadConfig(config: Archive):Void {
 		settingSlot = config.FindEntry("Slot", 1);
 		GetDestinationSlot();
-		
+
 		settingDebugChat = config.FindEntry("DebugChat", false);
 		settingDebugFifo = config.FindEntry("DebugFifo", false);
 		settingDefault = config.FindEntry("Switch", false);
@@ -65,15 +65,15 @@ class com.fox.AgentSwitcher.Settings{
 		agentDisplayDval.SetValue(config.FindEntry("Display", false));
 		settingDisplayName = config.FindEntry("DisplayName", false);
 		settingQuickselectName = config.FindEntry("QuickName", false);
-		
-		if (settingProximityEnabled){
-			if (!DistributedValueBase.GetDValue("ShowVicinityNPCNametags")){
+
+		if (settingProximityEnabled) {
+			if (!DistributedValueBase.GetDValue("ShowVicinityNPCNametags")) {
 				setTimeout(Delegate.create(this,EmitError), 5000, "AgentSwitcher /option ShowVicinityNPCNametags must be set to true for proximity targeting");
 			}
 		}
 
 		if (settingDefaultAgent == 0) {
-			settingDefaultAgent = AgentHelper.GetAgentInSlot(settingRealSlot).m_AgentId | 0;
+			settingDefaultAgent = DruidSystem.GetAgentInSlot(settingRealSlot).m_AgentId | 0;
 		}
 
 		RecentAgents = config.FindEntryArray("RecentAgents");
@@ -96,8 +96,8 @@ class com.fox.AgentSwitcher.Settings{
 				LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
 				//LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
 				LDBFormat.LDBGetText(51000, 18180) + "|Default|40" // Klein
-				
-				/* 
+
+				/*
 				Build switching test cases
 				"Antimony Ministrix|boss1Prox|35",
 				"Antimony Ministrix|boss1Kill|onKill",
@@ -115,12 +115,12 @@ class com.fox.AgentSwitcher.Settings{
 			);
 		}
 	}
-	
-	private function EmitError(msg:String){
+
+	private function EmitError(msg:String) {
 		Debugger.ShowFifo("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
 	}
 
-	public function SaveConfigs():Archive {
+	public function SaveConfig():Archive {
 		var config:Archive = new Archive();
 		config.AddEntry("Slot", settingSlot);
 		config.AddEntry("DebugChat", settingDebugChat);
@@ -143,7 +143,7 @@ class com.fox.AgentSwitcher.Settings{
 		for (var i = 0; i < RecentAgents.length; i++ ) {
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}
-		
+
 		for (var i = 0; i < settingPriority.length; i++ ) {
 			config.AddEntry("Priority", settingPriority[i]);
 		}

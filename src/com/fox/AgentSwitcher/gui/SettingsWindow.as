@@ -1,8 +1,5 @@
-import GUI.fox.aswing.border.LineBorder;
 import com.fox.AgentSwitcher.Controller;
-import com.GameInterface.Tooltip.TooltipInterface;
-import com.GameInterface.Tooltip.TooltipData;
-import com.GameInterface.Tooltip.TooltipManager;
+
 import GUI.fox.aswing.ASColor;
 import GUI.fox.aswing.Component;
 import GUI.fox.aswing.Icon;
@@ -15,7 +12,10 @@ import GUI.fox.aswing.JSeparator;
 import GUI.fox.aswing.JTextArea;
 import GUI.fox.aswing.JTextField;
 import GUI.fox.aswing.SoftBoxLayout;
-import com.fox.Utils.Debugger;
+import GUI.fox.aswing.border.LineBorder;
+import com.GameInterface.Tooltip.TooltipData;
+import com.GameInterface.Tooltip.TooltipInterface;
+import com.GameInterface.Tooltip.TooltipManager;
 import flash.geom.Point;
 /*
 * ...
@@ -24,23 +24,23 @@ import flash.geom.Point;
 class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 	private var m_Controller:Controller;
-	
+
 	private var Active:JCheckBox;
 	private var DebugChat:JCheckBox;
 	private var DebugFifo:JCheckBox;
 	private var slotText:JTextField;
 	private var Slot:JTextField;
-	
+
 	private var Default:JCheckBox;
 	private var delayText:JTextField;
 	private var Delay:JTextField;
-	
+
 	private var Display:JCheckBox;
 	private var DisplayName:JCheckBox;
 	private var Disable:JCheckBox;
-	
+
 	private var QuickName:JCheckBox;
-	
+
 	private var ProximityToggle:JCheckBox;
 	private var ProximityList:JTextArea;
 	private var ProximityListContent:Array;
@@ -50,8 +50,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var rateText:JTextField;
 	private var Rate:JTextField;
 	private var Tooltip:TooltipInterface;
-	
-	
 
 	public function SettingsWindow(iconPos:Point, cont:Controller) {
 		// Setup
@@ -69,17 +67,17 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-	//Main Controls
+		//Main Controls
 		slotText = new JTextField("Agent slot:");
 		slotText.setBorder(null);
 		slotText.setEnabled(false);
 		slotText.setEditable(false);
-		
+
 		content.append(GetActive());
 		content.append(GetDefault());
 		content.append(GetProximityTogggle());
 		content.append(new JSeparator());
-	//Misc Settings
+		//Misc Settings
 		//Agent Slot
 		slotPanel.append(slotText);
 		slotPanel.append(GetSlot());
@@ -104,8 +102,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		content.append(GetQuickName());
 		content.append(new JSeparator());
 
-
-	//Proximity settings
+		//Proximity settings
 		var tf3:JTextField = new JTextField("Proximity Switching(?)");
 		tf3.addEventListener(Component.ON_ROLLOVER,OpenProximityTooltip,this);
 		tf3.addEventListener(Component.ON_ROLLOUT,CloseProximityTooltip,this);
@@ -113,7 +110,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		tf3.setEnabled(false);
 		tf3.setEditable(false);
 		content.append(tf3);
-		
+
 		scrollPane = new JScrollPane(GetProximityList(),JScrollPane.SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder());
 		var scrollbar:JScrollBar = scrollPane.getVerticalScrollBar();
@@ -121,7 +118,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		scrollbar.addEventListener(ON_RELEASE, __stopDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb, this);
 		content.append(scrollPane);
-		
+
 		rangeText = new JTextField("Distance");
 		rangeText.setBorder(null);
 		rangeText.setEnabled(false);
@@ -137,7 +134,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		ProximitySettingPanel.append(GetRate());
 		content.append(ProximitySettingPanel);
 
-	//Show window + Reposition based on icon location
+		//Show window + Reposition based on icon location
 		setContentPane(content);
 		show();
 		pack();
@@ -168,7 +165,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
 			"Valid triggers are &quot;onKill&quot; and &quot;onZone&quot;. onKill triggers the switch when specified target is killed and onZone triggers when entering new zone\n\n" +
 			"&lt;Role&gt; : Role is only used by builds and outfits. Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then build will only be changed when players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
-			"----\n" + 
+			"----\n" +
 			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry" +
 			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
 		);
@@ -177,16 +174,16 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function CloseProximityTooltip() {
 		Tooltip.Close();
 	}
-	private function __startDragThumb(){
+	private function __startDragThumb() {
 		scrollPane.getVerticalScrollBar().getUI()["__startDragThumb"]();
 	}
-	private function __stopDragThumb(){
+	private function __stopDragThumb() {
 		scrollPane.getVerticalScrollBar().getUI()["__stopDragThumb"]();
 	}
 	public function tryToClose():Void {
 		Tooltip.Close();
 		// Reload proximity list if changed
-		if (ProximityListContent.toString() != ProximityList.getText().split("\n").toString()){
+		if (ProximityListContent.toString() != ProximityList.getText().split("\n").toString()) {
 			m_Controller.ReloadProximityList();
 		}
 		m_Controller.settingDval.SetValue(false);
@@ -214,13 +211,13 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		DisplayName.setEnabled(box.isSelected());
 	}
 	private function __DisplayNameChanged(box:JCheckBox) {
-		m_Controller.settingDisplayName = box.isSelected()
+		m_Controller.settingDisplayName = box.isSelected();
 		m_Controller.m_AgentDisplay.SlotChanged();
 	}
 	private function __DisableChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnSwitch = box.isSelected();
 	}
-	private function __QuickSelectChanged(box:JCheckBox){
+	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
 	}
 	private function  __ProximityToggled(box:JCheckBox) {
@@ -286,7 +283,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		}
 		return QuickName;
 	}
-	
+
 	private function GetDisable() {
 		if (Disable == null) {
 			Disable = new JCheckBox("Disable on quickselect");
@@ -380,7 +377,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			ProximityList.setEditable(true);
 			ProximityList.addEventListener(JTextField.ON_TEXT_CHANGED, __ProximityListChanged, this);
 			ProximityList.setFocusable(false);
-			
+
 		}
 		return ProximityList;
 	}

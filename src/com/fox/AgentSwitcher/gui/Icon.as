@@ -1,22 +1,22 @@
 import com.fox.AgentSwitcher.Controller;
 import com.fox.Utils.Common;
-import com.Utils.Colors;
 import flash.geom.Point;
-import mx.utils.Delegate;
 import com.GameInterface.Tooltip.TooltipData;
-import com.GameInterface.Tooltip.TooltipManager;
 import com.GameInterface.Tooltip.TooltipInterface;
+import com.GameInterface.Tooltip.TooltipManager;
+import com.Utils.Colors;
+import mx.utils.Delegate;
 /*
 * ...
 * @author fox
 */
-class com.fox.AgentSwitcher.gui.Icon{
+class com.fox.AgentSwitcher.gui.Icon {
 	private var m_swfRoot:MovieClip;
 	private var m_Controller:Controller;
 	public var m_Icon:MovieClip;
 	private var Tooltip:TooltipInterface;
-	
-	public function Icon(root:MovieClip, cont:Controller){
+
+	public function Icon(root:MovieClip, cont:Controller) {
 		m_swfRoot = root;
 		m_Controller = cont;
 	}
@@ -30,20 +30,20 @@ class com.fox.AgentSwitcher.gui.Icon{
 			GuiEdit(false);
 		}
 	}
-	private function Clicked(){
+	private function Clicked() {
 		m_Controller.m_QuickSelect.QuickSelectStateChanged();
 	}
-	private function ClickedAux(){
+	private function ClickedAux() {
 		m_Controller.settingDval.SetValue(!m_Controller.settingDval.GetValue());
 	}
 	public function StateChanged(state:Boolean) {
 		if (state) Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
 		else Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
 	}
-	private function onRollOut(){
+	private function onRollOut() {
 		Tooltip.Close();
 	}
-	private function OnRollOver(){
+	private function OnRollOver() {
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher</b></font>";
