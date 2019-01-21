@@ -14,7 +14,6 @@ class com.fox.AgentSwitcher.Utils.Player {
 	private static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
 	
 	public function Player(id:ID32){
-		super(id);
 		m_Player = Character.GetClientCharacter();;
 	}
 	public static function GetPlayer(id:ID32):Character{

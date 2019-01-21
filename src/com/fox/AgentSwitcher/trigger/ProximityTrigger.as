@@ -53,15 +53,19 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		}
 		if (distance < Range) {
 			clearInterval(refreshInterval);
+			var f2:Function = Delegate.create(this, kill);
 			if (!isBuild) {
 				if (!Task.HasTaskType(Task.OutCombatTask)) {
 					var f:Function = Delegate.create(this, EquipAgent);
-					Task.AddTask(Task.OutCombatTask, f, kill);
+					Task.AddTask(Task.OutCombatTask, f, f2);
 				}
 			} else {
-				Task.RemoveTasksByType(Task.BuildTask);
+				var time:Date = new Date();
+				Age = time.valueOf();
+				// Trying to get agent before inPlay crashes the game
+				// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 				var f:Function = Delegate.create(this, EquipBuild);
-				Task.AddTask(Task.BuildTask, f, kill);
+				Task.AddTask(Task.inPlayTask, f, f2);
 			}
 		}
 	}
@@ -70,22 +74,22 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 			return true
 		}
 	}
+	private function StartedEquip():Void {
+		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
+			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
+			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+		}
+	}
 	private function Disconnect() {
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
 	private function EquipBuild() {
+		var f:Function = Delegate.create(this, StartedEquip);
 		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
-		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
-			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
-		}
-		Build.AddToQueue(Agent);
-		Controller.m_Controller.m_Proximity.DisableBuildTrigger(Char.GetName(), Range, Agent);
+		Build.AddToQueue(Agent, Age, f);
 	}
 	private function AgentChanged(slotID:Number) {
-		// Changing build can also changes agents
-		// Switch back druid agent if it gets changed
 		clearTimeout(disconnectTimeout);
 		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		if (slotID == Controller.m_Controller.settingRealSlot) {
@@ -97,6 +101,8 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
 				}
 			}
+		} else {
+			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		}
 	}
 	public function EquipAgent() {

@@ -40,21 +40,37 @@ Use agent name on display : Whether display should show agents name or damage bo
 Use agent name on quickselect : Whether quickselect should show agents name or damage bonus.  
 ________  
 Proximity targeting:  
-	Format \<Name\>|\<Agent\>|\<Distance/Trigger\>. Only name is required.  
+Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
-	Name : Mob name, must be exact match(including capitalization).  
+**Name/zoneID**  
+	Mob name - Targets exact name.  
+	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
+
+**Agent/Build/Outfit**  
+	Agent - Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
+			Valid values: Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default or AgentID  
+	Build - Build name to switch to, supports boobuilds and default GearManager  
+	Outfit - Outfit to switch to, supports outfits from boobuilds  
+
+**Distance/Trigger**  
+	Number - Switches agent once target is closer than this value.
+	onKill - Changes agent/build/outfit after the specified mob is killed. Also locks switching until next combat starts.  
+	onZone - Changes agent/build/outfit after zoning to specified zone  
 	
-	Agent : Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
-		This can be handy if you need to change agent for dungeon boss, but the adds have different type(e.g DW2, DW6).  
-		Valid values: Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default  
-	
-	Distance : Mob has to be closer than this distance before proximity switch will trigger  
-	Trigger : Currently there is only one trigger, onKill. onKill triggers the switch when the specified target is killed.  
-		This can be useful when you don't necessarily have time to target the boss (e.g DW4, DW6, Ankh5).  
-		
-	Additional Notes:  
-		Targeting based switching and defaulting are locked while proximity target is in range, or player has not entered combat after onKill triggered.  
-	
+**Role**  
+	Tank,DPS,Healer or All - Only used with builds/outfits. If specified then the action will only be performed if player has the right role (according to party window).  
+	If not specified assumed to be all
+
+Some examples:  
+	`Xibalban Bloodhound` - Priorities Xibalban Bloodhound over adds in Darkness War 2 Fight.  
+	`The Unutterable Lurker|Default|100` - Switches to default agent when Unutterable Lurker is within 100m of the player.  
+	`Dark House Sorcerer|Animal|onKill` - Switches to Animal agent(Finn Mulligan) after killing Dark House Sorcerer. This is in preparation for Akab Boss.  
+	`7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence  
+	`5060|Single|onZone` - Switches to "Single" build when entering Agartha  
+	`7740|DarkAgartha|onZone` - Switches to "DarkAgartha" build when entering DarkAgartha  
+	`3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
+	`Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
+	`Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.
 ________  
 Range : When distance is not specified in the proximity list this value will be used  
-Rate : How often nametag distance is checked, low values could cause lag?  
+Rate : How often tracked proximity distance is checked  

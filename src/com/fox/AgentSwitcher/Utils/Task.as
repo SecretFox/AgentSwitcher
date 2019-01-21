@@ -2,6 +2,7 @@ import com.GameInterface.Game.Character;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.GameInterface.Game.Shortcut;
 import com.Utils.Signal;
+import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...
@@ -11,7 +12,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 	static var TaskQueue:Array = [];
 	static var OutCombatTask:Number = 0;
 	static var InCombatTask:Number = 1;
-	static var BuildTask:Number = 2;
+	static var inPlayTask:Number = 2;
 
 	public var ID:Number;
 	public var Type:Number;
@@ -81,8 +82,6 @@ class com.fox.AgentSwitcher.Utils.Task {
 		AbortCallback();
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
-		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat3, this);
-		Shortcut.SignalCooldownTime.Disconnect(CooldownChangedBuffer, this);
 		clearTimeout(timeout);
 		Callback = undefined;
 	}
@@ -128,33 +127,11 @@ class com.fox.AgentSwitcher.Utils.Task {
 //Tasktype 3
 //Triggers when player has no cooldowns and is out of combat
 	public function StartTask3() {
-		Shortcut.SignalCooldownTime.Connect(CooldownChangedBuffer, this);
-		m_Player.SignalToggleCombat.Connect(SlotToggleCombat3, this);
-		CheckIfCompleted();
-	}
-	private function CooldownChangedBuffer(itemPos, cooldownStart, cooldownEnd, cooldownFlags) {
-		if (cooldownStart == cooldownEnd) {
-			clearTimeout(timeout);
-			// Ability slot has to update first
-			timeout = setTimeout(Delegate.create(this, CheckIfCompleted), 50);
-		}
-	}
-	private function SlotToggleCombat3() {
-		if (!m_Player.IsInCombat()) {
-			CheckIfCompleted();
-		}
-	}
-	private function CheckIfCompleted() {
-		if (!Player.IsinPlay()) {
-			clearTimeout(timeout);
-			timeout = setTimeout(Delegate.create(this,CheckIfCompleted), 200);
-			return
-		}
-		if (!Player.HasCooldown() && !m_Player.IsInCombat()) {
-			Shortcut.SignalCooldownTime.Disconnect(CooldownChangedBuffer, this);
-			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat3, this);
+		if (Player.IsinPlay()){
 			Callback();
 			SignalDone.Emit(ID);
+		}else{
+			setTimeout(Delegate.create(this, StartTask3), 500);
 		}
 	}
 }

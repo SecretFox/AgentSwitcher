@@ -5,6 +5,7 @@ import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.WaypointInterface;
+import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...
@@ -14,7 +15,6 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	private var Zone:Number;
 	private var Role:String;
-	private var Age:Number;
 
 	public function ZoneTrigger(zone:String, build:String, role:String, isbuild:Boolean) {
 		Zone = Number(zone);
@@ -43,27 +43,31 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		}
 	}
 	private function StartEquip() {
-		var time:Date = new Date();
-		Age = time.valueOf();
+		var f2:Function = Delegate.create(this, kill);
 		if (!isBuild) {
 			Task.RemoveTasksByType(Task.OutCombatTask);
 			var f:Function = Delegate.create(this, EquipAgent);
-			Task.AddTask(Task.OutCombatTask, f, kill);
+			Task.AddTask(Task.OutCombatTask, f, f2);
 		} 
-		// Trying to switch clothes while zoning crashes you, otherwise it would be pretty safe to start equipping right away.
-		// Task checks that player is not in loading screen etc
 		else {
+			var time:Date = new Date();
+			Age = time.valueOf();
+			// Trying to get agent before inPlay crashes the game
+			// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 			var f:Function = Delegate.create(this, EquipBuild);
-			Task.AddTask(Task.BuildTask, f, kill);
+			Task.AddTask(Task.inPlayTask, f, f2);
 		}
 	}
-	private function EquipBuild() {
-		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+	private function StartedEquip():Void {
 		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Build.AddToQueue(Agent, Age);
+	}
+	private function EquipBuild() {
+		var f:Function = Delegate.create(this, StartedEquip);
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		Build.AddToQueue(Agent, Age, f);
 	}
 	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);

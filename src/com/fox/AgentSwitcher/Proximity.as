@@ -11,6 +11,7 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.Nametags;
 import com.GameInterface.WaypointInterface;
 import com.Utils.ID32;
+import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...
@@ -144,8 +145,8 @@ class com.fox.AgentSwitcher.Proximity {
 	// Also starts the zone triggers
 	public function GetProximitylistCopy() {
 		ProximityCopy = new Array();
-		for (var prio in m_Controller.settingPriority) {
-			var entry:Array = m_Controller.settingPriority[prio].split("|");
+		for (var i:Number = 0; i < m_Controller.settingPriority.length; i++){
+			var entry:Array = m_Controller.settingPriority[i].split("|");
 			var entryObj:ProximityEntry = new ProximityEntry();
 			entryObj.Name = entry[0];
 			entryObj.Agent = entry[1] || m_Controller.settingDefaultAgent;
@@ -160,9 +161,9 @@ class com.fox.AgentSwitcher.Proximity {
 				entryObj.Agent = string(m_Controller.settingDefaultAgent);
 				entryObj.isBuild = false;
 			} else {
-				for (var i in DruidSystem.Druids) {
-					if (DruidSystem.Druids[i][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
-						entryObj.Agent = string(DruidSystem.Druids[i][0]);
+				for (var x in DruidSystem.Druids) {
+					if (DruidSystem.Druids[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
+						entryObj.Agent = string(DruidSystem.Druids[x][0]);
 						entryObj.isBuild = false;
 						break
 					}
@@ -211,22 +212,17 @@ class com.fox.AgentSwitcher.Proximity {
 		var char:Character = new Character(id);
 		if (!TrackedNametags[id.toString()]) {
 			//var char:Character = new Character(id);
-			for (var i in ProximityCopy) {
+			//Debugger.PrintText("Nametag added for " + char.GetName());
+			for (var i:Number = 0; i < ProximityCopy.length; i++){
 				var entry:ProximityEntry = ProximityCopy[i];
 				if (entry.disabled) {
 					continue
-				} else if (entry.Name == char.GetName()) {
+				} else if (char.GetName() == entry.Name) {
 					if (Player.IsRightRole(entry.Role) || !entry.isBuild) {
-						/*
-						if (entry.isBuild){
-							Debugger.PrintText("Right role for " + entry.Name + " " +entry.Agent);
-						}
-						*/
 						if (!TrackedNametags[id.toString()]) {
-							// need to be able to use both kill and proximity triggers together (and maybe even more later)
 							TrackedNametags[id.toString()] = new Array();
 						}
-						if (entry.Range != "onkill" && !(!entry.Range && m_Controller.settingRange.toLowerCase() == "onkill")) {
+						if (entry.Range != "onkill") {
 							var Trigger:ProximityTrigger= new ProximityTrigger(id, entry.Agent, Number(entry.Range), entry.isBuild);
 							Trigger.SignalDestruct.Connect(RemoveTrigger, this);
 							Trigger.StartTrigger();
@@ -238,11 +234,6 @@ class com.fox.AgentSwitcher.Proximity {
 							TrackedNametags[id.toString()].push(Trigger);
 						}
 					}
-					/*
-					else{
-						Debugger.PrintText("Wrong role for " + entry.Name + " " +entry.Agent);
-					}
-					*/
 				}
 			}
 		}

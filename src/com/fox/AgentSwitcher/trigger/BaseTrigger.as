@@ -15,6 +15,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 	private var disconnectTimeout:Number;
 	private var switchTimeout:Number;
 	public var SignalDestruct:Signal;
+	private var Age:Number;
 
 	public function BaseTrigger() {
 		SignalDestruct = new Signal();

@@ -27,52 +27,57 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 		if (!Agent) data = DruidSystem.GetRace(ID);
 		isBuild = isbuild;
 	}
+	
 	private function TargetDied() {
+		var f2:Function = Delegate.create(this, kill);
 		if (!isBuild) {
 			if (!Task.HasTaskType(Task.OutCombatTask)) {
 				var f:Function = Delegate.create(this, EquipAgent);
-				Task.AddTask(Task.OutCombatTask, f, kill);
+				Task.AddTask(Task.OutCombatTask, f, f2);
 			}
 		} else {
-			Task.RemoveTasksByType(Task.BuildTask);
+			var time:Date = new Date();
+			Age = time.valueOf();
+			// Trying to get agent before inPlay crashes the game
+			// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 			var f:Function = Delegate.create(this, EquipBuild);
-			Task.AddTask(Task.BuildTask, f, kill);
+			Task.AddTask(Task.inPlayTask, f, f2);
 		}
 	}
+	
+	private function InRange() {
+		return false
+	}
+
+	private function TargetDestructed() {
+		Char.SignalCharacterDied.Disconnect(TargetDied, this);
+		Char.SignalCharacterDestructed.Disconnect(TargetDestructed, this);
+		SignalDestruct.Emit(ID);
+	}
+	
 	public function kill() {
 		Disconnect();
 		clearTimeout(switchTimeout);
 		Char.SignalCharacterDied.Disconnect(TargetDied, this);
 		Char.SignalCharacterDestructed.Disconnect(TargetDestructed, this);
 	}
-	private function EquipAgent() {
-		if (Agent) {
-			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
-			if (agentID) {
-				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
-			}
-		}
-		//it's probably pointless to run onKill without override,but might as well allow it
-		else {
-			var agent = DruidSystem.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, 0);
-			if (agent) {
-				DruidSystem.SwitchToAgent(agent, Controller.m_Controller.settingRealSlot);
-			}
-		}
-		SignalLock.Emit();
-		SignalDestruct.Emit(ID);
-	}
 
-	private function EquipBuild() {
-		// Changing build can also changes agents
-		// Switch back druid agent if it gets changed
-		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+	private function StartedEquip():Void {
 		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		}
-		Build.AddToQueue(Agent);
 	}
+	private function Disconnect() {
+		clearTimeout(disconnectTimeout);
+		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
+	}
+	private function EquipBuild() {
+		var f:Function = Delegate.create(this, StartedEquip);
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		Build.AddToQueue(Agent, Age, f);
+	}
+	
 	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);
 		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
@@ -89,18 +94,22 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		}
 	}
-	private function Disconnect() {
-		clearTimeout(disconnectTimeout);
-		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
-	}
-
-	private function InRange() {
-		return false
-	}
-
-	private function TargetDestructed() {
-		Char.SignalCharacterDied.Disconnect(TargetDied, this);
-		Char.SignalCharacterDestructed.Disconnect(TargetDestructed, this);
+	
+	private function EquipAgent() {
+		if (Agent) {
+			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			if (agentID) {
+				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+			}
+		}
+		//it's probably pointless to run onKill without override,but might as well allow it
+		else {
+			var agent = DruidSystem.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, 0);
+			if (agent) {
+				DruidSystem.SwitchToAgent(agent, Controller.m_Controller.settingRealSlot);
+			}
+		}
+		SignalLock.Emit();
 		SignalDestruct.Emit(ID);
 	}
 }
