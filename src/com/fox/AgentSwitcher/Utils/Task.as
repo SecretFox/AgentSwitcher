@@ -1,8 +1,6 @@
 import com.GameInterface.Game.Character;
 import com.fox.AgentSwitcher.Utils.Player;
-import com.GameInterface.Game.Shortcut;
 import com.Utils.Signal;
-import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...

@@ -5,7 +5,6 @@ import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.WaypointInterface;
-import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...
@@ -43,11 +42,10 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		}
 	}
 	private function StartEquip() {
-		var f2:Function = Delegate.create(this, kill);
 		if (!isBuild) {
 			Task.RemoveTasksByType(Task.OutCombatTask);
 			var f:Function = Delegate.create(this, EquipAgent);
-			Task.AddTask(Task.OutCombatTask, f, f2);
+			Task.AddTask(Task.OutCombatTask, f);
 		} 
 		else {
 			var time:Date = new Date();
@@ -55,7 +53,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 			// Trying to get agent before inPlay crashes the game
 			// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 			var f:Function = Delegate.create(this, EquipBuild);
-			Task.AddTask(Task.inPlayTask, f, f2);
+			Task.AddTask(Task.inPlayTask, f);
 		}
 	}
 	private function StartedEquip():Void {

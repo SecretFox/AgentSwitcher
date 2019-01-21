@@ -11,7 +11,6 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.Nametags;
 import com.GameInterface.WaypointInterface;
 import com.Utils.ID32;
-import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /**
  * ...

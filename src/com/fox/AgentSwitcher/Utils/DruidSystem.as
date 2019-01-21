@@ -168,9 +168,9 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 	  [211, "Undead"],
 	  [207, "Animal"]
 	];
-	*/
 	
-	/*
+	
+	
 	public static function GetRace(id:ID32):Object {
 		//Debug
 		var mob:Character = new Character(id);
