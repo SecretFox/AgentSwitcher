@@ -25,14 +25,14 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 	}
 	public function kill() {
-		WaypointInterface.SignalPlayfieldChanged.Disconnect(PlayFieldChanged, this);
 		clearTimeout(switchTimeout);
-		Disconnect();
+		WaypointInterface.SignalPlayfieldChanged.Disconnect(PlayFieldChanged, this);
+		DisconnectAgent();
 	}
 	private function InRange() {
 		return false
 	}
-	private function Disconnect() {
+	private function DisconnectAgent() {
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
@@ -42,10 +42,11 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		}
 	}
 	private function StartEquip() {
+		var f2:Function = Delegate.create(this, kill);
 		if (!isBuild) {
 			Task.RemoveTasksByType(Task.OutCombatTask);
 			var f:Function = Delegate.create(this, EquipAgent);
-			Task.AddTask(Task.OutCombatTask, f);
+			Task.AddTask(Task.OutCombatTask, f, f2);
 		} 
 		else {
 			var time:Date = new Date();
@@ -53,24 +54,26 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 			// Trying to get agent before inPlay crashes the game
 			// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 			var f:Function = Delegate.create(this, EquipBuild);
-			Task.AddTask(Task.inPlayTask, f);
+			Task.AddTask(Task.inPlayTask, f, f2);
 		}
 	}
 	private function StartedEquip():Void {
+		// If we had druid equipped we want to keep it equipped
+		// build will still switch to other agent momentarily, setting the new default agent
 		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+			disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 5000);
 		}
 	}
 	private function EquipBuild() {
 		var f:Function = Delegate.create(this, StartedEquip);
-		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
 		Build.AddToQueue(Agent, Age, f);
 	}
 	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);
-		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
-		if (slotID == Controller.m_Controller.settingRealSlot) {
+		disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 200);
+		if (slotID == Controller.GetInstance().settingRealSlot) {
 			var SlotAgent:com.GameInterface.AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
 				if (SlotAgent.m_AgentId != Number(currentAgent)) {
@@ -79,15 +82,13 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
 				}
 			}
-		} else {
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		}
 	}
 	public function EquipAgent() {
 		if (Agent) {
-			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.GetInstance().settingRealSlot, 0);
 			if (agentID) {
-				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
 			}
 		}
 	}

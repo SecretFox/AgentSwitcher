@@ -69,6 +69,7 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 
 	public function WipeZoneTriggers() {
+		Task.RemoveTasksByType(Task.inPlayTask);
 		for (var zone in TrackedZones) {
 			for (var trigger in TrackedZones[zone]) {
 				TrackedZones[zone][trigger].kill();
@@ -85,7 +86,7 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 
 	public function inProximity() {
-		if (Lock) return true;
+		if(Lock) return true
 		for (var id in TrackedNametags) {
 			for (var trigger in TrackedNametags[id]) {
 				if (TrackedNametags[id][trigger].InRange()) {
@@ -125,20 +126,24 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 
+	
 	/*
-	* Once proximity build switch triggers it be can be disabled so it wont trigger again after each wipe
-	* KillTrigger is fine as it is, since the target will only trigger Destructed Signal on resetting, and not Killed signal.
-	*/
-	public function DisableBuildTrigger(name:String, range:Number, Build:String) {
+	UNUSED, not always desirable behaviour (e.g after wiping on DW6), may need to add single use proximity triggers?
+	Once proximity build switch triggers it be can be disabled so it wont trigger again after each wipe
+	
+	public function DisableBuildTrigger(pattern:String, range:Number, Build:String) {
+		Debugger.PrintText("Attempting to disable proximity " + pattern + range + Build);
 		for (var i = 0; i < ProximityCopy.length; i++) {
 			var entry:ProximityEntry = ProximityCopy[i];
-			if (name == entry.Name && entry.Range != "onKill" && range == entry.Range && Build == entry.Agent) {
+			if (entry.Name == pattern && entry.Range != "onkill" && range == entry.Range && Build == entry.Agent) {
 				entry.disabled = true;
 				ProximityCopy[i] = entry;
+				Debugger.PrintText("Found and disabled proximity trigger for " + pattern);
 				break
 			}
 		}
 	}
+	*/
 
 	// Gets copy of ProximityList with underleveled agents removed
 	// Also starts the zone triggers
@@ -210,13 +215,11 @@ class com.fox.AgentSwitcher.Proximity {
 	private function NametagAdded(id:ID32) {
 		var char:Character = new Character(id);
 		if (!TrackedNametags[id.toString()]) {
-			//var char:Character = new Character(id);
-			//Debugger.PrintText("Nametag added for " + char.GetName());
 			for (var i:Number = 0; i < ProximityCopy.length; i++){
 				var entry:ProximityEntry = ProximityCopy[i];
 				if (entry.disabled) {
 					continue
-				} else if (char.GetName() == entry.Name) {
+				} else if (char.GetName().toLowerCase().indexOf(entry.Name.toLowerCase()) >= 0) {
 					if (Player.IsRightRole(entry.Role) || !entry.isBuild) {
 						if (!TrackedNametags[id.toString()]) {
 							TrackedNametags[id.toString()] = new Array();

@@ -78,7 +78,7 @@ class com.fox.AgentSwitcher.Build {
 	// checks if latest boobuilds info message was for succesful equipping
 	private function checkIfloaded(){
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList){
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList[i].ErrorMsgText.text == "Build loaded: " + BuildName){
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList[i].ErrorMsgText.text.toLowerCase() == "build loaded: " + BuildName.toLowerCase()){
 				Disconnect();
 			}
 			break
@@ -103,30 +103,33 @@ class com.fox.AgentSwitcher.Build {
 		CheckInterval = setInterval(Delegate.create(this, checkIfloaded), 100);
 		// Quick build
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name == BuildName) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadQuickBuild", BuildName);
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+				DistributedValueBase.SetDValue("BooBuilds_LoadQuickBuild", _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name);
 				return
 			}
 			// Quick builds should be loaded regardless of used build
 		}
 		// boobuild
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name == BuildName) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", BuildName);
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", _root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name);
 				return
 			}
 		}
 		// Boo outfit
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name == BuildName) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", BuildName);
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", _root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name);
 				return
 			}
 		}
 		// Gear manager
-		if (GearManager.GetBuild(BuildName).m_ItemArray) {
-			GearManager.UseBuild(BuildName);
-			return
+		var buildList:Array = GearManager.GetBuildList();
+		for (var i in buildList){
+			if (buildList[i].toLowerCase() == BuildName.toLowerCase()){
+				GearManager.UseBuild(buildList[i]);
+				return
+			}
 		}
 	}
 	private function Disconnect() {

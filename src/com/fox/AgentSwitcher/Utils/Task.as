@@ -12,7 +12,6 @@ class com.fox.AgentSwitcher.Utils.Task {
 	static var InCombatTask:Number = 1;
 	static var inPlayTask:Number = 2;
 
-	public var ID:Number;
 	public var Type:Number;
 	private var Callback:Function;
 	private var AbortCallback:Function;
@@ -21,17 +20,18 @@ class com.fox.AgentSwitcher.Utils.Task {
 	private var m_Player:Character;
 
 	static function AddTask(type, f, f2) {
-		var id = TaskQueue.length;
-		var task:Task = new Task(id, f, type, f2)
+		var task:Task = new Task(f, type, f2)
 		TaskQueue.push(task);
-		task.SignalDone.Connect(RemoveTask);
+		task.SignalDone.Connect(TaskDone);
 		task.Start();
 	}
-	static function RemoveTask(id) {
-		TaskQueue[id].kill();
-		TaskQueue.splice(id, 1);
-		for (var i = 0; i < TaskQueue.length; i++ ) {
-			TaskQueue[i].ID = i;
+	static function TaskDone(task:Task) {
+		for (var i:Number = 0; i < TaskQueue.length;i++){
+			if (TaskQueue[i] == task) {
+				TaskQueue[i].dispose();
+				TaskQueue.splice(i, 1);
+				break
+			}
 		}
 	}
 	static function RemoveTasksByType(type:Number) {
@@ -41,9 +41,6 @@ class com.fox.AgentSwitcher.Utils.Task {
 				TaskQueue[i].kill();
 				TaskQueue.splice(Number(i), 1);
 			}
-		}
-		for (var i = 0; i < TaskQueue.length; i++ ) {
-			TaskQueue[i].ID = i;
 		}
 	}
 	static function RemoveAllTasks() {
@@ -60,13 +57,12 @@ class com.fox.AgentSwitcher.Utils.Task {
 		}
 		return false;
 	}
-	public function Task(id, f, type, f2) {
+	public function Task(f, type, f2) {
 		m_Player = Player.GetPlayer();
 		Callback = f;
 		AbortCallback = f2;
 		Type = type;
 		SignalDone = new Signal();
-		ID = id;
 	}
 	public function Start() {
 		if (Type == 0) StartTask1();
@@ -78,10 +74,14 @@ class com.fox.AgentSwitcher.Utils.Task {
 	}
 	private function kill() {
 		AbortCallback();
+		dispose();
+	}
+	private function dispose() {
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 		clearTimeout(timeout);
 		Callback = undefined;
+		AbortCallback = undefined;
 	}
 //Tasktype 1
 //Triggers when player exits combat
@@ -98,7 +98,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		if (!m_Player.IsInCombat()) {
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 			Callback();
-			SignalDone.Emit(ID);
+			SignalDone.Emit(this);
 		}
 	}
 //Tasktype 2
@@ -116,7 +116,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		if (m_Player.IsInCombat()) {
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 			Callback();
-			SignalDone.Emit(ID);
+			SignalDone.Emit(this);
 		} else if (m_Player.IsThreatened()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this, SlotToggleCombat2), 200);
@@ -127,7 +127,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 	public function StartTask3() {
 		if (Player.IsinPlay()){
 			Callback();
-			SignalDone.Emit(ID);
+			SignalDone.Emit(this);
 		}else{
 			setTimeout(Delegate.create(this, StartTask3), 500);
 		}

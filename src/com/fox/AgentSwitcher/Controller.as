@@ -23,7 +23,7 @@ import com.Utils.GlobalSignal;
 * @author fox
 */
 class com.fox.AgentSwitcher.Controller extends Settings {
-	static var m_Controller:Controller;
+	private static var m_Controller:Controller;
 	public var m_settings:SettingsWindow;
 	public var m_AgentDisplay:AgentDisplay;
 	public var m_QuickSelect:QuickSelect;
@@ -52,6 +52,10 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		m_Proximity = new Proximity(this);
 		m_Default = new Defaulting(this);
 		m_Targeting = new Targeting(this);
+	}
+	
+	public static function GetInstance():Controller{
+		return m_Controller;
 	}
 
 	public function Load():Void {

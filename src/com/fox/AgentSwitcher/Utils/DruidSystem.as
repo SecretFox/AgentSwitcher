@@ -151,22 +151,22 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 				break;
 		}
 		//com.GameInterface.UtilsBase.PrintChatText(string(stat))
-		return {Name:name, Race:race, Stat:stat, DruidSystem:agent}
+		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
 	
 	/*
 	static var Druids:Array = [
 	//Debug
-	  [2701, "Construct"],
-	  [2468, "Cybernetic"],
-	  [2456, "Demon"],
-	  [233, "Aquatic"],
-	  [236, "Filth"],
-	  [215, "Human"],
-	  [246, "Spirit"],
-	  [225, "Supernatural"],
-	  [211, "Undead"],
-	  [207, "Animal"]
+		[2701, "Construct"],
+		[2468, "Cybernetic"],
+		[2456, "Demon"],
+		[233, "Aquatic"],
+		[236, "Filth"],
+		[215, "Human"],
+		[246, "Spirit"],
+		[225, "Supernatural"],
+		[211, "Undead"],
+		[207, "Animal"]
 	];
 	
 	

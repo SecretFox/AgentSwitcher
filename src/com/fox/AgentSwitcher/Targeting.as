@@ -41,7 +41,7 @@ class com.fox.AgentSwitcher.Targeting {
 			LastSelectedName = data.Name;
 			LastSelectedRace = data.Race;
 			if (!m_Controller.settingEnabled) return;
-			if (!m_Player.IsInCombat() && !m_Proximity.Lock && !m_Proximity.inProximity()) {
+			if (!m_Player.IsInCombat() && !m_Proximity.inProximity()) {
 				var agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
 				if (agent) {
 					DruidSystem.SwitchToAgent(agent, m_Controller.settingRealSlot);

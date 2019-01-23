@@ -23,7 +23,7 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 		SignalLock = new Signal();
 		Char = new Character(id);
 		Char.SignalCharacterDied.Connect(TargetDied, this);
-		Char.SignalCharacterDestructed.Connect(TargetDestructed, this);
+		Char.SignalCharacterDestructed.Connect(kill, this);
 		if (!Agent) data = DruidSystem.GetRace(ID);
 		isBuild = isbuild;
 	}
@@ -48,40 +48,35 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 	private function InRange() {
 		return false
 	}
-
-	private function TargetDestructed() {
-		Char.SignalCharacterDied.Disconnect(TargetDied, this);
-		Char.SignalCharacterDestructed.Disconnect(TargetDestructed, this);
-		SignalDestruct.Emit(ID);
-	}
 	
 	public function kill() {
-		Disconnect();
-		clearTimeout(switchTimeout);
 		Char.SignalCharacterDied.Disconnect(TargetDied, this);
-		Char.SignalCharacterDestructed.Disconnect(TargetDestructed, this);
+		Char.SignalCharacterDestructed.Disconnect(kill, this);
+		SignalDestruct.Emit(ID);
 	}
 
 	private function StartedEquip():Void {
+		// If we had druid equipped we want to keep it equipped
+		// build will still switch to other agent momentarily, setting the new default agent
 		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+			disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 5000);
 		}
 	}
-	private function Disconnect() {
+	private function DisconnectAgent() {
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
 	private function EquipBuild() {
 		var f:Function = Delegate.create(this, StartedEquip);
-		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
 		Build.AddToQueue(Agent, Age, f);
 	}
 	
 	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);
-		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
-		if (slotID == Controller.m_Controller.settingRealSlot) {
+		disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 200);
+		if (slotID == Controller.GetInstance().settingRealSlot) {
 			var SlotAgent:com.GameInterface.AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
 				if (SlotAgent.m_AgentId != Number(currentAgent)) {
@@ -90,26 +85,26 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
 				}
 			}
-		} else {
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		}
 	}
 	
 	private function EquipAgent() {
 		if (Agent) {
-			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.GetInstance().settingRealSlot, 0);
 			if (agentID) {
-				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
 			}
 		}
 		//it's probably pointless to run onKill without override,but might as well allow it
 		else {
-			var agent = DruidSystem.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, 0);
+			var agent = DruidSystem.GetSwitchAgent(data.Agent, Controller.GetInstance().settingRealSlot, 0);
 			if (agent) {
-				DruidSystem.SwitchToAgent(agent, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agent, Controller.GetInstance().settingRealSlot);
 			}
 		}
-		SignalLock.Emit();
+		if (!isBuild){
+			SignalLock.Emit(true);
+		}
 		SignalDestruct.Emit(ID);
 	}
 }

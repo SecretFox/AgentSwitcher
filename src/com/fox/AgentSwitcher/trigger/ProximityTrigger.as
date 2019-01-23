@@ -15,6 +15,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private var Range:Number;
 	public var EnteredRangeSignal:Signal;
 	private var refreshInterval:Number;
+	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
 
 	public function ProximityTrigger(id:ID32, agent:String, range:Number, isbuild:Boolean) {
 		super();
@@ -24,32 +25,28 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		Char = new Character(ID);
 		SignalDestruct = new Signal();
 		isBuild = isbuild;
-	}
-	public function kill() {
-		Disconnect();
-		clearTimeout(switchTimeout);
-		Char.SignalCharacterDestructed.Disconnect(Destructed, this);
-		clearInterval(refreshInterval);
+		Char.SignalCharacterDestructed.Connect(kill, this);
 	}
 	public function StartTrigger() {
-		Char.SignalCharacterDestructed.Connect(Destructed, this);
-		refreshInterval = setInterval(Delegate.create(this, GetRange), Controller.m_Controller.settingUpdateRate);
+		refreshInterval = setInterval(Delegate.create(this, GetRange), Controller.GetInstance().settingUpdateRate);
 		GetRange();
 	}
 	public function SetRefresh() {
 		clearInterval(refreshInterval);
-		refreshInterval = setInterval(Delegate.create(this, GetRange), Controller.m_Controller.settingUpdateRate);
+		refreshInterval = setInterval(Delegate.create(this, GetRange), Controller.GetInstance().settingUpdateRate);
 	}
-	private function Destructed() {
+	private function kill() {
+		DisconnectAgent();
+		clearInterval(switchTimeout);
 		clearInterval(refreshInterval);
-		Char.SignalCharacterDestructed.Disconnect(Destructed, this);
+		Char.SignalCharacterDestructed.Disconnect(kill, this);
 		SignalDestruct.Emit(ID);
 	}
 	private function GetRange() {
 		var distance = Char.GetDistanceToPlayer();
-		var HP = Char.GetStat(27);
-		if (!HP || !distance) {
-			Destructed();
+		if (Char.IsDead()) {
+			kill();
+			return
 		}
 		if (distance < Range) {
 			clearInterval(refreshInterval);
@@ -70,29 +67,32 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		}
 	}
 	public function InRange() {
-		if (Char.GetDistanceToPlayer() < Range && Char.GetStat(27) && !isBuild) {
+		if (Char.GetDistanceToPlayer() < Range && !Char.IsDead() && !isBuild) {
 			return true
 		}
 	}
 	private function StartedEquip():Void {
+		// If we had druid equipped we want to keep it equipped
+		// build will still switch to other agent momentarily, setting the new default agent
 		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
+			disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 5000);
 		}
 	}
-	private function Disconnect() {
+	private function DisconnectAgent() {
 		clearTimeout(disconnectTimeout);
 		com.GameInterface.AgentSystem.SignalPassiveChanged.Disconnect(AgentChanged,this);
 	}
 	private function EquipBuild() {
 		var f:Function = Delegate.create(this, StartedEquip);
-		currentAgent = DruidSystem.GetAgentInSlot(Controller.m_Controller.settingRealSlot).m_AgentId;
+		currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
+		//Controller.m_Controller.m_Proximity.DisableBuildTrigger(namePattern, Range, Agent);
 		Build.AddToQueue(Agent, Age, f);
 	}
 	private function AgentChanged(slotID:Number) {
 		clearTimeout(disconnectTimeout);
-		disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
-		if (slotID == Controller.m_Controller.settingRealSlot) {
+		disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 200);
+		if (slotID == Controller.GetInstance().settingRealSlot) {
 			var SlotAgent:com.GameInterface.AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
 				if (SlotAgent.m_AgentId != Number(currentAgent)) {
@@ -101,21 +101,19 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 					switchTimeout = setTimeout(Delegate.create(this, EquipAgent), 500);
 				}
 			}
-		} else {
-			disconnectTimeout = setTimeout(Delegate.create(this, Disconnect), 200);
 		}
 	}
 	public function EquipAgent() {
 		if (Agent) {
-			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.m_Controller.settingRealSlot, 0);
+			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.GetInstance().settingRealSlot, 0);
 			if (agentID) {
-				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
 			}
 		} else {
 			var data:Object = DruidSystem.GetRace(ID);
-			var agentID = DruidSystem.GetSwitchAgent(data.Agent, Controller.m_Controller.settingRealSlot, Controller.m_Controller.settingDefaultAgent);
+			var agentID = DruidSystem.GetSwitchAgent(data.Agent, Controller.GetInstance().settingRealSlot, Controller.GetInstance().settingDefaultAgent);
 			if (agentID) {
-				DruidSystem.SwitchToAgent(agentID, Controller.m_Controller.settingRealSlot);
+				DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
 			}
 		}
 	}
