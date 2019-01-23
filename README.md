@@ -43,7 +43,7 @@ Proximity targeting:
 Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
 **Name/zoneID**  
-	Mob name - Targets exact name.  
+	Mob name - Targets (partial) name, ignores case  
 	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
 
 **Agent/Build/Outfit**  

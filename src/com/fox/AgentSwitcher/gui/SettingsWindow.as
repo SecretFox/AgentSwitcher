@@ -159,7 +159,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			"&lt;Name&gt;|&lt;Agent&gt;\n" +
 			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
 			"&lt;Name/Zone&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
-			" &lt;Name/Zone&gt; : Monsters full name(exact match) or zoneID\n\n" +
+			" &lt;Name/Zone&gt; : Monsters name or zoneID\n\n" +
 			" &lt;Agent/Oufit/Build&gt; Either agent override, buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
 			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
 			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
