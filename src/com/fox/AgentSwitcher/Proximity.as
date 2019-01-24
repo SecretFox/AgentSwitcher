@@ -126,8 +126,8 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 	
-	// When build trigger gets triggered we don't want to change agent back if agent switch has been queued
-	// We also want to delay agent change until build finishes changing
+	// When build trigger gets triggered we don't want to change agent back after build switching, IF agent switch has also been queued
+	// We also want to delay agent changing until build finishes changing
 	public function HasTrigger(TriggerType:Number, id:String, isbuild:Boolean){
 		// Proximity
 		if (TriggerType == 0){

@@ -23,7 +23,6 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		Agent = agent;
 		Range = range;
 		Char = new Character(ID);
-		SignalDestruct = new Signal();
 		isBuild = isbuild;
 		Char.SignalCharacterDestructed.Connect(kill, this);
 	}

@@ -14,12 +14,11 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 	private var data:Object;
 	public var SignalLock:Signal;
-
+	
 	public function KillTrigger(id:ID32, agent:String, isbuild:Boolean) {
 		super();
 		ID = id;
 		Agent = agent;
-		SignalDestruct = new Signal();
 		SignalLock = new Signal();
 		Char = new Character(id);
 		Char.SignalCharacterDied.Connect(TargetDied, this);
