@@ -125,6 +125,44 @@ class com.fox.AgentSwitcher.Proximity {
 			}
 		}
 	}
+	
+	// When build trigger gets triggered we don't want to change agent back if agent switch has been queued
+	// We also want to delay agent change until build finishes changing
+	public function HasTrigger(TriggerType:Number, id:String, isbuild:Boolean){
+		// Proximity
+		if (TriggerType == 0){
+			var Triggers:Array = TrackedNametags[id];
+			for (var i:Number = 0; i < Triggers.length; i++){
+				if (Triggers[i] instanceof ProximityTrigger){
+					if (Triggers[i].isBuild == isbuild){
+						return true;
+					}
+				}
+			}
+		}
+		// Kill
+		else if (TriggerType == 1){
+			var Triggers:Array = TrackedNametags[id];
+			for (var i:Number = 0; i < Triggers.length; i++){
+				if (Triggers[i] instanceof KillTrigger){
+					if (Triggers[i].isBuild == isbuild){
+						return true;
+					}
+				}
+			}
+		}
+		// Zone
+		else if (TriggerType == 2){
+			var Triggers:Array = TrackedZones[id];
+			for (var i:Number = 0; i < Triggers.length; i++){
+				if (Triggers[i] instanceof ZoneTrigger){
+					if (Triggers[i].isBuild == isbuild){
+						return true;
+					}
+				}
+			}
+		}
+	}
 
 	
 	/*
@@ -162,7 +200,6 @@ class com.fox.AgentSwitcher.Proximity {
 			
 			//Figure out if "Agent" is actual agent or build name
 			if (entryObj.Agent.toLowerCase() == "default") {
-				entryObj.Agent = string(m_Controller.settingDefaultAgent);
 				entryObj.isBuild = false;
 			} else {
 				for (var x in DruidSystem.Druids) {
@@ -197,7 +234,10 @@ class com.fox.AgentSwitcher.Proximity {
 			// Nametags
 			else {
 				if (entryObj.isBuild == false) {
-					if (AgentSystem.HasAgent(Number(entryObj.Agent))) {
+					if (entryObj.Agent.toLowerCase() == "default"){
+						ProximityCopy.push(entryObj);
+					}
+					else if (AgentSystem.HasAgent(Number(entryObj.Agent))) {
 						if (Number(entryObj.Agent) == m_Controller.settingDefaultAgent && AgentSystem.GetAgentById(Number(entryObj.Agent)).m_Level >= 25) {
 							ProximityCopy.push(entryObj);
 						} else if (AgentSystem.GetAgentById(Number(entryObj.Agent)).m_Level == 50) {

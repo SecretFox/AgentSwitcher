@@ -58,7 +58,7 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 	private function StartedEquip():Void {
 		// If we had druid equipped we want to keep it equipped
 		// build will still switch to other agent momentarily, setting the new default agent
-		if (currentAgent && DruidSystem.IsDruid(currentAgent)) {
+		if (currentAgent && DruidSystem.IsDruid(currentAgent) && !Controller.GetInstance().m_Proximity.HasTrigger(1, ID.toString(), false)) {
 			com.GameInterface.AgentSystem.SignalPassiveChanged.Connect(AgentChanged,this);
 			disconnectTimeout = setTimeout(Delegate.create(this, DisconnectAgent), 5000);
 		}
@@ -89,7 +89,19 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 	}
 	
 	private function EquipAgent() {
+		if (isBuild){
+			DisconnectAgent();
+		} else{
+			// wait for build to finish swapping (potentially setting new default agent)
+			if (Controller.GetInstance().m_Proximity.HasTrigger(1, ID.toString(), true)){
+				setTimeout(Delegate.create(this, EquipAgent), 200);
+				return
+			}
+		}
 		if (Agent) {
+			if (Agent.toLowerCase() == "default"){
+				Agent = string(Controller.GetInstance().settingDefaultAgent);
+			}
 			var agentID = DruidSystem.GetSwitchAgent(Number(Agent), Controller.GetInstance().settingRealSlot, 0);
 			if (agentID) {
 				DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
@@ -100,6 +112,7 @@ class com.fox.AgentSwitcher.trigger.KillTrigger extends BaseTrigger {
 			var agent = DruidSystem.GetSwitchAgent(data.Agent, Controller.GetInstance().settingRealSlot, 0);
 			if (agent) {
 				DruidSystem.SwitchToAgent(agent, Controller.GetInstance().settingRealSlot);
+				
 			}
 		}
 		if (!isBuild){
