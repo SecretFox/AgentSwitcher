@@ -34,7 +34,7 @@ class com.fox.AgentSwitcher.Utils.Player {
 			if (role == "healer" && HealerBuff) {
 				return true;
 			}
-			if (!TankBuff && !DpsBuff && !HealerBuff) return true;
+			//if (!TankBuff && !DpsBuff && !HealerBuff) return true;
 		}
 	}
 	//Cutscene/dead etc..

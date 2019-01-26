@@ -111,6 +111,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		} else {
 			if (agentDisplayDval.GetValue()) m_AgentDisplay.Show();
 			m_settings.dispose();
+			m_settings = undefined;
 		}
 	}
 

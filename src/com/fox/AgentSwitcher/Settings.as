@@ -93,7 +93,7 @@ class com.fox.AgentSwitcher.Settings {
 				LDBFormat.LDBGetText(51000, 28875) + "|Filth|40", // Chilam Psychopomp, override these to filth for Wayeb
 				LDBFormat.LDBGetText(51000, 19280) + "|Construct|50", // Prime Maker
 				LDBFormat.LDBGetText(51000, 30654) + "|Default|onKill",//Dimensional arcachnid
-				LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
+				//LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
 				//LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
 				LDBFormat.LDBGetText(51000, 18180) + "|Default|40" // Klein
 

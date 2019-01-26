@@ -9,6 +9,7 @@ import com.Utils.ID32;
 */
 class com.fox.AgentSwitcher.Utils.DruidSystem {
 	
+	
 	public static var Druids:Array = [
 		[2746, "Construct"],
 		[2749, "Cybernetic"],
@@ -153,6 +154,7 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 		//com.GameInterface.UtilsBase.PrintChatText(string(stat))
 		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
+	
 	
 	/*
 	static var Druids:Array = [

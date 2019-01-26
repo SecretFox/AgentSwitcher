@@ -1,5 +1,4 @@
 import com.fox.AgentSwitcher.Controller;
-
 import GUI.fox.aswing.ASColor;
 import GUI.fox.aswing.Component;
 import GUI.fox.aswing.Icon;

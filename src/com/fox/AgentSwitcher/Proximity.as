@@ -1,3 +1,4 @@
+import com.fox.AgentSwitcher.Build;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.data.ProximityEntry;
 import com.fox.AgentSwitcher.trigger.KillTrigger;
@@ -21,8 +22,9 @@ class com.fox.AgentSwitcher.Proximity {
 	private var m_Player:Player;
 	private var Enabled:Boolean;
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
-	private var TrackedNametags:Object = new Object(); // Arrays of triggers with mob name as key
-	private var TrackedZones:Object = new Object(); // Arrays of triggers with zoneID as key
+	private var KillTriggers:Array = new Array(); // Arrays of KillTriggers
+	private var ProximityTriggers:Array = new Array(); // Arrays of ProximityTriggers
+	private var ZoneTriggers:Array = new Array(); // Arrays of ZoneTriggers
 	public var Lock:Boolean = false;
 
 	public function Proximity(cont:Controller) {
@@ -31,8 +33,13 @@ class com.fox.AgentSwitcher.Proximity {
 		WaypointInterface.SignalPlayfieldChanged.Connect(WipeMobTriggers, this);
 	}
 
-	public function SetState(state:Boolean) {
+	public function SetState(state:Boolean, ran:Boolean) {
+		// wait boo for little bit longer
 		if (!Enabled && state) {
+			if (!Build.BooIsLoaded() && !ran){
+				setTimeout(Delegate.create(this, SetState), 1000, state, true);
+				return
+			}
 			Enabled = true;
 			GetProximitylistCopy();
 			if (ProximityCopy.length > 0) {
@@ -51,47 +58,42 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 
 	public function WipeMobTriggers() {
-		for (var id in TrackedNametags) {
-			for (var trigger in TrackedNametags[id]) {
-				TrackedNametags[id][trigger].SignalDestruct.Disconnect(RemoveTrigger, this);
-				TrackedNametags[id][trigger].SignalLock.Disconnect(SetLock, this);
-				TrackedNametags[id][trigger].kill();
-			}
+		for (var trigger in KillTriggers) {
+			KillTriggers[trigger].SignalDestruct.Disconnect(RemoveKillTrigger, this);
+			KillTriggers[trigger].SignalLock.Disconnect(SetLock, this);
+			KillTriggers[trigger].kill();
+		}
+		for (var trigger in ProximityTriggers) {
+			ProximityTriggers[trigger].SignalDestruct.Disconnect(RemoveProximityTrigger, this);
+			ProximityTriggers[trigger].SignalLock.Disconnect(SetLock, this);
+			ProximityTriggers[trigger].kill();
 		}
 		Task.RemoveTasksByType(Task.OutCombatTask);
 		Task.RemoveTasksByType(Task.InCombatTask);
-		// Build switches can stil be finished after zoning
-		TrackedNametags = new Object();
+		ProximityTriggers = new Array();
+		KillTriggers = new Array();
 		Lock = false;
-		for (var i in ProximityCopy) {
-			ProximityCopy[i].disabled = false;
-		}
 	}
 
-	public function WipeZoneTriggers() {
+	public function WipeZoneTriggers(caller) {
 		Task.RemoveTasksByType(Task.inPlayTask);
-		for (var zone in TrackedZones) {
-			for (var trigger in TrackedZones[zone]) {
-				TrackedZones[zone][trigger].kill();
-			}
+		for (var trigger in ZoneTriggers) {
+			ZoneTriggers[trigger].kill();
 		}
-		TrackedZones = new Object();
+		ZoneTriggers = new Array();
 	}
 
 	public function ReloadProximityList() {
 		WipeMobTriggers();
-		WipeZoneTriggers();
 		GetProximitylistCopy();
 		Nametags.RefreshNametags();
 	}
 
 	public function inProximity() {
 		if(Lock) return true
-		for (var id in TrackedNametags) {
-			for (var trigger in TrackedNametags[id]) {
-				if (TrackedNametags[id][trigger].InRange()) {
-					return true;
-				}
+		for (var trigger in ProximityTriggers) {
+			if (ProximityTriggers[trigger].InRange()) {
+				return true;
 			}
 		}
 	}
@@ -117,53 +119,10 @@ class com.fox.AgentSwitcher.Proximity {
 
 	// Updates refresh rates for proximity based triggers
 	public function UpdateRateChanged() {
-		for (var id in TrackedNametags) {
-			for (var trigger in TrackedNametags[id]) {
-				if (TrackedNametags[id][trigger] instanceof ProximityTrigger) {
-					TrackedNametags[id][trigger].SetRefresh();
-				}
-			}
+		for (var trigger in ProximityTriggers) {
+			ProximityTriggers[trigger].SetRefresh();
 		}
 	}
-	
-	// When build trigger gets triggered we don't want to change agent back after build switching, IF agent switch has also been queued
-	// We also want to delay agent changing until build finishes changing
-	public function HasTrigger(TriggerType:Number, id:String, isbuild:Boolean){
-		// Proximity
-		if (TriggerType == 0){
-			var Triggers:Array = TrackedNametags[id];
-			for (var i:Number = 0; i < Triggers.length; i++){
-				if (Triggers[i] instanceof ProximityTrigger){
-					if (Triggers[i].isBuild == isbuild){
-						return true;
-					}
-				}
-			}
-		}
-		// Kill
-		else if (TriggerType == 1){
-			var Triggers:Array = TrackedNametags[id];
-			for (var i:Number = 0; i < Triggers.length; i++){
-				if (Triggers[i] instanceof KillTrigger){
-					if (Triggers[i].isBuild == isbuild){
-						return true;
-					}
-				}
-			}
-		}
-		// Zone
-		else if (TriggerType == 2){
-			var Triggers:Array = TrackedZones[id];
-			for (var i:Number = 0; i < Triggers.length; i++){
-				if (Triggers[i] instanceof ZoneTrigger){
-					if (Triggers[i].isBuild == isbuild){
-						return true;
-					}
-				}
-			}
-		}
-	}
-
 	
 	/*
 	UNUSED, not always desirable behaviour (e.g after wiping on DW6), may need to add single use proximity triggers?
@@ -182,6 +141,14 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 	*/
+	private function GetTrigger(array:Array, id:String){
+		for (var i:Number = 0; i < array.length ; i++ ) {
+			if (array[i].ID == id){
+				return array[i];
+			}
+		}
+		return false
+	}
 
 	// Gets copy of ProximityList with underleveled agents removed
 	// Also starts the zone triggers
@@ -208,11 +175,11 @@ class com.fox.AgentSwitcher.Proximity {
 						entryObj.isBuild = false;
 						break
 					}
-					/* If agent/buildname is a number,and player doesn't own agent with that ID
-					 * If buildname is the same as one of the agentID's there will be a conflict, unlikely to happen when agentID's are all 4 digit
-					*/
 				}
 				if (entryObj.isBuild != false){
+					/* If agent/buildname is a number,and player doesn't own agent with that ID
+					* If buildname is the same as one of the agentID's there will be a conflict, unlikely to happen when agentID's are all 4 digit
+					*/
 					if (!isNaN(Number(entryObj.Agent)) && AgentSystem.HasAgent(Number(entryObj.Agent))) {
 						entryObj.isBuild = false;
 					}
@@ -221,15 +188,31 @@ class com.fox.AgentSwitcher.Proximity {
 			
 			// onZone triggers
 			if (entryObj.Range.toLowerCase() == "onzone") {
-				if (!TrackedZones[entryObj.Name]) {
-					TrackedZones[entryObj.Name] = new Array();
-				}
 				if (entryObj.isBuild != false){
 					entryObj.isBuild = true;
 				}
-				var Trigger:ZoneTrigger = new ZoneTrigger(entryObj.Name, entryObj.Agent, entryObj.Role, entryObj.isBuild);
-				Trigger.StartTrigger();
-				TrackedZones[entryObj.Name].push(Trigger);
+				var trigger:ZoneTrigger = GetTrigger(ZoneTriggers, entryObj.Name);
+				if (!trigger){
+					trigger = new ZoneTrigger(entryObj.Name);
+					ZoneTriggers.push(trigger);
+				}
+				// Zone triggers only get loaded once, so builds/agent/outfits must be stored in an array, ignoring the role
+				// Role is only checked on trigger.
+				if (entryObj.isBuild){
+					if (Build.HasBuild(entryObj.Agent)){
+						trigger.BuildNames.push(entryObj.Agent);
+						trigger.BuildRoles.push(entryObj.Role);
+					}
+					if (Build.HasOutfit(entryObj.Agent)){
+						trigger.OutfitNames.push(entryObj.Agent);
+						trigger.OutfitRoles.push(entryObj.Role);
+					}
+				}
+				else{
+					trigger.AgentNames.push(entryObj.Agent);
+					trigger.AgentRoles.push(entryObj.Role);
+				}
+				trigger.StartTrigger();
 			}
 			// Nametags
 			else {
@@ -254,26 +237,64 @@ class com.fox.AgentSwitcher.Proximity {
 
 	private function NametagAdded(id:ID32) {
 		var char:Character = new Character(id);
-		if (!TrackedNametags[id.toString()]) {
+		var charName = char.GetName().toLowerCase();
+		if (!GetTrigger(ProximityTriggers, charName) && !GetTrigger(KillTriggers, charName)) {
 			for (var i:Number = 0; i < ProximityCopy.length; i++){
-				var entry:ProximityEntry = ProximityCopy[i];
-				if (entry.disabled) {
+				var entryObj:ProximityEntry = ProximityCopy[i];
+				/*
+				if (entryObj.disabled) {
 					continue
-				} else if (char.GetName().toLowerCase().indexOf(entry.Name.toLowerCase()) >= 0) {
-					if (Player.IsRightRole(entry.Role) || !entry.isBuild) {
-						if (!TrackedNametags[id.toString()]) {
-							TrackedNametags[id.toString()] = new Array();
-						}
-						if (entry.Range != "onkill") {
-							var Trigger:ProximityTrigger= new ProximityTrigger(id, entry.Agent, Number(entry.Range), entry.isBuild);
-							Trigger.SignalDestruct.Connect(RemoveTrigger, this);
-							Trigger.StartTrigger();
-							TrackedNametags[id.toString()].push(Trigger);
-						} else {
-							var Trigger:KillTrigger = new KillTrigger(id, entry.Agent, entry.isBuild);
-							Trigger.SignalDestruct.Connect(RemoveTrigger, this);
-							Trigger.SignalLock.Connect(SetLock, this);
-							TrackedNametags[id.toString()].push(Trigger);
+				}
+				*/
+				if (charName.indexOf(entryObj.Name.toLowerCase()) >= 0) {
+					if (Player.IsRightRole(entryObj.Role)) {
+						if (entryObj.Range != "onkill") {
+							// Using charName as trigger ID, that way it wont create new trigger for every enemy of same name
+							var trigger:ProximityTrigger = GetTrigger(ProximityTriggers, charName);
+							if (!trigger){
+								trigger = new ProximityTrigger(charName, Number(entryObj.Range));
+								trigger.SignalDestruct.Connect(RemoveProximityTrigger, this);
+								ProximityTriggers.push(trigger);
+							}
+							if (entryObj.isBuild){
+								if (Build.HasBuild(entryObj.Agent)){
+									trigger.BuildName = entryObj.Agent;
+									trigger.BuildRole = entryObj.Role
+								}
+								if (Build.HasOutfit(entryObj.Agent)){
+									trigger.OutfitName = entryObj.Agent;
+									trigger.OutfitRole = entryObj.Role
+								}
+							}
+							else{
+								trigger.AgentName = entryObj.Agent;
+								trigger.AgentRole = entryObj.Role
+							}
+							trigger.StartTrigger(id);
+						} 
+						else {
+							var trigger:KillTrigger = GetTrigger(KillTriggers, charName);
+							if (!trigger){
+								trigger = new KillTrigger(charName);
+								trigger.SignalLock.Connect(SetLock, this);
+								trigger.SignalDestruct.Connect(RemoveKillTrigger, this);
+								KillTriggers.push(trigger);
+							}
+							if (entryObj.isBuild){
+								if (Build.HasBuild(entryObj.Agent)){
+									trigger.BuildName = entryObj.Agent;
+									trigger.BuildRole = entryObj.Role
+								}
+								if (Build.HasOutfit(entryObj.Agent)){
+									trigger.OutfitName = entryObj.Agent;
+									trigger.OutfitRole = entryObj.Role
+								}
+							}
+							else{
+								trigger.AgentName = entryObj.Agent;
+								trigger.AgentRole = entryObj.Role
+							}
+							trigger.StartTrigger(id);
 						}
 					}
 				}
@@ -281,9 +302,22 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 
-	// Removes all triggers belonging to mobID from tracked objects
-	// Task will keep reference to them if they are still doing something
-	private function RemoveTrigger(id:ID32) {
-		delete TrackedNametags[id.toString()];
+	// Removes all triggers belonging to mobID from proxity triggers
+	private function RemoveProximityTrigger(trigger:ProximityTrigger) {
+		for (var i in ProximityTriggers){
+			if (ProximityTriggers[i] == trigger){
+				ProximityTriggers[i].kill();
+				ProximityTriggers.splice(Number(i), 1);
+			}
+		}
+	}
+	// Removes all triggers belonging to mobID from kill triggers
+	private function RemoveKillTrigger(trigger:ProximityTrigger) {
+		for (var i in KillTriggers){
+			if (KillTriggers[i] == trigger){
+				KillTriggers[i].kill();
+				KillTriggers.splice(Number(i), 1);
+			}
+		}
 	}
 }

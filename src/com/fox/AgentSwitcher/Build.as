@@ -15,14 +15,62 @@ class com.fox.AgentSwitcher.Build {
 	private static var EquipTimeout:Number;
 	private static var BuildQueue:Array = new Array();
 
-	public static function AddToQueue(build:String, age:Number, callback:Function) {
+	public var BuildName:String;
+	public var Age:Number;
+	public var Switching:Boolean;
+	public var BuildEquipped:Signal;
+	private var isOutfit:Boolean;
+	private var StartCallback:Function;
+	private var FinishCallback:Function;
+	private var DisconnecTimeout:Number;
+	private var CheckInterval:Number;
+	
+	public static function BooIsLoaded():Boolean{
+		if(!_root["boobuilds\\boobuilds"]) return true
+		if (_root["boobuilds\\boobuilds"].m_quickBuilds[0] || _root["boobuilds\\boobuilds"].m_builds[0] || _root["boobuilds\\boobuilds"].m_outfits[0]){
+			return true
+		}
+		return false
+	}
+	
+	
+	public static function HasBuild(buildname:String){
+		// quick build
+		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name.toLowerCase() == buildname.toLowerCase()) {
+				return true
+			}
+		}
+		// boobuild
+		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name.toLowerCase() == buildname.toLowerCase()) {
+				return true
+			}
+		}
+		// Gear manager
+		var buildList:Array = GearManager.GetBuildList();
+		for (var i in buildList){
+			if (buildList[i].toLowerCase() == buildname.toLowerCase()){
+				return true
+			}
+		}
+	}
+	public static function HasOutfit(buildname:String){
+		// Boo outfit
+		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits) {
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name.toLowerCase() == buildname.toLowerCase()) {
+				return true
+			}
+		}
+	}
+	public static function AddToQueue(build:String, age:Number, callback:Function, callback2:Function, isOutfit:Boolean) {
 		for (var i in BuildQueue) {
 			if (BuildQueue[i].BuildName == build) {
 				return
 			}
 		}
 		clearTimeout(EquipTimeout);
-		var Equipper:Build = new Build(build, age, callback);
+		var Equipper:Build = new Build(build, age, callback, callback2, isOutfit);
 		Equipper.BuildEquipped.Connect(Dispose);
 		BuildQueue.push(Equipper);
 		EquipTimeout = setTimeout(Equip, 500);
@@ -61,31 +109,39 @@ class com.fox.AgentSwitcher.Build {
 		}
 	}
 // ----
-	public var BuildName:String;
-	public var Age:Number;
-	public var Switching:Boolean;
-	public var BuildEquipped:Signal;
-	private var Callback:Function;
-	private var DisconnecTimeout:Number;
-	private var CheckInterval:Number;
 
-	public function Build(build, age, callback) {
+	public function Build(build:String, age:Number, callback:Function,callback2:Function, isoutfit:Boolean) {
 		BuildName = build;
 		Age = age;
-		Callback = callback;
+		StartCallback = callback;
+		FinishCallback = callback2;
 		BuildEquipped = new Signal();
+		isOutfit = isoutfit;
 	}
 	// checks if latest boobuilds info message was for succesful equipping
 	private function checkIfloaded(){
 		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList){
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList[i].ErrorMsgText.text.toLowerCase() == "build loaded: " + BuildName.toLowerCase()){
+			if (!isOutfit && _root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList[i].ErrorMsgText.text.toLowerCase() == "build loaded: " + BuildName.toLowerCase()){
+				Disconnect();
+			}
+			else if (isOutfit && _root["boobuilds\\boobuilds"].appBuilds.m_info.m_msgList[i].ErrorMsgText.text.toLowerCase() == "outfit loaded"){
 				Disconnect();
 			}
 			break
 		}
 	}
+	private function FinsihedLoading(){
+		FinishCallback();
+	}
+	private function Disconnect() {
+		clearInterval(CheckInterval);
+		clearTimeout(DisconnecTimeout);
+		com.GameInterface.Chat.SignalShowFIFOMessage.Disconnect(FIFOMessageHandler, this);
+		FinsihedLoading();
+		BuildEquipped.Emit(this);
+	}
 	public function StartEquip(){
-		Callback();
+		StartCallback();
 		com.GameInterface.Chat.SignalShowFIFOMessage.Connect(FIFOMessageHandler, this);
 		EquipBuild();
 	}
@@ -101,43 +157,42 @@ class com.fox.AgentSwitcher.Build {
 		}
 		DisconnecTimeout = setTimeout(Delegate.create(this, Disconnect), 5000);
 		CheckInterval = setInterval(Delegate.create(this, checkIfloaded), 100);
-		// Quick build
-		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadQuickBuild", _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name);
-				return
+		
+		if (!isOutfit){
+			// Quick build
+			for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
+				if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+					DistributedValueBase.SetDValue("BooBuilds_LoadQuickBuild", _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name);
+					return
+				}
+				// Quick builds should be loaded regardless of used build
 			}
-			// Quick builds should be loaded regardless of used build
-		}
-		// boobuild
-		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadBuild", _root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name);
-				return
+			// boobuild
+			for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
+				if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+					DistributedValueBase.SetDValue("BooBuilds_LoadBuild", _root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name);
+					return
+				}
 			}
-		}
-		// Boo outfit
-		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits) {
-			if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
-				DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", _root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name);
-				return
+			// Gear manager
+			var buildList:Array = GearManager.GetBuildList();
+			for (var i in buildList){
+				if (buildList[i].toLowerCase() == BuildName.toLowerCase()){
+					GearManager.UseBuild(buildList[i]);
+					return
+				}
 			}
-		}
-		// Gear manager
-		var buildList:Array = GearManager.GetBuildList();
-		for (var i in buildList){
-			if (buildList[i].toLowerCase() == BuildName.toLowerCase()){
-				GearManager.UseBuild(buildList[i]);
-				return
+		}else{
+			// Boo outfit
+			for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_outfits) {
+				if (_root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+					DistributedValueBase.SetDValue("BooBuilds_LoadOutfit", _root["boobuilds\\boobuilds"].appBuilds.m_outfits[i].m_name);
+					return
+				}
 			}
 		}
 	}
-	private function Disconnect() {
-		clearInterval(CheckInterval);
-		clearTimeout(DisconnecTimeout);
-		com.GameInterface.Chat.SignalShowFIFOMessage.Disconnect(FIFOMessageHandler, this);
-		BuildEquipped.Emit(this);
-	}
+
 	// From booBuilds
 	private function FIFOMessageHandler(text:String, mode:Number) {
 		if (text.indexOf(CANT_UNEQUIP,0) == 0) {
