@@ -12,6 +12,7 @@ import mx.utils.Delegate;
 */
 class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private var Range:Number;
+	private var lockNeeded:Boolean;
 	private var refreshInterval:Number;
 	private var Char:Character;
 	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
@@ -54,6 +55,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		if (distance < Range) {
 			clearInterval(refreshInterval);
 			var f2:Function = Delegate.create(this, kill);
+			if (AgentName) lockNeeded = true;
 			if (BuildName || OutfitName) {
 				var time:Date = new Date();
 				Age = time.valueOf();
@@ -71,7 +73,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	}
 	
 	public function InRange() {
-		if (AgentName && Char.GetDistanceToPlayer() < Range && !Char.IsDead()) {
+		if (lockNeeded && Char.GetDistanceToPlayer() < Range && !Char.IsDead()) {
 			return true
 		}
 	}
