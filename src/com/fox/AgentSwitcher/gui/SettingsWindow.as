@@ -1,3 +1,4 @@
+import GUI.fox.aswing.ASFont;
 import com.fox.AgentSwitcher.Controller;
 import GUI.fox.aswing.ASColor;
 import GUI.fox.aswing.Component;
@@ -52,7 +53,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 	public function SettingsWindow(iconPos:Point, cont:Controller) {
 		// Setup
-		super("Settings");
+		super("AgentSwitcher v.2.1.0");
+		setFont(new ASFont("_StandardFont", 13, false));
 		m_Controller = cont;
 		setResizable(false);
 		setDragable(false);
@@ -61,7 +63,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		var icon:Icon = new Icon();//Empty icon
 		setIcon(icon);
 		//setBorder();
-		setBorder(new LineBorder(null,new ASColor(0xFFFFFF,100), 1, 8));
+		setBorder(new LineBorder(null,new ASColor(0xFFFFFF,100), 1, 2));
 		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS,0,SoftBoxLayout.CENTER))
 		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
@@ -125,7 +127,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		ProximitySettingPanel.append(rangeText);
 		ProximitySettingPanel.append(GetRange());
 
-		rateText = new JTextField("Update rate");
+		rateText = new JTextField("Update rate(ms)");
 		rateText.setBorder(null);
 		rateText.setEnabled(false);
 		rateText.setEditable(false);
@@ -188,8 +190,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		m_Controller.settingDval.SetValue(false);
 	}
 	private function __ActiveChanged(box:JCheckBox) {
-		m_Controller.settingEnabled = box.isSelected();
-		m_Controller.m_Icon.StateChanged(box.isSelected());
+		m_Controller.settingTargeting = box.isSelected();
 		m_Controller.SettingChanged();
 	}
 	private function __DebugChatChanged(box:JCheckBox) {
@@ -228,7 +229,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetActive() {
 		if (Active == null) {
 			Active = new JCheckBox("Switch on target change");
-			Active.setSelected(m_Controller.settingEnabled);
+			Active.setSelected(m_Controller.settingTargeting);
 			Active.addActionListener(__ActiveChanged, this);
 		}
 		return Active;
@@ -259,7 +260,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetDisplay() {
 		if (Display == null) {
-			Display = new JCheckBox("Agent display");
+			Display = new JCheckBox("Display active agent");
 			Display.setSelected(m_Controller.agentDisplayDval.GetValue());
 			Display.addActionListener(__DisplayChanged, this);
 		}

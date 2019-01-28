@@ -78,7 +78,7 @@ class com.fox.AgentSwitcher.gui.QuickSelect {
 			DruidSystem.SwitchToAgent(button.AgentData.m_AgentId, m_Controller.settingRealSlot);
 		}
 		if (m_Controller.settingDisableOnSwitch) {
-			m_Controller.settingEnabled = false;
+			m_Controller.settingTargeting = false;
 			m_Controller.SettingChanged();
 			m_Controller.m_Icon.StateChanged(false);
 		}

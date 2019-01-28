@@ -20,25 +20,31 @@ class com.fox.AgentSwitcher.gui.Icon {
 		m_swfRoot = root;
 		m_Controller = cont;
 	}
-	public function CreateTopIcon(pos:Point, enabled:Boolean) {
+	public function CreateTopIcon(pos:Point) {
 		if (!m_Icon) {
 			m_Icon = m_swfRoot.createEmptyMovieClip("m_TopIcon", m_swfRoot.getNextHighestDepth());
 			m_Icon._x = pos.x;
 			m_Icon._y = pos.y;
 			var m_Img = m_Icon.attachMovie("src.assets.topbarIcon.png", "m_Img", m_Icon.getNextHighestDepth(), {_x:2, _y:2, _width:17, _height:17});
-			StateChanged(enabled);
+			StateChanged(m_Controller.settingPause);
 			GuiEdit(false);
 		}
 	}
 	private function Clicked() {
-		m_Controller.m_QuickSelect.QuickSelectStateChanged();
+		if (Key.isDown(Key.SHIFT)){
+			m_Controller.settingPause = !m_Controller.settingPause;
+			m_Controller.ApplyPause();
+			StateChanged(m_Controller.settingPause);
+		} else{
+			m_Controller.m_QuickSelect.QuickSelectStateChanged();
+		}
 	}
 	private function ClickedAux() {
 		m_Controller.settingDval.SetValue(!m_Controller.settingDval.GetValue());
 	}
 	public function StateChanged(state:Boolean) {
-		if (state) Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
-		else Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);
+		if (state) Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);//paused
+		else Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
 	}
 	private function onRollOut() {
 		Tooltip.Close();

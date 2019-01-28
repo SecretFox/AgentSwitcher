@@ -5,6 +5,7 @@ class com.fox.Utils.Common {
 	}
 
 	public static function getOnScreen( mc:MovieClip) : Point {
+
 		var pointy:Point = new Point(mc._x, mc._y);
 		if ( mc._x < 0 ) pointy.x = 0;
 		else if ( mc._x + mc._width > Stage.visibleRect.width ) pointy.x = Stage.visibleRect.width - mc._width;

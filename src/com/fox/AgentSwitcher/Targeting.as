@@ -12,36 +12,38 @@ import com.Utils.ID32;
 class com.fox.AgentSwitcher.Targeting {
 	private var m_Controller:Controller;
 	private var m_Player:Character;
+	private var Enabled:Boolean;
 	private var m_Proximity:Proximity;
-	private var LastSelectedName:String = "";
-	private var LastSelectedRace:String = "";
+	private var LastName:String = "";
 
 	public function Targeting(cont:Controller) {
 		m_Controller = cont;
 		m_Player = Player.GetPlayer();
-		m_Proximity = m_Controller.m_Proximity
+		m_Proximity = m_Controller.m_Proximity;
 	}
 	public function SetState(state:Boolean, state2:Boolean, state3:Boolean) {
-		m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
-		if (state || state2 || state3) {
+		if (!Enabled && (state || state2 || state3)) {
+			Enabled = true;
 			m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
-			LastSelectedName = "";
-			LastSelectedRace = "";
+			LastName = "";
+		}
+		else if (Enabled && !state && !state2 && !state3){
+			Enabled = false;
+			m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		}
 	}
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
 			var data:Object = DruidSystem.GetRace(id);
-			if (m_Controller.settingDebugChat && data.Name + data.Race != LastSelectedName + LastSelectedRace) {
+			var name = data.Name + data.Race
+			if (m_Controller.settingDebugChat && name != LastName) {
 				Debugger.PrintText(data.Name + " : " + data.Race);
 			}
-			if (m_Controller.settingDebugFifo && data.Name + data.Race != LastSelectedName + LastSelectedRace) {
+			if (m_Controller.settingDebugFifo && name != LastName) {
 				Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
 			}
-			LastSelectedName = data.Name;
-			LastSelectedRace = data.Race;
-			if (!m_Controller.settingEnabled) return;
-			if (!m_Player.IsInCombat() && !m_Proximity.inProximity()) {
+			LastName = name;
+			if (m_Controller.settingTargeting && !m_Player.IsInCombat() && !m_Proximity.inProximity()) {
 				var agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
 				if (agent) {
 					DruidSystem.SwitchToAgent(agent, m_Controller.settingRealSlot);

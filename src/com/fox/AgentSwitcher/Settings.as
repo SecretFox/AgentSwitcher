@@ -17,7 +17,8 @@ class com.fox.AgentSwitcher.Settings {
 	public var settingDebugFifo:Boolean;
 	public var settingDefault:Boolean;
 	public var settingDefaultDelay:Number;
-	public var settingEnabled:Boolean;
+	public var settingTargeting:Boolean;
+	public var settingPause:Boolean;
 	public var settingDisableOnSwitch:Boolean;
 	public var settingDefaultAgent:Number;
 	public var settingRange:String;
@@ -55,7 +56,8 @@ class com.fox.AgentSwitcher.Settings {
 		settingDefault = config.FindEntry("Switch", false);
 		settingDefaultDelay = config.FindEntry("Delay", 2000);
 		settingDisableOnSwitch = config.FindEntry("DisableOnSwitch", true);
-		settingEnabled = config.FindEntry("Active", true);
+		settingTargeting = config.FindEntry("Active", true);
+		settingPause = config.FindEntry("Pause", false);
 		settingDefaultAgent = config.FindEntry("Default", 0);
 		iconPos = config.FindEntry("iconPos", new Point(200, 50));
 		settingRange = config.FindEntry("Range", "40");
@@ -128,7 +130,8 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("Switch", settingDefault);
 		config.AddEntry("Delay", settingDefaultDelay);
 		config.AddEntry("DisableOnSwitch", settingDisableOnSwitch);
-		config.AddEntry("Active", settingEnabled);
+		config.AddEntry("Active", settingTargeting);
+		config.AddEntry("Pause", settingPause);
 		config.AddEntry("Display", agentDisplayDval.GetValue());
 		config.AddEntry("Range", settingRange);
 		config.AddEntry("DefaultsGenerated", true);

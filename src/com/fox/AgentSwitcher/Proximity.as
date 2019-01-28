@@ -112,9 +112,11 @@ class com.fox.AgentSwitcher.Proximity {
 
 	// Updates refresh rates for proximity based triggers
 	public function RangeChanged(old:String) {
-		WipeMobTriggers();
-		GetProximitylistCopy();
-		Nametags.RefreshNametags();
+		if(Enabled && !m_Controller.settingPause) {
+			WipeMobTriggers();
+			GetProximitylistCopy();
+			Nametags.RefreshNametags();
+		}
 	}
 
 	// Updates refresh rates for proximity based triggers
