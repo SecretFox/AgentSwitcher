@@ -9,7 +9,6 @@ import com.Utils.ID32;
 */
 class com.fox.AgentSwitcher.Utils.DruidSystem {
 	
-	
 	public static var Druids:Array = [
 		[2746, "Construct"],
 		[2749, "Cybernetic"],

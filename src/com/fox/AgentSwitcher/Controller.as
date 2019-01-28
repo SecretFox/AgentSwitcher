@@ -170,6 +170,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_Proximity.SetState(false);
 		} else {
 			SettingChanged();
+			SlotPassiveChanged(settingRealSlot);
 		}
 	}
 

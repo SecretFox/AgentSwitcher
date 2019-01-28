@@ -20,8 +20,9 @@ Agent used:
 Default agent is automatically set when you switch to a build.
 
 
-Left-Click the icon to open QuickSelect menu, which contains your last 3 regular agents, and all your level 50 druids  
-Right-click the icon to access mod settings  
+Left-Click the icon to open QuickSelect menu, which contains your last 3 regular agents, and all your level 50 druids.  
+Right-click the icon to access mod settings.  
+Shift + Left-Click to Toggle mod on/off.  
 Icon can be moved while in GUI-Edit mode  
 [![Menu](Menu.png "Menu")](https://raw.githubusercontent.com/SecretFox/AgentSwitcher/master/Menu.png)  
 	
@@ -29,17 +30,22 @@ Icon can be moved while in GUI-Edit mode
 **Settings**  
 Switch on target change : Switches your agent when you target an enemy  
 Default on combat end : Switches back to your default agent x seconds after combat ends  
-Enable proximity Targeting : Automatically switches agent when specified(see proximiy list below) enemy enters proximity.
+Enable proximity switching : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.
 ________
 Agent Slot : Agent slot used for switching (1-3)  
-Print Target Race : Prints enemy race on system chat channel when targeting them  
+Print race to chat : Prints enemy race on system chat channel when targeting them  
+Print race as Fifo: Prints enemy race as FadeIn/FadeOut message when targeting them  
 Disable on quickselect : Disables target based switching when quickselecting(left-clicking icon) agent  
 Default delay : Wait time for "Default on combat end" option  
-Agent display : Creates moveable text which displays currently equipped agent  
+Display active agent : Creates moveable text which displays currently equipped agent  
 Use agent name on display : Whether display should show agents name or damage bonus.  
 Use agent name on quickselect : Whether quickselect should show agents name or damage bonus.  
+Proximity Switching list: See "Proximity Switching" section
 ________  
-Proximity targeting:  
+Range : When distance is not specified in the proximity list this value will be used  
+Rate : How often tracked proximity distance is checked  
+________  
+### Proximity Switching:  
 Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
 **Name/zoneID**  
@@ -53,7 +59,7 @@ Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Onl
 	Outfit - Outfit to switch to, supports outfits from boobuilds  
 
 **Distance/Trigger**  
-	Number - Switches agent once target is closer than this value.
+	Number - Switches agent once target is closer than this value.  
 	onKill - Changes agent/build/outfit after the specified mob is killed. Also locks switching until next combat starts.  
 	onZone - Changes agent/build/outfit after zoning to specified zone  
 	
@@ -71,6 +77,3 @@ Some examples:
 	`3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
 	`Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
 	`Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.
-________  
-Range : When distance is not specified in the proximity list this value will be used  
-Rate : How often tracked proximity distance is checked  
