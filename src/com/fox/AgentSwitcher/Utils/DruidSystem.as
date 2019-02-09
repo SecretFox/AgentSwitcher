@@ -129,20 +129,22 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 				race =  "Vampire";
 				break;
 			case 101:
+				// fusang?
 				race =  "None(Turret)";
 				break
 			case 100:
+				// fusang?
 				race =  "None(Custodian)";
 				break
 			case 59:
+				// Winter event rats
 				race = "None?";
 				break
 			case 0:
-				// Unassigned?
 				race =  "None";
 				break;
 			case 999:
-				// No Race Defined
+				// 	Not entirely sure what the difference betweeen this and 0 is.
 				race = "No Race Defined";
 				break
 			default:

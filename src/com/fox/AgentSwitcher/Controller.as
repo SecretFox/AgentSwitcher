@@ -90,11 +90,14 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 
 	public function Activate(config:Archive) {
-		LoadConfig(config);
-		SettingChanged();
-		m_Icon.CreateTopIcon(iconPos);
-		m_AgentDisplay.SlotChanged();
-		ApplyPause();
+		if (!Loaded){
+			LoadConfig(config);
+			SettingChanged();
+			m_Icon.CreateTopIcon(iconPos);
+			m_AgentDisplay.SlotChanged();
+			m_Targeting.SetBlacklist(settingBlacklist);
+			ApplyPause();
+		}
 	}
 
 	public function Deactivate():Archive {

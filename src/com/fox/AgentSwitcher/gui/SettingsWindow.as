@@ -26,9 +26,11 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var m_Controller:Controller;
 
 	private var Active:JCheckBox;
+	private var Blacklist:JTextField;
 	private var DebugChat:JCheckBox;
 	private var DebugFifo:JCheckBox;
 	private var slotText:JTextField;
+	private var blacklisText:JTextField;
 	private var Slot:JTextField;
 
 	private var Default:JCheckBox;
@@ -43,7 +45,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 	private var ProximityToggle:JCheckBox;
 	private var ProximityList:JTextArea;
-	private var ProximityListContent:Array;
 	private var scrollPane:JScrollPane;
 	private var rangeText:JTextField;
 	private var Range:JTextField;
@@ -64,7 +65,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		setIcon(icon);
 		//setBorder();
 		setBorder(new LineBorder(null,new ASColor(0xFFFFFF,100), 1, 2));
-		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS,0,SoftBoxLayout.CENTER))
+		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER))
+		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
@@ -73,8 +75,17 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		slotText.setBorder(null);
 		slotText.setEnabled(false);
 		slotText.setEditable(false);
+		
+		blacklisText = new JTextField("Targeting Blacklist:");
+		blacklisText.setBorder(null);
+		blacklisText.setEnabled(false);
+		blacklisText.setEditable(false);
 
 		content.append(GetActive());
+		blacklistPanel.append(blacklisText);
+		blacklistPanel.append(GetBlacklist());
+		content.append(blacklistPanel);
+		
 		content.append(GetDefault());
 		content.append(GetProximityTogggle());
 		content.append(new JSeparator());
@@ -184,14 +195,19 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	public function tryToClose():Void {
 		Tooltip.Close();
 		// Reload proximity list if changed
-		if (ProximityListContent.toString() != ProximityList.getText().split("\n").toString()) {
+		if (m_Controller.settingPriority.toString() != ProximityList.getText().split("\n").toString()) {
 			m_Controller.ReloadProximityList();
+		}
+		if (m_Controller.settingBlacklist != Blacklist.getText()){
+			m_Controller.settingBlacklist = Blacklist.getText();
+			m_Controller.m_Targeting.SetBlacklist(Blacklist.getText());
 		}
 		m_Controller.settingDval.SetValue(false);
 	}
 	private function __ActiveChanged(box:JCheckBox) {
 		m_Controller.settingTargeting = box.isSelected();
 		m_Controller.SettingChanged();
+		Blacklist.setEnabled(box.isSelected());
 	}
 	private function __DebugChatChanged(box:JCheckBox) {
 		m_Controller.settingDebugChat = box.isSelected();
@@ -226,6 +242,9 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		Range.setEnabled(m_Controller.settingProximityEnabled);
 		Rate.setEnabled(m_Controller.settingProximityEnabled);
 	}
+	private function __BlacklistChanged(){
+		
+	}
 	private function GetActive() {
 		if (Active == null) {
 			Active = new JCheckBox("Switch on target change");
@@ -233,6 +252,17 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			Active.addActionListener(__ActiveChanged, this);
 		}
 		return Active;
+	}
+	private function GetBlacklist() {
+		if (Blacklist == null){
+			Blacklist = new JTextField(string(m_Controller.settingBlacklist), 15);
+			Blacklist.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
+			Blacklist.setEditable(true);
+			Blacklist.addEventListener(JTextField.ON_TEXT_CHANGED, __BlacklistChanged, this);
+			Blacklist.setFocusable(false);
+			Blacklist.setEnabled(Active.isSelected());
+		}
+		return Blacklist
 	}
 	private function GetDebugChat() {
 		if (DebugChat == null) {
@@ -370,8 +400,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetProximityList() {
 		if (ProximityList == null) {
-			ProximityListContent = m_Controller.settingPriority;
-			ProximityList = new JTextArea(ProximityListContent.join("\n"), 8, 1);
+			ProximityList = new JTextArea(m_Controller.settingPriority.join("\n"), 8, 1);
 			ProximityList.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
 			ProximityList.setOpaque(false);
 			ProximityList.setEditable(true);

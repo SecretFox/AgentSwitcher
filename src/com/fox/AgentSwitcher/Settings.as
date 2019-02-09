@@ -11,6 +11,8 @@ import mx.utils.Delegate;
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
+	public var Loaded:Boolean = false;
+	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
 	public var settingDebugChat:Boolean;
@@ -23,6 +25,7 @@ class com.fox.AgentSwitcher.Settings {
 	public var settingDefaultAgent:Number;
 	public var settingRange:String;
 	public var settingSlot:Number;
+	public var settingBlacklist:String;
 	public var settingPriority:Array;
 	public var settingProximityEnabled:Boolean;
 	public var settingQuickselectName:Boolean;
@@ -57,6 +60,8 @@ class com.fox.AgentSwitcher.Settings {
 		settingDefaultDelay = config.FindEntry("Delay", 2000);
 		settingDisableOnSwitch = config.FindEntry("DisableOnSwitch", true);
 		settingTargeting = config.FindEntry("Active", true);
+		settingBlacklist = config.FindEntry("blacklist", "");
+		
 		settingPause = config.FindEntry("Pause", false);
 		settingDefaultAgent = config.FindEntry("Default", 0);
 		iconPos = config.FindEntry("iconPos", new Point(200, 50));
@@ -116,6 +121,7 @@ class com.fox.AgentSwitcher.Settings {
 				*/
 			);
 		}
+		Loaded = true;
 	}
 
 	private function EmitError(msg:String) {
@@ -131,6 +137,7 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("Delay", settingDefaultDelay);
 		config.AddEntry("DisableOnSwitch", settingDisableOnSwitch);
 		config.AddEntry("Active", settingTargeting);
+		config.AddEntry("blacklist", settingBlacklist);
 		config.AddEntry("Pause", settingPause);
 		config.AddEntry("Display", agentDisplayDval.GetValue());
 		config.AddEntry("Range", settingRange);

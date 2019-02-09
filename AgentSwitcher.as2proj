@@ -49,8 +49,8 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "G:\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
-xcopy "$(ProjectDir)\src\mod\*.*" "G:\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
+  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
+xcopy "$(ProjectDir)\src\mod\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
 
 xcopy "$(ProjectDir)\bin\*.*" "./deployment/AgentSwitcher/*.*" /e /y
 xcopy "$(ProjectDir)\src\mod\*.*" "./deployment/AgentSwitcher/*.*" /e /y</postBuildCommand>

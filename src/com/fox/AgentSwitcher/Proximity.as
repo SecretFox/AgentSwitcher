@@ -22,9 +22,9 @@ class com.fox.AgentSwitcher.Proximity {
 	private var m_Player:Player;
 	private var Enabled:Boolean;
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
-	private var KillTriggers:Array = new Array(); // Arrays of KillTriggers
-	private var ProximityTriggers:Array = new Array(); // Arrays of ProximityTriggers
-	private var ZoneTriggers:Array = new Array(); // Arrays of ZoneTriggers
+	private var KillTriggers:Array = [];
+	private var ProximityTriggers:Array = [];
+	private var ZoneTriggers:Array = [];
 	public var Lock:Boolean = false;
 
 	public function Proximity(cont:Controller) {
@@ -126,23 +126,6 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 	
-	/*
-	UNUSED, not always desirable behaviour (e.g after wiping on DW6), may need to add single use proximity triggers?
-	Once proximity build switch triggers it be can be disabled so it wont trigger again after each wipe
-	
-	public function DisableBuildTrigger(pattern:String, range:Number, Build:String) {
-		Debugger.PrintText("Attempting to disable proximity " + pattern + range + Build);
-		for (var i = 0; i < ProximityCopy.length; i++) {
-			var entry:ProximityEntry = ProximityCopy[i];
-			if (entry.Name == pattern && entry.Range != "onkill" && range == entry.Range && Build == entry.Agent) {
-				entry.disabled = true;
-				ProximityCopy[i] = entry;
-				Debugger.PrintText("Found and disabled proximity trigger for " + pattern);
-				break
-			}
-		}
-	}
-	*/
 	private function GetTrigger(array:Array, id:String){
 		for (var i:Number = 0; i < array.length ; i++ ) {
 			if (array[i].ID == id){
@@ -179,16 +162,13 @@ class com.fox.AgentSwitcher.Proximity {
 					}
 				}
 				if (entryObj.isBuild != false){
-					/* If agent/buildname is a number,and player doesn't own agent with that ID
-					* If buildname is the same as one of the agentID's there will be a conflict, unlikely to happen when agentID's are all 4 digit
-					*/
 					if (!isNaN(Number(entryObj.Agent)) && AgentSystem.HasAgent(Number(entryObj.Agent))) {
 						entryObj.isBuild = false;
 					}
 				}
 			}
 			
-			// onZone triggers
+			// Start onZone triggers
 			if (entryObj.Range.toLowerCase() == "onzone") {
 				if (entryObj.isBuild != false){
 					entryObj.isBuild = true;
@@ -243,15 +223,10 @@ class com.fox.AgentSwitcher.Proximity {
 		if (!GetTrigger(ProximityTriggers, charName) && !GetTrigger(KillTriggers, charName)) {
 			for (var i:Number = 0; i < ProximityCopy.length; i++){
 				var entryObj:ProximityEntry = ProximityCopy[i];
-				/*
-				if (entryObj.disabled) {
-					continue
-				}
-				*/
 				if (charName.indexOf(entryObj.Name.toLowerCase()) >= 0) {
 					if (Player.IsRightRole(entryObj.Role)) {
 						if (entryObj.Range != "onkill") {
-							// Using charName as trigger ID, that way it wont create new trigger for every enemy of same name
+							// Using charName as trigger ID, that way it wont create new trigger for every enemy with same name
 							var trigger:ProximityTrigger = GetTrigger(ProximityTriggers, charName);
 							if (!trigger){
 								trigger = new ProximityTrigger(charName, Number(entryObj.Range));
