@@ -29,6 +29,7 @@ Icon can be moved while in GUI-Edit mode
 
 **Settings**  
 Switch on target change : Switches your agent when you target an enemy  
+Targeting blacklist : Comma-separated(no space after comma) list of enemies to ignore for targeting based switching  
 Default on combat end : Switches back to your default agent x seconds after combat ends  
 Enable proximity switching : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.
 ________

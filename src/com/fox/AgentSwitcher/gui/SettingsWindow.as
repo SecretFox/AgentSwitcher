@@ -54,7 +54,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 	public function SettingsWindow(iconPos:Point, cont:Controller) {
 		// Setup
-		super("AgentSwitcher v.2.1.1");
+		super("AgentSwitcher " +cont.ModVersion);
 		setFont(new ASFont("_StandardFont", 13, false));
 		m_Controller = cont;
 		setResizable(false);

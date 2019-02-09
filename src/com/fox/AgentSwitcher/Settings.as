@@ -12,6 +12,7 @@ import mx.utils.Delegate;
 */
 class com.fox.AgentSwitcher.Settings {
 	public var Loaded:Boolean = false;
+	public var ModVersion:String = "2.2.0";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;

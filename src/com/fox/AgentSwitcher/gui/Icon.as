@@ -53,7 +53,7 @@ class com.fox.AgentSwitcher.gui.Icon {
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher</b></font>";
-		m_TooltipData.m_SubTitle = "<font size='9'>v2.1.1 by Starfox</font>";
+		m_TooltipData.m_SubTitle = "<font size='9'>" + m_Controller.ModVersion + " by Starfox</font>";
 		m_TooltipData.m_Color = 0xFF8000;
 		m_TooltipData.m_MaxWidth = 220;
 		m_TooltipData.AddDescription("<font size='11'>Left-Click for QuickSelect menu\nRight-Click for settings\nMoveable while in GUIEdit</font>");
@@ -69,8 +69,8 @@ class com.fox.AgentSwitcher.gui.Icon {
 			m_Icon.onPressAux = Delegate.create(this, ClickedAux);
 			m_Icon.onRelease = undefined;
 			m_Icon.onReleaseOutside = undefined;
-			m_Icon.onRollOver = OnRollOver;
-			m_Icon.onRollOut = onRollOut;
+			m_Icon.onRollOver = Delegate.create(this,OnRollOver);
+			m_Icon.onRollOut = Delegate.create(this,onRollOut);
 		} else {
 			m_Icon.onPress = Delegate.create(this, function() {
 				this.m_Icon.startDrag();
