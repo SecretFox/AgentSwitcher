@@ -1,3 +1,4 @@
+import com.Utils.StringUtils;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Proximity;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
@@ -22,15 +23,21 @@ class com.fox.AgentSwitcher.Targeting {
 		m_Player = Player.GetPlayer();
 		m_Proximity = m_Controller.m_Proximity;
 	}
+	
 	public function SetBlacklist(blacklistStr:String) {
 		Blacklist = new Array();
+		if (!StringUtils.LStrip(blacklistStr)){
+			return
+		}
 		var temp:Array = blacklistStr.toLowerCase().split(",");
 		for (var i = 0; i < temp.length; i++) {
 			var entry:Array = temp[i].split("|");
 			if (!entry[1]) entry.push("none");
+			entry[0] = StringUtils.LStrip(entry[0]);
 			Blacklist.push(entry);
 		}
 	}
+	
 	public function SetState(state:Boolean, state2:Boolean, state3:Boolean) {
 		if (!Enabled && (state || state2 || state3)) {
 			Enabled = true;
@@ -41,6 +48,7 @@ class com.fox.AgentSwitcher.Targeting {
 			m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		}
 	}
+	
 	private function IsBlacklisted(name:String) {
 		for (var i in Blacklist) {
 			if (name.indexOf(Blacklist[i][0]) >= 0) {
@@ -48,6 +56,7 @@ class com.fox.AgentSwitcher.Targeting {
 			}
 		}
 	}
+	
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
 			var data:Object = DruidSystem.GetRace(id);

@@ -1,3 +1,4 @@
+import com.Utils.StringUtils;
 import com.fox.AgentSwitcher.Build;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.data.ProximityEntry;
@@ -142,7 +143,7 @@ class com.fox.AgentSwitcher.Proximity {
 		for (var i:Number = 0; i < m_Controller.settingPriority.length; i++){
 			var entry:Array = m_Controller.settingPriority[i].split("|");
 			var entryObj:ProximityEntry = new ProximityEntry();
-			entryObj.Name = entry[0];
+			entryObj.Name = StringUtils.LStrip(entry[0]);
 			entryObj.Agent = entry[1] || m_Controller.settingDefaultAgent;
 			entryObj.Range = entry[2].toLowerCase() || m_Controller.settingRange;
 			entryObj.Role = entry[3].toLowerCase() || "all";
