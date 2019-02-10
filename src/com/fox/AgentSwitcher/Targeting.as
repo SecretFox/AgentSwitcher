@@ -50,7 +50,7 @@ class com.fox.AgentSwitcher.Targeting {
 	}
 	
 	private function IsBlacklisted(name:String) {
-		for (var i in Blacklist) {
+		for (var i = 0; i < Blacklist.length; i++) {
 			if (name.indexOf(Blacklist[i][0]) >= 0) {
 				return Blacklist[i][1];
 			}
