@@ -23,6 +23,7 @@ import com.Utils.GlobalSignal;
 * @author fox
 */
 class com.fox.AgentSwitcher.Controller extends Settings {
+	public var Loaded:Boolean;
 	private static var m_Controller:Controller;
 	public var m_settings:SettingsWindow;
 	public var m_AgentDisplay:AgentDisplay;
@@ -65,28 +66,19 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		var laf:TswLookAndFeel = new TswLookAndFeel();
 		UIManager.setLookAndFeel(laf);
 
-		// Settings window
 		settingDval.SignalChanged.Connect(OpenSettings, this);
-
-		// Agents
 		agentDisplayDval.SignalChanged.Connect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
-
 		GlobalSignal.SignalSetGUIEditMode.Connect(ToggleGuiEdits, this);
 	}
 
 	public function Unload():Void {
-		//ASWING
 		m_settingsRoot.removeMovieClip();
-
-		// Settings window
 		settingDval.SignalChanged.Disconnect(OpenSettings, this);
-
-		// Agents
 		agentDisplayDval.SignalChanged.Disconnect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
-
 		GlobalSignal.SignalSetGUIEditMode.Disconnect(ToggleGuiEdits, this);
+		Loaded = false;
 	}
 
 	public function Activate(config:Archive) {
@@ -97,6 +89,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_AgentDisplay.SlotChanged();
 			m_Targeting.SetBlacklist(settingBlacklist);
 			ApplyPause();
+			Loaded = true;
 		}
 	}
 

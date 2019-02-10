@@ -121,7 +121,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 		currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
 		if(BuildName) Build.AddToQueue(BuildName, Age, f, f2, false); // Equips agent after it is done
 		if (OutfitName) Build.AddToQueue(OutfitName, Age, undefined, undefined, true); // Equips outfit simultaneously with build
-		if (OutfitName && !BuildName && AgentName) EquipAgent(); // If no build start agent switch
+		if (!BuildName && AgentName) EquipAgent(); // If no build start agent switch
 	}
 	private function EquipAgent() {
 		if (BuildName){

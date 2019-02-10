@@ -21,7 +21,6 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	public var OutfitNames:Array;
 	
 	private var hasBuild:Boolean;
-	private var hasOutfit:Boolean;
 	
 	public function ZoneTrigger(id:String) {
 		super();
@@ -62,15 +61,11 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		if (BuildNames.length > 0 || OutfitNames.length > 0) {
 			var time:Date = new Date();
 			Age = time.valueOf();
-			// Trying to get agent before inPlay crashes the game
-			// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 			var f:Function = Delegate.create(this, EquipBuild);
 			Task.AddTask(Task.inPlayTask, f, f2);
 		} else {
-			if (!Task.HasTaskType(Task.OutCombatTask)) {
-				var f:Function = Delegate.create(this, EquipAgent);
-				Task.AddTask(Task.OutCombatTask, f, f2);
-			}
+			var f:Function = Delegate.create(this, EquipAgent);
+			Task.AddTask(Task.inPlayTask, f, f2);
 		}
 	}
 	
@@ -122,22 +117,20 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		var f2:Function = Delegate.create(this, OnBuildEquip);
 		currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
 		hasBuild = false;
-		hasBuild = false;
 		for (var i:Number = 0; i < BuildNames.length; i++){
 			if (Player.IsRightRole(BuildRoles[i])){
-				Build.AddToQueue(BuildNames[i], Age, f, f2); // Equips agent after it is done
+				Build.AddToQueue(BuildNames[i], Age, f, f2);
 				hasBuild = true;
 				break
 			}
 		}
 		for (var i:Number = 0; i < OutfitNames.length; i++){
 			if (Player.IsRightRole(OutfitRoles[i])){
-				Build.AddToQueue(OutfitNames[i], Age, undefined, undefined, true); // Equips outfit simultaneously with build
-				hasOutfit = true;
+				Build.AddToQueue(OutfitNames[i], Age, undefined, undefined, true);
 				break
 			}
 		}
-		if (hasOutfit && !hasBuild && AgentName){
+		if (!hasBuild && AgentName){
 			EquipAgent();
 		}
 	}

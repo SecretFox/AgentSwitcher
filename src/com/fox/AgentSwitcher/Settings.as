@@ -11,8 +11,7 @@ import mx.utils.Delegate;
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var Loaded:Boolean = false;
-	public var ModVersion:String = "2.2.0";
+	public var ModVersion:String = "2.2.1";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
@@ -122,7 +121,6 @@ class com.fox.AgentSwitcher.Settings {
 				*/
 			);
 		}
-		Loaded = true;
 	}
 
 	private function EmitError(msg:String) {

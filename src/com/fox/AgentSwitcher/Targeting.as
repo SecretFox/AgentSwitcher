@@ -15,34 +15,38 @@ class com.fox.AgentSwitcher.Targeting {
 	private var Enabled:Boolean;
 	private var m_Proximity:Proximity;
 	private var LastName:String = "";
-	private var Blacklist:Array = [];
+	private var Blacklist:Array;
 
 	public function Targeting(cont:Controller) {
 		m_Controller = cont;
 		m_Player = Player.GetPlayer();
 		m_Proximity = m_Controller.m_Proximity;
 	}
-	public function SetBlacklist(blacklistStr:String){
-		Blacklist = blacklistStr.toLowerCase().split(",");
+	public function SetBlacklist(blacklistStr:String) {
+		Blacklist = new Array();
+		var temp:Array = blacklistStr.toLowerCase().split(",");
+		for (var i = 0; i < temp.length; i++) {
+			var entry:Array = temp[i].split("|");
+			if (!entry[1]) entry.push("none");
+			Blacklist.push(entry);
+		}
 	}
 	public function SetState(state:Boolean, state2:Boolean, state3:Boolean) {
 		if (!Enabled && (state || state2 || state3)) {
 			Enabled = true;
 			m_Player.SignalOffensiveTargetChanged.Connect(TargetChanged, this);
 			LastName = "";
-		}
-		else if (Enabled && !state && !state2 && !state3){
+		} else if (Enabled && !state && !state2 && !state3) {
 			Enabled = false;
 			m_Player.SignalOffensiveTargetChanged.Disconnect(TargetChanged, this);
 		}
 	}
-	private function IsBlacklisted(name:String){
-		for (var i in Blacklist){
-			if (name.indexOf(Blacklist[i]) >= 0){
-				return true
+	private function IsBlacklisted(name:String) {
+		for (var i in Blacklist) {
+			if (name.indexOf(Blacklist[i][0]) >= 0) {
+				return Blacklist[i][1];
 			}
 		}
-		return false
 	}
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
@@ -55,8 +59,21 @@ class com.fox.AgentSwitcher.Targeting {
 				Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
 			}
 			LastName = name;
-			if (m_Controller.settingTargeting && !IsBlacklisted(data.Name.toLowerCase()) && !m_Player.IsInCombat() && !m_Proximity.inProximity()) {
-				var agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
+			if (m_Controller.settingTargeting && !m_Player.IsInCombat() && !m_Proximity.inProximity()) {
+				var agent;
+				var blacklist = IsBlacklisted(data.Name.toLowerCase());
+				if (!blacklist) {
+					agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
+				} else if (blacklist.toLowerCase() == "default") {
+					agent = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent, m_Controller.settingRealSlot, 0);
+				} else {
+					for (var i in DruidSystem.Druids) {
+						if (DruidSystem.Druids[i][1].toLowerCase() == blacklist.toLowerCase()) {
+							agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids[i][0], m_Controller.settingRealSlot, 0);
+							break
+						}
+					}
+				}
 				if (agent) {
 					DruidSystem.SwitchToAgent(agent, m_Controller.settingRealSlot);
 				}
