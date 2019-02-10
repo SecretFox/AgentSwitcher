@@ -27,24 +27,26 @@ Icon can be moved while in GUI-Edit mode
 [![Menu](Menu.png "Menu")](https://raw.githubusercontent.com/SecretFox/AgentSwitcher/master/Menu.png)  
 	
 
-**Settings**  
-Switch on target change : Switches your agent when you target an enemy  
-Targeting blacklist : Comma-separated(no space after comma) list of enemies to ignore for targeting based switching  
-Default on combat end : Switches back to your default agent x seconds after combat ends  
-Enable proximity switching : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.
+### Settings  
+**Switch on target change** : Switches your agent when you target an enemy  
+**Targeting blacklist** : Comma-separated list of enemies that targeting based switching ignores.  
+You can also override the agent choice by adding `None, Default, Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal` as second argument, separated by `|` e.g  
+`Familiar|Demon,mob2|Animal,mob3|Construct`  
+**Default on combat end** : Switches back to your default agent x seconds after combat ends  
+**Enable proximity switching** : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.
 ________
-Agent Slot : Agent slot used for switching (1-3)  
-Print race to chat : Prints enemy race on system chat channel when targeting them  
-Print race as Fifo: Prints enemy race as FadeIn/FadeOut message when targeting them  
-Disable on quickselect : Disables target based switching when quickselecting(left-clicking icon) agent  
-Default delay : Wait time for "Default on combat end" option  
-Display active agent : Creates moveable text which displays currently equipped agent  
-Use agent name on display : Whether display should show agents name or damage bonus.  
-Use agent name on quickselect : Whether quickselect should show agents name or damage bonus.  
-Proximity Switching list: See "Proximity Switching" section
+**Agent Slot** : Agent slot used for switching (1-3)  
+**Print race to chat** : Prints enemy race on system chat channel when targeting them  
+**Print race as Fifo** : Prints enemy race as FadeIn/FadeOut message when targeting them  
+**Disable on quickselect** : Disables target based switching when quickselecting(left-clicking icon) agent  
+**Default delay** : Wait time for "Default on combat end" option  
+**Display active agent** : Creates moveable text which displays currently equipped agent  
+**Use agent name on display** : Whether display should show agents name or damage bonus.  
+**Use agent name on quickselect** : Whether quickselect should show agents name or damage bonus.  
+**Proximity Switching list** : See "Proximity Switching" section
 ________  
-Range : When distance is not specified in the proximity list this value will be used  
-Rate : How often tracked proximity distance is checked  
+**Range** : When distance is not specified in the proximity list this value will be used  
+**Rate** : How often tracked proximity distance is checked  
 ________  
 ### Proximity Switching:  
 Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
@@ -65,7 +67,7 @@ Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Onl
 	onZone - Changes agent/build/outfit after zoning to specified zone  
 	
 **Role**  
-	Tank,DPS,Healer or All - Only used with builds/outfits. If specified then the action will only be performed if player has the right role (according to party window).  
+	Tank,DPS,Healer or All - If specified then the action will only be performed if player has the right role (according to party window).  
 	If not specified assumed to be all
 
 Some examples:  
