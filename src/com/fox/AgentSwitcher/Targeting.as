@@ -49,6 +49,7 @@ class com.fox.AgentSwitcher.Targeting {
 		}
 	}
 	
+	// Returns redirect agent if target is "blacklisted"
 	private function IsBlacklisted(name:String) {
 		for (var i = 0; i < Blacklist.length; i++) {
 			if (name.indexOf(Blacklist[i][0]) >= 0) {
@@ -68,7 +69,10 @@ class com.fox.AgentSwitcher.Targeting {
 				Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
 			}
 			LastName = name;
-			if (m_Controller.settingTargeting && !m_Player.IsInCombat() && !m_Proximity.inProximity()) {
+			if (m_Controller.settingTargeting
+			&& !m_Player.IsInCombat()
+			&& !m_Proximity.inProximity()) 
+			{
 				var agent;
 				var blacklist = IsBlacklisted(data.Name.toLowerCase());
 				if (!blacklist) {

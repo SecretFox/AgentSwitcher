@@ -59,8 +59,6 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 			if (BuildName || OutfitName) {
 				var time:Date = new Date();
 				Age = time.valueOf();
-				// Trying to get agent before inPlay crashes the game
-				// Actual equip action will also have separate check for cooldowns, inPlay, casting, Combat
 				var f:Function = Delegate.create(this, EquipBuild);
 				Task.AddTask(Task.inPlayTask, f, f2);
 			} else {
@@ -95,7 +93,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private function OnBuildEquip(){
 		DisconnectAgentMonitoring();
 		if (AgentName){
-			EquipAgent(true);
+			EquipAgent();
 		}else{
 			SignalDestruct.Emit();
 		}

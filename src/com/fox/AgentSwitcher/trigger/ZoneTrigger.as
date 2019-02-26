@@ -7,9 +7,9 @@ import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.WaypointInterface;
 import mx.utils.Delegate;
 /**
- * ...
- * @author fox
- */
+* ...
+* @author fox
+*/
 
 class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	public var BuildRoles:Array;
@@ -26,7 +26,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		super();
 		ID = id;
 		// Need to store builds in array,since player might want use different build depending on role
-		// Proximity/Kill triggers don't have this problems since they are created (and role checked) only when nametag gets added (unlike zone triggers which are loaded once only)
+		// Proximity/Kill triggers don't have this problems since they are created (and role checked) only when nametag gets added (unlike zone triggers which are loaded only once)
 		BuildRoles = new Array();
 		AgentRoles = new Array();
 		OutfitRoles = new Array();
@@ -61,9 +61,11 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		if (BuildNames.length > 0 || OutfitNames.length > 0) {
 			var time:Date = new Date();
 			Age = time.valueOf();
+			// Trying to get equipped agent while in loading screen will crash the game
 			var f:Function = Delegate.create(this, EquipBuild);
 			Task.AddTask(Task.inPlayTask, f, f2);
 		} else {
+			// Trying to get equipped agent while in loading screen will crash the game
 			var f:Function = Delegate.create(this, EquipAgent);
 			Task.AddTask(Task.inPlayTask, f, f2);
 		}
@@ -94,7 +96,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	private function OnBuildEquip(){
 		DisconnectAgentMonitoring();
 		if (AgentName){
-			EquipAgent(true);
+			EquipAgent();
 		}
 	}
 	

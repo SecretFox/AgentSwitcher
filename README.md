@@ -52,7 +52,7 @@ ________
 Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
 **Name/zoneID**  
-	Mob name - Targets (partial) name, ignores case  
+	Mob name - Targets (partial) name, case insensitive
 	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
 
 **Agent/Build/Outfit**  

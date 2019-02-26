@@ -33,10 +33,11 @@ class com.fox.AgentSwitcher.Defaulting {
 		}
 	}
 	private function Default() {
-		if (m_Player.GetOffensiveTarget().IsNull() && //No target
-				!m_Player.IsInCombat()	&&
-				!m_Controller.m_Proximity.Lock && //Hasn't triggered onKill recently
-				!m_Controller.m_Proximity.inProximity()) { //No Proximity Targets inrange
+		if (m_Player.GetOffensiveTarget().IsNull() 
+		&& !m_Player.IsInCombat()
+		&& !m_Controller.m_Proximity.Lock
+		&& !m_Controller.m_Proximity.inProximity()) //No Proximity Targets inrange
+		{ 
 			var AgentID:Number = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent, m_Controller.settingRealSlot, 0);
 			if (AgentID) {
 				DruidSystem.SwitchToAgent(AgentID, m_Controller.settingRealSlot);

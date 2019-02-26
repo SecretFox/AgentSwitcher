@@ -3,9 +3,9 @@ import com.fox.AgentSwitcher.Utils.Player;
 import com.Utils.Signal;
 import mx.utils.Delegate;
 /**
- * ...
- * @author fox
- */
+* ...
+* @author fox
+*/
 class com.fox.AgentSwitcher.Utils.Task {
 	static var TaskQueue:Array = [];
 	static var OutCombatTask:Number = 0;
@@ -123,13 +123,13 @@ class com.fox.AgentSwitcher.Utils.Task {
 		}
 	}
 //Tasktype 3
-//Triggers when player has no cooldowns and is out of combat
+//Triggers when player is in play (not in cutscene/zoning/dead) 
 	public function StartTask3() {
 		if (Player.IsinPlay()){
 			Callback();
 			SignalDone.Emit(this);
 		}else{
-			setTimeout(Delegate.create(this, StartTask3), 500);
+			timeout = setTimeout(Delegate.create(this, StartTask3), 500);
 		}
 	}
 }

@@ -77,10 +77,11 @@ class com.fox.AgentSwitcher.Build {
 	}
 	private static function Equip(){
 		if (!BuildQueue.length) return
-		if (Player.GetPlayer().IsInCombat() ||
-		Player.HasCooldown() ||
-		!Player.IsinPlay() ||
-		Player.GetPlayer().GetCommandProgress()) {
+		if (Player.GetPlayer().IsInCombat()
+		|| Player.HasCooldown()
+		|| !Player.IsinPlay()
+		|| Player.GetPlayer().GetCommandProgress()) // casting
+		{
 			setTimeout(Equip, 500);
 			return
 		}
@@ -93,7 +94,7 @@ class com.fox.AgentSwitcher.Build {
 				oldest = build;
 			}
 		}
-		if(oldest){
+		if(oldest) {
 			oldest.Switching = true;
 			oldest.StartEquip();
 		}
