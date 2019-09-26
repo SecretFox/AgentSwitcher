@@ -1,4 +1,5 @@
 import GUI.fox.aswing.tswlaf.CheckBoxIcon;
+import GUI.fox.aswing.tswlaf.ASWingButtonUI;
 import GUI.fox.aswing.tswlaf.TitleBarUI;
 import GUI.fox.aswing.plaf.asw.ASWingLookAndFeel;
 import GUI.fox.aswing.UIDefaults;
@@ -45,6 +46,7 @@ class GUI.fox.aswing.TswLookAndFeel extends ASWingLookAndFeel
 		table.put("Frame.titleBarUI", TitleBarUI);//Removes maximize button from the titlebar
 		table.put("CheckBox.icon", CheckBoxIcon);
 		
+		table.put("ButtonUI", ASWingButtonUI);//disables window maximizing on space
 		///replace tahoma with standardfont
 		var Font:ASFontUIResource = new ASFontUIResource("_StandardFont", 11);
 		table.put("Frame.font", Font);
