@@ -40,6 +40,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var Display:JCheckBox;
 	private var DisplayName:JCheckBox;
 	private var Disable:JCheckBox;
+	private var DisableTank:JCheckBox;
 
 	private var QuickName:JCheckBox;
 
@@ -100,6 +101,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		content.append(GetDebugFifo());
 		//Disable on switch
 		content.append(GetDisable());
+		//Disable on Tank
+		content.append(GetTank());
 		//Delay field
 		delayText = new JTextField("Default delay");
 		delayText.setBorder(null);
@@ -233,6 +236,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function __DisableChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnSwitch = box.isSelected();
 	}
+	private function __TankChanged(box:JCheckBox) {
+		m_Controller.settingDisableOnTank = box.isSelected();
+		m_Controller.ApplyPause();
+	}
 	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
 	}
@@ -321,6 +328,14 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			Disable.addActionListener(__DisableChanged, this);
 		}
 		return Disable;
+	}
+	private function GetTank() {
+		if (DisableTank == null) {
+			DisableTank = new JCheckBox("Disable while tanking");
+			DisableTank.setSelected(m_Controller.settingDisableOnTank);
+			DisableTank.addActionListener(__TankChanged, this);
+		}
+		return DisableTank;
 	}
 	private function GetProximityTogggle() {
 		if (ProximityToggle == null) {

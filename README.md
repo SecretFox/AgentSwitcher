@@ -39,6 +39,7 @@ ________
 **Print race to chat** : Prints enemy race on system chat channel when targeting them  
 **Print race as Fifo** : Prints enemy race as FadeIn/FadeOut message when targeting them  
 **Disable on quickselect** : Disables target based switching when quickselecting(left-clicking icon) agent  
+**Disable while tanking** : Disables mod when player has over 50 points on survivability  
 **Default delay** : Wait time for "Default on combat end" option  
 **Display active agent** : Creates moveable text which displays currently equipped agent  
 **Use agent name on display** : Whether display should show agents name or damage bonus.  

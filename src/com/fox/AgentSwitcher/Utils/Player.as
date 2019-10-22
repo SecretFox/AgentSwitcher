@@ -14,10 +14,13 @@ class com.fox.AgentSwitcher.Utils.Player {
 	private static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
 	
 	public function Player(id:ID32){
-		m_Player = Character.GetClientCharacter();;
+		m_Player = Character.GetClientCharacter();
 	}
 	public static function GetPlayer(id:ID32):Character{
 		return m_Player
+	}
+	public static function IsTank(): Boolean {
+		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealthRatio, 2) > 50;
 	}
 	public static function IsRightRole(role:String) {
 		if (role == "all") return true;

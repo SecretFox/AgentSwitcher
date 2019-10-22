@@ -1,17 +1,14 @@
 import com.fox.AgentSwitcher.Utils.DruidSystem;
-import com.fox.Utils.Debugger;
 import com.GameInterface.DistributedValue;
-import com.GameInterface.DistributedValueBase;
 import com.Utils.Archive;
 import com.Utils.LDBFormat;
 import flash.geom.Point;
-import mx.utils.Delegate;
 /*
 * ...
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var ModVersion:String = "2.2.4";
+	public var ModVersion:String = "2.2.5";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
@@ -22,6 +19,7 @@ class com.fox.AgentSwitcher.Settings {
 	public var settingTargeting:Boolean;
 	public var settingPause:Boolean;
 	public var settingDisableOnSwitch:Boolean;
+	public var settingDisableOnTank:Boolean;
 	public var settingDefaultAgent:Number;
 	public var settingRange:String;
 	public var settingSlot:Number;
@@ -59,6 +57,7 @@ class com.fox.AgentSwitcher.Settings {
 		settingDefault = config.FindEntry("Switch", false);
 		settingDefaultDelay = config.FindEntry("Delay", 2000);
 		settingDisableOnSwitch = config.FindEntry("DisableOnSwitch", true);
+		settingDisableOnTank = config.FindEntry("DisableOnTank", true);
 		settingTargeting = config.FindEntry("Active", true);
 		settingBlacklist = config.FindEntry("blacklist", "");
 		
@@ -73,11 +72,13 @@ class com.fox.AgentSwitcher.Settings {
 		settingDisplayName = config.FindEntry("DisplayName", false);
 		settingQuickselectName = config.FindEntry("QuickName", false);
 
+		/*
 		if (settingProximityEnabled) {
 			if (!DistributedValueBase.GetDValue("ShowVicinityNPCNametags")) {
 				setTimeout(Delegate.create(this,EmitError), 5000, "AgentSwitcher /option ShowVicinityNPCNametags must be set to true for proximity targeting");
 			}
 		}
+		*/
 
 		if (settingDefaultAgent == 0) {
 			settingDefaultAgent = DruidSystem.GetAgentInSlot(settingRealSlot).m_AgentId | 0;
@@ -123,9 +124,11 @@ class com.fox.AgentSwitcher.Settings {
 		}
 	}
 
+	/*
 	private function EmitError(msg:String) {
 		Debugger.ShowFifo("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
 	}
+	*/
 
 	public function SaveConfig():Archive {
 		var config:Archive = new Archive();
@@ -135,6 +138,7 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("Switch", settingDefault);
 		config.AddEntry("Delay", settingDefaultDelay);
 		config.AddEntry("DisableOnSwitch", settingDisableOnSwitch);
+		config.AddEntry("DisableOnTank", settingDisableOnTank);
 		config.AddEntry("Active", settingTargeting);
 		config.AddEntry("blacklist", settingBlacklist);
 		config.AddEntry("Pause", settingPause);

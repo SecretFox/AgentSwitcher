@@ -20,7 +20,7 @@ import mx.utils.Delegate;
  */
 class com.fox.AgentSwitcher.Proximity {
 	private var m_Controller:Controller;
-	private var m_Player:Player;
+	//private var m_Player:Player;
 	private var Enabled:Boolean;
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
 	private var KillTriggers:Array = [];
@@ -30,7 +30,7 @@ class com.fox.AgentSwitcher.Proximity {
 
 	public function Proximity(cont:Controller) {
 		m_Controller = cont;
-		m_Player = m_Controller.m_Player;
+		//m_Player = m_Controller.m_Player;
 		WaypointInterface.SignalPlayfieldChanged.Connect(WipeMobTriggers, this);
 	}
 
