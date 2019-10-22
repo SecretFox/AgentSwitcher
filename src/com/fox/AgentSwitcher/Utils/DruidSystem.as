@@ -156,7 +156,6 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 		return {Name:name, Race:race, Stat:stat, Agent:agent}
 	}
 	
-	
 	/*
 	static var Druids:Array = [
 	//Debug

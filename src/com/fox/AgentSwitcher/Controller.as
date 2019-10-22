@@ -166,17 +166,17 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	
 	
 	public function CheckIfTanking(StatType:Number) {
-		if (settingDisableOnTank && StatType == 1){
+		if (StatType == 1){
 			var tank:Boolean = Player.IsTank();
 			if (tank != m_Tanking){
 				m_Tanking = tank;
-				ApplyPause();
+				if(settingDisableOnTank) ApplyPause();
 			}
 		}
 	}
 
 	public function ApplyPause() {
-		if (settingPause || m_Tanking) {
+		if (settingPause || (m_Tanking && settingDisableOnTank)) {
 			m_Targeting.SetState(false, false, false);
 			m_Default.SetState(false);
 			m_Proximity.SetState(false);

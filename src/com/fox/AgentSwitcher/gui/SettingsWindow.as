@@ -238,6 +238,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function __TankChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnTank = box.isSelected();
+		m_Controller.ApplyPause();
 	}
 	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
