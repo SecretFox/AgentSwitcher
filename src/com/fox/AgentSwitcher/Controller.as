@@ -34,6 +34,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	public var m_Proximity:Proximity;
 	public var m_Targeting:Targeting;
 	public var m_Player:Player;
+	public var m_Tanking:Boolean;
 
 	public static function main(swfRoot:MovieClip):Void {
 		var m_controller = new Controller(swfRoot);
@@ -70,6 +71,8 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		agentDisplayDval.SignalChanged.Connect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 		GlobalSignal.SignalSetGUIEditMode.Connect(ToggleGuiEdits, this);
+		
+		Player.GetPlayer().SignalStatChanged.Connect(CheckIfTanking, this);
 	}
 
 	public function Unload():Void {
@@ -78,6 +81,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		agentDisplayDval.SignalChanged.Disconnect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
 		GlobalSignal.SignalSetGUIEditMode.Disconnect(ToggleGuiEdits, this);
+		Player.GetPlayer().SignalStatChanged.Disconnect(CheckIfTanking, this);
 		Loaded = false;
 	}
 
@@ -88,6 +92,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_Icon.CreateTopIcon(iconPos);
 			m_AgentDisplay.SlotChanged();
 			m_Targeting.SetBlacklist(settingBlacklist);
+			m_Tanking = Player.IsTank();
 			ApplyPause();
 			Loaded = true;
 		}
@@ -158,9 +163,20 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_Proximity.ReloadProximityList();
 		}
 	}
+	
+	
+	public function CheckIfTanking(StatType:Number) {
+		if (settingDisableOnTank && StatType == 1){
+			var tank:Boolean = Player.IsTank();
+			if (tank != m_Tanking){
+				m_Tanking = tank;
+				ApplyPause();
+			}
+		}
+	}
 
 	public function ApplyPause() {
-		if (settingPause) {
+		if (settingPause || m_Tanking) {
 			m_Targeting.SetState(false, false, false);
 			m_Default.SetState(false);
 			m_Proximity.SetState(false);
