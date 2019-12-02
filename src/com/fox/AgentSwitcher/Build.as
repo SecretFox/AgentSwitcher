@@ -78,7 +78,6 @@ class com.fox.AgentSwitcher.Build {
 	private static function Equip(){
 		if (!BuildQueue.length) return
 		if (Player.GetPlayer().IsInCombat()
-		|| Player.HasCooldown()
 		|| !Player.IsinPlay()
 		|| Player.GetPlayer().GetCommandProgress()) // casting
 		{
@@ -150,7 +149,7 @@ class com.fox.AgentSwitcher.Build {
 		clearTimeout(DisconnecTimeout);
 		clearInterval(CheckInterval);
 		if (Player.GetPlayer().IsInCombat() ||
-		Player.HasCooldown() ||
+		Player.HasCooldown(BuildName) ||
 		!Player.IsinPlay() ||
 		Player.GetPlayer().GetCommandProgress()) {
 			setTimeout(Delegate.create(this,EquipBuild), 500, true);

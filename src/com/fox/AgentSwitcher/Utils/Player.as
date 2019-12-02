@@ -1,8 +1,12 @@
 import com.GameInterface.AccountManagement;
+import com.GameInterface.FeatData;
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.Shortcut;
+import com.GameInterface.Game.ShortcutData;
 import com.GameInterface.ProjectUtils;
 import GUI.HUD.AbilitySlot;
 import com.Utils.ID32;
+import com.GameInterface.FeatInterface;
 /**
  * ...
  * @author fox
@@ -62,8 +66,54 @@ class com.fox.AgentSwitcher.Utils.Player {
 		}
 		return false
 	}
+	static function GetFeatId(spellId:Number):Number
+	{
+		for (var featId in FeatInterface.m_FeatList)
+		{
+			var featData:FeatData = FeatInterface.m_FeatList[featId];
+			if (featData.m_Spell == spellId)
+			{
+				return featData.m_Id;
+			}
+		}
+		
+		return null;
+	}
+	private static function GetSkillSlotID(indx:Number):Number
+	{
+		var positions:Array = [_global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot, _global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot + 2, 
+								_global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot + 4, _global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot + 5,
+								_global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot + 1, _global.Enums.ActiveAbilityShortcutSlots.e_PrimaryShortcutBarFirstSlot + 3 ];
+		return positions[indx];
+	}
 	// Probably not the best way to check cooldowns
-	public static function HasCooldown():Boolean {
+	public static function HasCooldown(BuildName):Boolean {
+		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds) {
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+				for (var y:Number = 0; y < _root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_skills.length; y++ ){
+					var shortcutPos = GetSkillSlotID(y);
+					var shortcutData:ShortcutData = Shortcut.m_ShortcutList[shortcutPos];
+					var abilitySlot = _root.abilitybar.GetAbilitySlot(shortcutPos);
+					if ((_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_skills[y] != GetFeatId(shortcutData.m_SpellId)) && abilitySlot["m_IsCooldown"]){
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		for (var i in _root["boobuilds\\boobuilds"].appBuilds.m_builds) {
+			if (_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_name.toLowerCase() == BuildName.toLowerCase()) {
+				for (var y:Number = 0; y < _root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_skills.length; y++ ){
+					var shortcutPos = GetSkillSlotID(y);
+					var shortcutData:ShortcutData = Shortcut.m_ShortcutList[shortcutPos];
+					var abilitySlot = _root.abilitybar.GetAbilitySlot(shortcutPos);
+					if ((_root["boobuilds\\boobuilds"].appBuilds.m_builds[i].m_skills[y] != GetFeatId(shortcutData.m_SpellId)) && abilitySlot["m_IsCooldown"]){
+						return true;
+					}
+				}
+				return false;
+			}
+		}
 		for (var i in _root.abilitybar.m_AbilitySlots) {
 			var slot:AbilitySlot = _root.abilitybar.m_AbilitySlots[i];
 			if (slot["m_IsCooldown"]) {

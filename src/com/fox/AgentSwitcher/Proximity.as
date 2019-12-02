@@ -247,12 +247,13 @@ class com.fox.AgentSwitcher.Proximity {
 	private function StartKillTrigger(entry:ProximityEntry, id:ID32, charName:String) {
 		// Using charName as trigger ID, that way it wont create new trigger for every enemy with same name
 		var trigger:KillTrigger = GetTrigger(KillTriggers, charName);
-		if (!trigger) {
-			trigger = new KillTrigger(charName);
-			trigger.SignalLock.Connect(SetLock, this);
-			trigger.SignalDestruct.Connect(RemoveKillTrigger, this);
-			KillTriggers.push(trigger);
+		if (trigger){
+			RemoveKillTrigger(trigger);
 		}
+		trigger = new KillTrigger(charName);
+		trigger.SignalLock.Connect(SetLock, this);
+		trigger.SignalDestruct.Connect(RemoveKillTrigger, this);
+		KillTriggers.push(trigger);
 		if (entry.isBuild) {
 			if (Build.HasBuild(entry.Agent)) {
 				trigger.BuildName = entry.Agent;
@@ -284,20 +285,20 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 
+	private function RemoveKillTrigger(trigger:KillTrigger) {
+		for (var i in KillTriggers) {
+			if (KillTriggers[i] == trigger) {
+				KillTriggers[i].kill();
+				KillTriggers.splice(Number(i), 1);
+			}
+		}
+	}
+
 	private function RemoveProximityTrigger(trigger:ProximityTrigger) {
 		for (var i in ProximityTriggers) {
 			if (ProximityTriggers[i] == trigger) {
 				ProximityTriggers[i].kill();
 				ProximityTriggers.splice(Number(i), 1);
-			}
-		}
-	}
-
-	private function RemoveKillTrigger(trigger:ProximityTrigger) {
-		for (var i in KillTriggers) {
-			if (KillTriggers[i] == trigger) {
-				KillTriggers[i].kill();
-				KillTriggers.splice(Number(i), 1);
 			}
 		}
 	}

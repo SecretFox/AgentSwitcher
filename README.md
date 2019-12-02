@@ -39,10 +39,10 @@ ________
 **Print race to chat** : Prints enemy race on system chat channel when targeting them  
 **Print race as Fifo** : Prints enemy race as FadeIn/FadeOut message when targeting them  
 **Disable on quickselect** : Disables target based switching when quickselecting(left-clicking icon) agent  
-**Disable while tanking** : Disables mod when player has over 50 points on survivability  
+**Disable while tanking** : Disables mod when player has allocated over 50 points to survivability  
 **Default delay** : Wait time for "Default on combat end" option  
 **Display active agent** : Creates moveable text which displays currently equipped agent  
-**Use agent name on display** : Whether display should show agents name or damage bonus.  
+**Use agent name on display** : Whether display should show agents name or species name  
 **Use agent name on quickselect** : Whether quickselect should show agents name or damage bonus.  
 **Proximity Switching list** : See "Proximity Switching" section
 ________  
@@ -58,7 +58,7 @@ Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Onl
 
 **Agent/Build/Outfit**  
 	Agent - Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
-			Valid values: Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default or AgentID  
+			Valid values: Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default or agents ID  
 	Build - Build name to switch to, supports boobuilds and default GearManager  
 	Outfit - Outfit to switch to, supports outfits from boobuilds  
 
@@ -75,8 +75,8 @@ Some examples:
 	`Xibalban Bloodhound` - Priorities Xibalban Bloodhound over adds in Darkness War 2 Fight.  
 	`The Unutterable Lurker|Default|100` - Switches to default agent when Unutterable Lurker is within 100m of the player.  
 	`Dark House Sorcerer|Animal|onKill` - Switches to Animal agent(Finn Mulligan) after killing Dark House Sorcerer. This is in preparation for Akab Boss.  
-	`7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence  
-	`5060|Single|onZone` - Switches to "Single" build when entering Agartha  
+	`7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence instance  
+	`5060|Single|onZone` - Switches to "Single" build when entering Agartha instance  
 	`7740|DarkAgartha|onZone` - Switches to "DarkAgartha" build when entering DarkAgartha  
 	`3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
 	`Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
