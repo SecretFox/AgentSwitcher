@@ -94,7 +94,7 @@ class com.fox.AgentSwitcher.Utils.Player {
 					var shortcutPos = GetSkillSlotID(y);
 					var shortcutData:ShortcutData = Shortcut.m_ShortcutList[shortcutPos];
 					var abilitySlot = _root.abilitybar.GetAbilitySlot(shortcutPos);
-					if ((_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_skills[y] != GetFeatId(shortcutData.m_SpellId)) && abilitySlot["m_IsCooldown"]){
+					if (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_skills[y] && (_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[i].m_skills[y] != GetFeatId(shortcutData.m_SpellId)) && abilitySlot["m_IsCooldown"]){
 						return true;
 					}
 				}

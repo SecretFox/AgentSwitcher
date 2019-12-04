@@ -181,7 +181,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			"Valid triggers are &quot;onKill&quot; and &quot;onZone&quot;. onKill triggers the switch when specified target is killed and onZone triggers when entering new zone\n\n" +
 			"&lt;Role&gt; : Role is only used by builds and outfits. Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then build will only be changed when players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
 			"----\n" +
-			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry" +
+			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry\n" +
 			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
 		);
 		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, -1, m_TooltipData);
