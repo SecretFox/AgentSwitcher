@@ -26,19 +26,22 @@ class com.fox.AgentSwitcher.Utils.Player {
 	public static function IsTank(): Boolean {
 		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealthRatio, 2) > 50;
 	}
+	public static function IsDps(): Boolean {
+		return !IsTank() && !IsHealer();
+	}
+	public static function IsHealer(): Boolean {
+		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealingRatio, 2) > 50;
+	}
 	public static function IsRightRole(role:String) {
 		if (role == "all") return true;
 		else {
-			var TankBuff = m_Player.m_BuffList[ROLE_TANK] != undefined || m_Player.m_InvisibleBuffList[ROLE_TANK] != undefined;
-			var DpsBuff = m_Player.m_BuffList[ROLE_DPS] != undefined || m_Player.m_InvisibleBuffList[ROLE_DPS] != undefined;
-			var HealerBuff = m_Player.m_BuffList[ROLE_HEALER] != undefined || m_Player.m_InvisibleBuffList[ROLE_HEALER] != undefined;
-			if (role == "tank" && TankBuff) {
+			if (role == "tank" && IsTank()) {
 				return true;
 			}
-			if (role == "dps" && DpsBuff) {
+			if (role == "dps" && IsDps()) {
 				return true;
 			}
-			if (role == "healer" && HealerBuff) {
+			if (role == "healer" && IsHealer()) {
 				return true;
 			}
 			//if (!TankBuff && !DpsBuff && !HealerBuff) return true;
