@@ -1,12 +1,12 @@
 import com.Utils.StringUtils;
-import com.fox.AgentSwitcher.Build;
+import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Controller;
+import com.fox.AgentSwitcher.Utils.NameFilter;
 import com.fox.AgentSwitcher.data.ProximityEntry;
 import com.fox.AgentSwitcher.trigger.KillTrigger;
 import com.fox.AgentSwitcher.trigger.ProximityTrigger;
 import com.fox.AgentSwitcher.trigger.ZoneTrigger;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.AgentSystem;
 import com.GameInterface.Game.Character;
@@ -14,10 +14,10 @@ import com.GameInterface.Nametags;
 import com.GameInterface.WaypointInterface;
 import com.Utils.ID32;
 import mx.utils.Delegate;
-/**
- * ...
- * @author fox
- */
+/*
+* ...
+* @author fox
+*/
 class com.fox.AgentSwitcher.Proximity {
 	private var m_Controller:Controller;
 	//private var m_Player:Player;
@@ -26,6 +26,7 @@ class com.fox.AgentSwitcher.Proximity {
 	private var KillTriggers:Array = [];
 	private var ProximityTriggers:Array = [];
 	private var ZoneTriggers:Array = [];
+	private var retry:Number;
 	public var Lock:Boolean = false;
 
 	public function Proximity(cont:Controller) {
@@ -35,10 +36,11 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 
 	public function SetState(state:Boolean, ran:Boolean) {
-		// wait boo for little bit longer
+		clearTimeout(retry);
 		if (!Enabled && state) {
+			// wait boo for little bit longer
 			if (!Build.BooIsLoaded() && !ran) {
-				setTimeout(Delegate.create(this, SetState), 1000, state, true);
+				retry = setTimeout(Delegate.create(this, SetState), 1000, state, true);
 				return
 			}
 			Enabled = true;
@@ -102,6 +104,7 @@ class com.fox.AgentSwitcher.Proximity {
 	public function SetLock() {
 		if (!Lock) {
 			Lock = true;
+			m_Controller.m_Icon.ApplyLock();
 			var f:Function = Delegate.create(this, ReleaseLock);
 			Task.AddTask(Task.InCombatTask, f);
 		}
@@ -127,7 +130,7 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 
-	private function GetTrigger(array:Array, id:String) {
+	private function GetTrigger(array:Array, id) {
 		for (var i:Number = 0; i < array.length ; i++ ) {
 			if (array[i].ID == id) {
 				return array[i];
@@ -143,21 +146,30 @@ class com.fox.AgentSwitcher.Proximity {
 		for (var i:Number = 0; i < m_Controller.settingPriority.length; i++) {
 			var entry:Array = m_Controller.settingPriority[i].split("|");
 			var entryObj:ProximityEntry = new ProximityEntry();
-			entryObj.Name = StringUtils.LStrip(entry[0]);
-			entryObj.Agent = entry[1] || m_Controller.settingDefaultAgent;
-			entryObj.Range = entry[2].toLowerCase() || m_Controller.settingRange;
-			entryObj.Role = entry[3].toLowerCase() || "all";
+			entryObj.Name = StringUtils.Strip(entry[0]);
+			entryObj.Agent = StringUtils.Strip(entry[1]) || "race";
+			entryObj.Range = StringUtils.Strip(entry[2].toLowerCase()) || m_Controller.settingRange.toLowerCase();
+			entryObj.Role = StringUtils.Strip(entry[3].toLowerCase()) || "all";
+			// skip empty lines
 			if (!entryObj.Name) {
 				continue;
 			}
 
 			//Figure out if "Agent" is actual agent or build name
-			if (entryObj.Agent.toLowerCase() == "default") {
+			if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race") {
 				entryObj.isBuild = false;
 			} else {
-				for (var x in DruidSystem.Druids) {
-					if (DruidSystem.Druids[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
-						entryObj.Agent = string(DruidSystem.Druids[x][0]);
+				for (var x:Number = 0; x < DruidSystem.Druids2.length;x++) {
+					if (DruidSystem.Druids2[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
+						// filth/aqua override
+						if ((DruidSystem.enum_Filth == 4 && m_Controller.settingCleaner) || 
+							(DruidSystem.enum_Aqua == 3 && m_Controller.settingWalter))
+						{
+							entryObj.Agent = string(DruidSystem.Druids2[x][0][1]);
+						}
+						else {
+							entryObj.Agent = string(DruidSystem.Druids2[x][0][0]);
+						}
 						entryObj.isBuild = false;
 						break
 					}
@@ -176,7 +188,7 @@ class com.fox.AgentSwitcher.Proximity {
 			// Remove entries with underleveled agents and add to tracking list
 			else {
 				if (entryObj.isBuild == false) {
-					if (entryObj.Agent.toLowerCase() == "default") {
+					if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race") {
 						ProximityCopy.push(entryObj);
 					} else if (AgentSystem.HasAgent(Number(entryObj.Agent))) {
 						if (Number(entryObj.Agent) == m_Controller.settingDefaultAgent && AgentSystem.GetAgentById(Number(entryObj.Agent)).m_Level >= 25) {
@@ -197,21 +209,17 @@ class com.fox.AgentSwitcher.Proximity {
 		if (entry.isBuild != false) {
 			entry.isBuild = true;
 		}
-		var trigger:ZoneTrigger = GetTrigger(ZoneTriggers, entry.Name);
+		var trigger:ZoneTrigger = GetTrigger(ZoneTriggers, Number(entry.Name));
 		if (!trigger) {
 			trigger = new ZoneTrigger(entry.Name);
 			ZoneTriggers.push(trigger);
 		}
-		// Zone triggers only get loaded once, so builds/agent/outfits must be stored in an array, ignoring the role
-		// Role is only checked on trigger.
 		if (entry.isBuild) {
 			if (Build.HasBuild(entry.Agent)) {
-				trigger.BuildNames.push(entry.Agent);
-				trigger.BuildRoles.push(entry.Role);
+				trigger.AddToBuilds(entry.Agent, entry.Role);
 			}
 			if (Build.HasOutfit(entry.Agent)) {
-				trigger.OutfitNames.push(entry.Agent);
-				trigger.OutfitRoles.push(entry.Role);
+				trigger.AddToOutfits(entry.Agent, entry.Role);
 			}
 		} else {
 			trigger.AgentNames.push(entry.Agent);
@@ -221,65 +229,58 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 
 	private function StartProximityTrigger(entry:ProximityEntry,id:ID32, charName:String) {
-		// Using charName as trigger ID, that way it wont create new trigger for every enemy with same name
-		var trigger:ProximityTrigger = GetTrigger(ProximityTriggers, charName);
+		var trigger:ProximityTrigger = GetTrigger(ProximityTriggers, id);
 		if (!trigger) {
-			trigger = new ProximityTrigger(charName, Number(entry.Range));
+			trigger = new ProximityTrigger(id, Number(entry.Range));
 			trigger.SignalDestruct.Connect(RemoveProximityTrigger, this);
 			ProximityTriggers.push(trigger);
 		}
 		if (entry.isBuild) {
 			if (Build.HasBuild(entry.Agent)) {
-				trigger.BuildName = entry.Agent;
-				trigger.BuildRole = entry.Role
+				trigger.AddToBuilds(entry.Agent, entry.Role);
 			}
 			if (Build.HasOutfit(entry.Agent)) {
-				trigger.OutfitName = entry.Agent;
-				trigger.OutfitRole = entry.Role
+				trigger.AddToOutfits(entry.Agent, entry.Role);
 			}
 		} else {
-			trigger.AgentName = entry.Agent;
-			trigger.AgentRole = entry.Role
+			trigger.AddToAgents(entry.Agent, entry.Role);
 		}
-		trigger.StartTrigger(id);
+		trigger.StartTrigger();
 	}
 
 	private function StartKillTrigger(entry:ProximityEntry, id:ID32, charName:String) {
-		// Using charName as trigger ID, that way it wont create new trigger for every enemy with same name
-		var trigger:KillTrigger = GetTrigger(KillTriggers, charName);
-		if (trigger){
-			RemoveKillTrigger(trigger);
+		var trigger:KillTrigger = GetTrigger(KillTriggers, id);
+		if (!trigger){
+			trigger = new KillTrigger(id);
+			trigger.SignalLock.Connect(SetLock, this);
+			trigger.SignalDestruct.Connect(RemoveKillTrigger, this);
+			KillTriggers.push(trigger);
 		}
-		trigger = new KillTrigger(charName);
-		trigger.SignalLock.Connect(SetLock, this);
-		trigger.SignalDestruct.Connect(RemoveKillTrigger, this);
-		KillTriggers.push(trigger);
 		if (entry.isBuild) {
 			if (Build.HasBuild(entry.Agent)) {
-				trigger.BuildName = entry.Agent;
-				trigger.BuildRole = entry.Role
+				trigger.AddToBuilds(entry.Agent, entry.Role);
 			}
-			if (Build.HasOutfit(entry.Agent)) {
-				trigger.OutfitName = entry.Agent;
-				trigger.OutfitRole = entry.Role
+			else if (Build.HasOutfit(entry.Agent)) {
+				trigger.AddToBuilds(entry.Agent, entry.Role);
 			}
 		} else {
-			trigger.AgentName = entry.Agent;
-			trigger.AgentRole = entry.Role
+			trigger.AddToAgents(entry.Agent, entry.Role);
 		}
-		trigger.StartTrigger(id);
+		trigger.StartTrigger();
 	}
 
 	private function NametagAdded(id:ID32) {
 		var char:Character = new Character(id);
-		var charName = char.GetName().toLowerCase();
-		for (var i:Number = 0; i < ProximityCopy.length; i++) {
-			var entry:ProximityEntry = ProximityCopy[i];
-			if (charName.indexOf(entry.Name.toLowerCase()) >= 0 && Player.IsRightRole(entry.Role)) {
-				if (entry.Range != "onkill"){
-					StartProximityTrigger(entry, id, charName);
-				} else{
-					StartKillTrigger(entry, id, charName);
+		if (!NameFilter.isFiltered(char)){
+			var charName = char.GetName().toLowerCase();
+			for (var i:Number = 0; i < ProximityCopy.length; i++) {
+				var entry:ProximityEntry = ProximityCopy[i];
+				if (charName.indexOf(entry.Name.toLowerCase()) >= 0) {
+					if (entry.Range != "onkill"){
+						StartProximityTrigger(entry, id, charName);
+					} else{
+						StartKillTrigger(entry, id, charName);
+					}
 				}
 			}
 		}
@@ -290,6 +291,7 @@ class com.fox.AgentSwitcher.Proximity {
 			if (KillTriggers[i] == trigger) {
 				KillTriggers[i].kill();
 				KillTriggers.splice(Number(i), 1);
+				break
 			}
 		}
 	}
@@ -299,6 +301,7 @@ class com.fox.AgentSwitcher.Proximity {
 			if (ProximityTriggers[i] == trigger) {
 				ProximityTriggers[i].kill();
 				ProximityTriggers.splice(Number(i), 1);
+				break
 			}
 		}
 	}

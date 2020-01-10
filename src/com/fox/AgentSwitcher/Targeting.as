@@ -34,7 +34,9 @@ class com.fox.AgentSwitcher.Targeting {
 			var entry:Array = temp[i].split("|");
 			if (!entry[1]) entry.push("none");
 			entry[0] = StringUtils.LStrip(entry[0]);
-			Blacklist.push(entry);
+			if (entry[0]){
+				Blacklist.push(entry);
+			}
 		}
 	}
 	
@@ -61,28 +63,40 @@ class com.fox.AgentSwitcher.Targeting {
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
 			var data:Object = DruidSystem.GetRace(id);
-			var name = data.Name + data.Race;
-			if (m_Controller.settingDebugChat && name != LastName) {
-				Debugger.PrintText(data.Name + " : " + data.Race);
+			// Debug prints
+			if (m_Controller.settingDebugChat || m_Controller.settingDebugFifo){
+				var name = data.Name + data.Race;
+				if (m_Controller.settingDebugChat && name != LastName) {
+					Debugger.PrintText(data.Name + " : " + data.Race);
+				}
+				if (m_Controller.settingDebugFifo && name != LastName) {
+					Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
+				}
+				LastName = name;
 			}
-			if (m_Controller.settingDebugFifo && name != LastName) {
-				Debugger.ShowFifo(data.Name + " : " + data.Race, 0);
-			}
-			LastName = name;
+			// Switching
 			if (m_Controller.settingTargeting
-			&& !m_Player.IsInCombat()
-			&& !m_Proximity.inProximity()) 
-			{
+				&& !m_Player.IsInCombat()
+				&& !m_Proximity.inProximity()
+			){
 				var agent;
-				var blacklist = IsBlacklisted(data.Name.toLowerCase());
+				var blacklist = IsBlacklisted(data.Name.toLowerCase()); // agent override
 				if (!blacklist) {
 					agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
 				} else if (blacklist.toLowerCase() == "default") {
 					agent = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent, m_Controller.settingRealSlot, 0);
 				} else {
-					for (var i in DruidSystem.Druids) {
-						if (DruidSystem.Druids[i][1].toLowerCase() == blacklist.toLowerCase()) {
-							agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids[i][0], m_Controller.settingRealSlot, 0);
+					for (var i:Number = 0; i < DruidSystem.Druids2.length;i++) {
+						if (DruidSystem.Druids2[i][1].toLowerCase() == blacklist.toLowerCase()) {
+							if (i == DruidSystem.enum_Filth && m_Controller.settingCleaner){
+								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][1], m_Controller.settingRealSlot, 0);
+							}
+							else if ( i == DruidSystem.enum_Aqua && m_Controller.settingWalter){
+								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][1], m_Controller.settingRealSlot, 0);
+							}
+							else{
+								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][0], m_Controller.settingRealSlot, 0);
+							}
 							break
 						}
 					}

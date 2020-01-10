@@ -41,6 +41,7 @@
   <library>
     <asset path="src\assets\gfxfontlib.swf" />
     <asset path="src\assets\topbarIcon.png" bitmap="False" />
+    <asset path="src\assets\LockIcon_Locked.png" bitmap="False" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
@@ -49,8 +50,8 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
-xcopy "$(ProjectDir)\src\mod\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
+  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "H:\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
+xcopy "$(ProjectDir)\src\mod\*.*" "H:\Secret World Legends\Data\Gui\Custom\Flash\AgentSwitcher\*.*" /e /y
 
 xcopy "$(ProjectDir)\bin\*.*" "./deployment/AgentSwitcher/*.*" /e /y
 xcopy "$(ProjectDir)\src\mod\*.*" "./deployment/AgentSwitcher/*.*" /e /y</postBuildCommand>

@@ -17,8 +17,8 @@ import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.CharacterBase;
 import com.Utils.Archive;
 import com.Utils.GlobalSignal;
+import com.fox.Utils.Debugger;
 /*
-*
 * ...
 * @author fox
 */
@@ -37,23 +37,23 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	public var m_Tanking:Boolean;
 
 	public static function main(swfRoot:MovieClip):Void {
-		var m_controller = new Controller(swfRoot);
-		swfRoot.onLoad =  function() {return m_controller.Load()};
-		swfRoot.onUnload =  function() {return m_controller.Unload()};
-		swfRoot.OnModuleActivated = function(config:Archive) {m_controller.Activate(config)};
-		swfRoot.OnModuleDeactivated = function() {return m_controller.Deactivate()};
+		var controller = new Controller(swfRoot);
+		swfRoot.onLoad =  function() {return controller.Load()};
+		swfRoot.onUnload =  function() {return controller.Unload()};
+		swfRoot.OnModuleActivated = function(config:Archive) {controller.Activate(config)};
+		swfRoot.OnModuleDeactivated = function() {return controller.Deactivate()};
 	}
 
 	public function Controller(swfRoot:MovieClip) {
 		super(swfRoot);
 		m_Controller = this;
 		m_Player = new Player();
-		m_Icon = new Icon(m_swfRoot, this);
-		m_AgentDisplay = new AgentDisplay(m_swfRoot, this);
-		m_QuickSelect = new QuickSelect(m_swfRoot, this);
-		m_Proximity = new Proximity(this);
-		m_Default = new Defaulting(this);
-		m_Targeting = new Targeting(this);
+		m_Icon = new Icon(m_swfRoot, m_Controller);
+		m_AgentDisplay = new AgentDisplay(m_swfRoot, m_Controller);
+		m_QuickSelect = new QuickSelect(m_swfRoot, m_Controller);
+		m_Proximity = new Proximity(m_Controller);
+		m_Default = new Defaulting(m_Controller);
+		m_Targeting = new Targeting(m_Controller);
 	}
 
 	public static function GetInstance():Controller {
@@ -66,13 +66,15 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		ASWingUtils.setRootMovieClip(m_settingsRoot);
 		var laf:TswLookAndFeel = new TswLookAndFeel();
 		UIManager.setLookAndFeel(laf);
-
+		
 		settingDval.SignalChanged.Connect(OpenSettings, this);
 		agentDisplayDval.SignalChanged.Connect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 		GlobalSignal.SignalSetGUIEditMode.Connect(ToggleGuiEdits, this);
 		
 		Player.GetPlayer().SignalStatChanged.Connect(CheckIfTanking, this);
+		dValExport.SignalChanged.Connect(ExportSettings, this);
+		dValImport.SignalChanged.Connect(ImportSettings, this);
 	}
 
 	public function Unload():Void {
@@ -88,7 +90,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	public function Activate(config:Archive) {
 		if (!Loaded){
 			LoadConfig(config);
-			SettingChanged();
+			//SettingChanged();
 			m_Icon.CreateTopIcon(iconPos);
 			m_AgentDisplay.SlotChanged();
 			m_Targeting.SetBlacklist(settingBlacklist);
@@ -99,6 +101,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 
 	public function Deactivate():Archive {
+		m_Icon.Tooltip.Close();
 		return SaveConfig();
 	}
 
@@ -141,7 +144,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			if (SlotAgent) {
 				if (settingDefaultAgent != SlotAgent.m_AgentId && !DruidSystem.IsDruid(SlotAgent.m_AgentId)) {
 					settingDefaultAgent = SlotAgent.m_AgentId;
-					m_Proximity.GetProximitylistCopy();
+					//m_Proximity.GetProximitylistCopy();
 					var found:Boolean;
 					for (var i in RecentAgents) {
 						if (RecentAgents[i] == SlotAgent.m_AgentId) {
@@ -158,6 +161,23 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		}
 	}
 
+	public function ExportSettings(dv:DistributedValue){
+		if (dv.GetValue()){
+			Debugger.PrintText("/option AgentSwitcher_Import \""+settingPriority.join("$")+"\"");
+			dv.SetValue(false);
+		}
+	}
+	
+	public function ImportSettings(dv:DistributedValue){
+		if (dv.GetValue()){
+			settingPriority = dv.GetValue().split("$");
+			ReloadProximityList();
+			if (m_Controller.m_settings){
+				m_Controller.m_settings.reDrawProximityList();
+			}
+			dv.SetValue(false);
+		}
+	}
 	public function ReloadProximityList() {
 		if (settingProximityEnabled && !settingPause) {
 			m_Proximity.ReloadProximityList();
@@ -170,7 +190,9 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			var tank:Boolean = Player.IsTank();
 			if (tank != m_Tanking){
 				m_Tanking = tank;
-				if(settingDisableOnTank) ApplyPause();
+				if (settingDisableOnTank){
+					ApplyPause();
+				}
 			}
 		}
 	}
@@ -184,6 +206,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			SettingChanged();
 			SlotPassiveChanged(settingRealSlot);
 		}
+		m_Icon.StateChanged();
 	}
 
 	public function SettingChanged() {
@@ -191,6 +214,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_Targeting.SetState(settingTargeting, settingDebugChat, settingDebugFifo);
 			m_Default.SetState(settingDefault);
 			m_Proximity.SetState(settingProximityEnabled);
+			m_Icon.StateChanged();
 		}
 	}
 }

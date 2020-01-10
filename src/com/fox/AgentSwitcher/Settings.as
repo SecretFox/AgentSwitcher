@@ -8,7 +8,7 @@ import flash.geom.Point;
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var ModVersion:String = "2.2.8";
+	public var ModVersion:String = "2.3.0";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
@@ -28,8 +28,12 @@ class com.fox.AgentSwitcher.Settings {
 	public var settingProximityEnabled:Boolean;
 	public var settingQuickselectName:Boolean;
 	public var settingDisplayName:Boolean;
+	public var settingCleaner:Boolean;
+	public var settingWalter:Boolean;
 	public var settingUpdateRate:Number;
 	public var settingRealSlot:Number;
+	public var dValImport:DistributedValue;
+	public var dValExport:DistributedValue;
 
 	private var m_swfRoot:MovieClip;
 	public var DisplayPos:Point;
@@ -42,6 +46,11 @@ class com.fox.AgentSwitcher.Settings {
 		settingDval.SetValue(false);
 		agentDisplayDval = DistributedValue.Create("AgentSwitcher_Display");
 		agentDisplayDval.SetValue(false);
+		
+		dValImport = DistributedValue.Create("AgentSwitcher_Import");
+		dValExport = DistributedValue.Create("AgentSwitcher_Export");
+		dValImport.SetValue(false);
+		dValExport.SetValue(false);
 	}
 
 	public function GetDestinationSlot() {
@@ -71,6 +80,8 @@ class com.fox.AgentSwitcher.Settings {
 		agentDisplayDval.SetValue(config.FindEntry("Display", false));
 		settingDisplayName = config.FindEntry("DisplayName", false);
 		settingQuickselectName = config.FindEntry("QuickName", false);
+		settingWalter = config.FindEntry("Walter", false);
+		settingCleaner = config.FindEntry("Cleaner", false);
 
 		/*
 		if (settingProximityEnabled) {
@@ -93,33 +104,63 @@ class com.fox.AgentSwitcher.Settings {
 		if (!settingPriority && !config.FindEntry("DefaultsGenerated")) {
 			// localized name | override agent | override range
 			settingPriority = new Array(
+				
 				LDBFormat.LDBGetText(51000, 32030) + "|Default|100", // The Unutterable Lurker
+				"",
 				LDBFormat.LDBGetText(51000, 28731) + "|Filth|45", // Xibalban Bloodhound,
 				LDBFormat.LDBGetText(51000, 30582) + "|Animal|onKill", // Dark House Sorcerer,
-				LDBFormat.LDBGetText(51000, 30590) + "|Filth|onKill", // Mayan Battle Mage,
 				LDBFormat.LDBGetText(51000, 30586) + "|Animal|100", // Ak'ab Hatchling
+				LDBFormat.LDBGetText(51000, 30590) + "|Filth|onKill", // Mayan Battle Mage,
 				LDBFormat.LDBGetText(51000, 28875) + "|Filth|40", // Chilam Psychopomp, override these to filth for Wayeb
+				"",
 				LDBFormat.LDBGetText(51000, 19280) + "|Construct|50", // Prime Maker
+				"",
 				LDBFormat.LDBGetText(51000, 30654) + "|Default|onKill",//Dimensional arcachnid
 				//LDBFormat.LDBGetText(51000, 30667) + "|Default|onKill",//Research Assistant
 				//LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
 				LDBFormat.LDBGetText(51000, 18180) + "|Default|40" // Klein
 
+				
+				//Build switching test cases
 				/*
-				Build switching test cases
-				"Antimony Ministrix|boss1Prox|35",
-				"Antimony Ministrix|boss1Kill|onKill",
-				"Corroder|boss2Prox|30",
-				"Corroder|boss2Kill|onKill",
-				"Hardwired Fleshtank|boss3Prox|40",
-				"Hardwired Fleshtank|boss3Kill|onKill",
-				"Traumadriver|boss4Prox|40",
-				"Traumadriver|boss4Kill|onKill",
-				"Recursia, Many-in-One|boss5Prox|30",
-				"Recursia, Many-in-One|boss5Kill|onKill",
-				"Machine Tyrant|boss6Prox|30",
-				"Machine Tyrant|boss6Kill|onKill"
+				,
+				"antimony|single|30",
+				"antimony|demon|30",
+				"antimony|aoe|onkill",
+				"antimony|tes|onkill",
+				"antimony|human|onkill",
+
+				"Corroder|single|20",
+				"Corroder|demon|20",
+				"Corroder|aoe|onkill",
+				"Corroder|tes|onkill",
+				"Corroder|human|onkill",
+
+				"tank|single|50",
+				"tank|demon|50",
+				"tank|aoe|onkill",
+				"tank|tes|onkill",
+				"tank|human|onkill",
+
+				"trauma|single|50",
+				"trauma|demon|50",
+				"trauma|aoe|onkill",
+				"trauma|tes|onkill",
+				"trauma|human|onkill",
+
+				"recursia|single|30",
+				"recursia|demon|30",
+				"recursia|aoe|onkill",
+				"recursia|tes|onkill",
+				"recursia|human|onkill",
+
+				"tyrant|single|40",
+				"tyrant|demon|40",
+				"tyrant|aoe|onkill",
+				"tyrant|tes|onkill",
+				"tyrant|human|onkill"
 				*/
+				
 			);
 		}
 	}
@@ -127,6 +168,14 @@ class com.fox.AgentSwitcher.Settings {
 	/*
 	private function EmitError(msg:String) {
 		Debugger.ShowFifo("/option ShowVicinityNPCNametags must be set to true for proximiy targeting",0);
+	}
+	*/
+	
+	// Todo store settings in config and get values  through this
+	// speeds up settings saving
+	/*
+	public function GetValue(key){
+		
 	}
 	*/
 
@@ -152,7 +201,8 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("PriorityEnable", settingProximityEnabled);
 		config.AddEntry("DisplayName", settingDisplayName);
 		config.AddEntry("QuickName", settingQuickselectName);
-
+		config.AddEntry("Walter", settingWalter);
+		config.AddEntry("Cleaner", settingCleaner);
 		for (var i = 0; i < RecentAgents.length; i++ ) {
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}

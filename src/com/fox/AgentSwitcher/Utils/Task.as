@@ -2,7 +2,7 @@ import com.GameInterface.Game.Character;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.Utils.Signal;
 import mx.utils.Delegate;
-/**
+/*
 * ...
 * @author fox
 */

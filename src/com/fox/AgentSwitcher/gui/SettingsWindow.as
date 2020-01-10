@@ -26,7 +26,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var m_Controller:Controller;
 
 	private var Active:JCheckBox;
-	private var Blacklist:JTextField;
+	private var Blacklist:JTextArea;
 	private var DebugChat:JCheckBox;
 	private var DebugFifo:JCheckBox;
 	private var slotText:JTextField;
@@ -41,22 +41,28 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var DisplayName:JCheckBox;
 	private var Disable:JCheckBox;
 	private var DisableTank:JCheckBox;
+	
+	private var useCleaner:JCheckBox;
+	private var useWalter:JCheckBox;
 
 	private var QuickName:JCheckBox;
 
 	private var ProximityToggle:JCheckBox;
 	private var ProximityList:JTextArea;
 	private var scrollPane:JScrollPane;
+	private var scrollPane2:JScrollPane;
 	private var rangeText:JTextField;
 	private var Range:JTextField;
 	private var rateText:JTextField;
 	private var Rate:JTextField;
 	private var Tooltip:TooltipInterface;
+	private var font:ASFont;
 
 	public function SettingsWindow(iconPos:Point, cont:Controller) {
 		// Setup
 		super("AgentSwitcher " +cont.ModVersion);
-		setFont(new ASFont("_StandardFont", 13, false));
+		setFont(new ASFont("_StandardFont", 14, false));
+		font = new ASFont("_StandardFont", 13);
 		m_Controller = cont;
 		setResizable(false);
 		setDragable(false);
@@ -65,76 +71,101 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		var icon:Icon = new Icon();//Empty icon
 		setIcon(icon);
 		//setBorder();
-		setBorder(new LineBorder(null,new ASColor(0xFFFFFF,100), 1, 2));
-		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER))
+		setBorder(new LineBorder(null, new ASColor(0xFFFFFF, 100), 1, 2));
+		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5));
+		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER))
+		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.CENTER))
 		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-		//Main Controls
+	//Main Controls
 		slotText = new JTextField("Agent slot:");
+		slotText.setFont(font);
 		slotText.setBorder(null);
 		slotText.setEnabled(false);
 		slotText.setEditable(false);
-		
-		blacklisText = new JTextField("Targeting Blacklist:");
-		blacklisText.setBorder(null);
-		blacklisText.setEnabled(false);
-		blacklisText.setEditable(false);
 
-		content.append(GetActive());
-		blacklistPanel.append(blacklisText);
-		blacklistPanel.append(GetBlacklist());
-		content.append(blacklistPanel);
-		
-		content.append(GetDefault());
-		content.append(GetProximityTogggle());
-		content.append(new JSeparator());
-		//Misc Settings
+		//Switch on target
+		leftcontent.append(GetActive());
 		//Agent Slot
 		slotPanel.append(slotText);
 		slotPanel.append(GetSlot());
-		content.append(slotPanel);
-		//Print target on chat
-		content.append(GetDebugChat());
-		//Print target on fifo
-		content.append(GetDebugFifo());
-		//Disable on switch
-		content.append(GetDisable());
-		//Disable on Tank
-		content.append(GetTank());
+		leftcontent.append(slotPanel);
+		
+		// Proximity switching
+		leftcontent.append(GetProximityTogggle());
+		// Agent Display
+		leftcontent.append(GetDisplay());
+		
 		//Delay field
+		leftcontent.append(GetDefault());
 		delayText = new JTextField("Default delay");
+		delayText.setFont(font);
 		delayText.setBorder(null);
 		delayText.setEnabled(false);
 		delayText.setEditable(false);
 		delayPanel.append(delayText);
 		delayPanel.append(GetDelay());
-		content.append(delayPanel);
-		//Agent display
-		content.append(GetDisplay());
-		content.append(GetDisplayName());
-		content.append(GetQuickName());
-		content.append(new JSeparator());
-
-		//Proximity settings
+		leftcontent.append(delayPanel);
+		
+	//Misc Settings
+		leftcontent.append(new JSeparator());
+		
+		//Print target on chat
+		leftcontent.append(GetDebugChat());
+		//Print target on fifo
+		leftcontent.append(GetDebugFifo());
+		//Disable on switch
+		leftcontent.append(GetDisable());
+		//Disable on Tank
+		leftcontent.append(GetTank());
+		
+		// Display options
+		leftcontent.append(GetDisplayName());
+		leftcontent.append(GetQuickName());
+		
+		//Special agent options
+		leftcontent.append(GetCleaner());
+		leftcontent.append(GetWalter());
+		
+		// Targeting blacklist
+		blacklisText = new JTextField("Targeting Blacklist:");
+		blacklisText.setFont(font);
+		blacklisText.setBorder(null);
+		blacklisText.setEnabled(false);
+		blacklisText.setEditable(false);
+		rightcontent.append(blacklisText);
+		scrollPane2 = new JScrollPane(GetBlacklist(),JScrollPane.SCROLLBAR_ALWAYS);
+		scrollPane2.setBorder(new LineBorder());
+		scrollPane2.setVerticalScrollBarPolicy(JScrollPane.SCROLLBAR_AS_NEEDED);
+		var scrollbar2:JScrollBar = scrollPane2.getVerticalScrollBar();
+		scrollbar2.addEventListener(ON_PRESS, __startDragThumb2, this);
+		scrollbar2.addEventListener(ON_RELEASE, __stopDragThumb2, this);
+		scrollbar2.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb2, this);
+		rightcontent.append(scrollPane2);
+		rightcontent.append(new JSeparator());
+	//Proximity settings
 		var tf3:JTextField = new JTextField("Proximity Switching(?)");
+		tf3.setFont(font);
 		tf3.addEventListener(Component.ON_ROLLOVER,OpenProximityTooltip,this);
 		tf3.addEventListener(Component.ON_ROLLOUT,CloseProximityTooltip,this);
 		tf3.setBorder(null);
 		tf3.setEnabled(false);
 		tf3.setEditable(false);
-		content.append(tf3);
+		rightcontent.append(tf3);
 
 		scrollPane = new JScrollPane(GetProximityList(),JScrollPane.SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder());
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.SCROLLBAR_AS_NEEDED);
 		var scrollbar:JScrollBar = scrollPane.getVerticalScrollBar();
 		scrollbar.addEventListener(ON_PRESS, __startDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASE, __stopDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb, this);
-		content.append(scrollPane);
+		rightcontent.append(scrollPane);
 
 		rangeText = new JTextField("Distance");
+		rangeText.setFont(font);
 		rangeText.setBorder(null);
 		rangeText.setEnabled(false);
 		rangeText.setEditable(false);
@@ -142,14 +173,18 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		ProximitySettingPanel.append(GetRange());
 
 		rateText = new JTextField("Update rate(ms)");
+		rateText.setFont(font);
 		rateText.setBorder(null);
 		rateText.setEnabled(false);
 		rateText.setEditable(false);
 		ProximitySettingPanel.append(rateText);
 		ProximitySettingPanel.append(GetRate());
-		content.append(ProximitySettingPanel);
+		rightcontent.append(ProximitySettingPanel);
 
 		//Show window + Reposition based on icon location
+		content.append(leftcontent);
+		content.append(new JSeparator(JSeparator.VERTICAL));
+		content.append(rightcontent);
 		setContentPane(content);
 		show();
 		pack();
@@ -195,15 +230,22 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function __stopDragThumb() {
 		scrollPane.getVerticalScrollBar().getUI()["__stopDragThumb"]();
 	}
+	private function __startDragThumb2() {
+		scrollPane2.getVerticalScrollBar().getUI()["__startDragThumb"]();
+	}
+	private function __stopDragThumb2() {
+		scrollPane2.getVerticalScrollBar().getUI()["__stopDragThumb"]();
+	}
 	public function tryToClose():Void {
 		Tooltip.Close();
 		// Reload proximity list if changed
 		if (m_Controller.settingPriority.toString() != ProximityList.getText().split("\n").toString()) {
 			m_Controller.ReloadProximityList();
 		}
-		if (m_Controller.settingBlacklist != Blacklist.getText()){
-			m_Controller.settingBlacklist = Blacklist.getText();
-			m_Controller.m_Targeting.SetBlacklist(Blacklist.getText());
+		var blacklistContent = Blacklist.getText().split("\n").join(",");
+		if (m_Controller.settingBlacklist != blacklistContent){
+			m_Controller.settingBlacklist = blacklistContent;
+			m_Controller.m_Targeting.SetBlacklist(blacklistContent);
 		}
 		m_Controller.settingDval.SetValue(false);
 	}
@@ -238,42 +280,47 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function __TankChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnTank = box.isSelected();
-		m_Controller.ApplyPause();
+		m_Controller.m_Tanking = undefined;
+		m_Controller.CheckIfTanking(1);
+		if(!box.isSelected()) m_Controller.ApplyPause();
 	}
 	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
 	}
-	private function  __ProximityToggled(box:JCheckBox) {
+	public function reDrawProximityList(){
+		ProximityList.setText(m_Controller.settingPriority.join("\n"));
+	}
+	private function __ProximityToggled(box:JCheckBox) {
 		m_Controller.settingProximityEnabled = box.isSelected();
 		m_Controller.SettingChanged();
 		Range.setEnabled(m_Controller.settingProximityEnabled);
 		Rate.setEnabled(m_Controller.settingProximityEnabled);
 	}
+	private function __CleanerChanged(box:JCheckBox) {
+		m_Controller.settingCleaner = box.isSelected();
+		m_Controller.ReloadProximityList();
+	}
+	private function __WalterChanged(box:JCheckBox) {
+		m_Controller.settingWalter = box.isSelected();
+		m_Controller.ReloadProximityList();
+	}
+	
 	private function __BlacklistChanged(){
-		
+		//empty on purpose
 	}
 	private function GetActive() {
 		if (Active == null) {
 			Active = new JCheckBox("Switch on target change");
+			Active.setFont(font);
 			Active.setSelected(m_Controller.settingTargeting);
 			Active.addActionListener(__ActiveChanged, this);
 		}
 		return Active;
 	}
-	private function GetBlacklist() {
-		if (Blacklist == null){
-			Blacklist = new JTextField(string(m_Controller.settingBlacklist), 15);
-			Blacklist.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
-			Blacklist.setEditable(true);
-			Blacklist.addEventListener(JTextField.ON_TEXT_CHANGED, __BlacklistChanged, this);
-			Blacklist.setFocusable(false);
-			Blacklist.setEnabled(Active.isSelected());
-		}
-		return Blacklist
-	}
 	private function GetDebugChat() {
 		if (DebugChat == null) {
 			DebugChat = new JCheckBox("Print race to chat");
+			DebugChat.setFont(font);
 			DebugChat.setSelected(m_Controller.settingDebugChat);
 			DebugChat.addActionListener(__DebugChatChanged, this);
 		}
@@ -290,6 +337,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDefault() {
 		if (Default == null) {
 			Default = new JCheckBox("Default on combat end");
+			Default.setFont(font);
 			Default.setSelected(m_Controller.settingDefault);
 			Default.addActionListener(__DefaultChanged, this);
 		}
@@ -298,6 +346,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDisplay() {
 		if (Display == null) {
 			Display = new JCheckBox("Display active agent");
+			Display.setFont(font);
 			Display.setSelected(m_Controller.agentDisplayDval.GetValue());
 			Display.addActionListener(__DisplayChanged, this);
 		}
@@ -306,6 +355,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDisplayName() {
 		if (DisplayName == null) {
 			DisplayName = new JCheckBox("Use agent name on display");
+			DisplayName.setFont(font);
 			DisplayName.setSelected(m_Controller.settingDisplayName);
 			DisplayName.addActionListener(__DisplayNameChanged, this);
 			DisplayName.setEnabled(m_Controller.agentDisplayDval.GetValue());
@@ -315,6 +365,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetQuickName() {
 		if (QuickName == null) {
 			QuickName = new JCheckBox("Use agent name on quickselect");
+			QuickName.setFont(font);
 			QuickName.setSelected(m_Controller.settingQuickselectName);
 			QuickName.addActionListener(__QuickSelectChanged, this);
 		}
@@ -324,6 +375,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDisable() {
 		if (Disable == null) {
 			Disable = new JCheckBox("Disable on quickselect");
+			Disable.setFont(font);
 			Disable.setSelected(m_Controller.settingDisableOnSwitch);
 			Disable.addActionListener(__DisableChanged, this);
 		}
@@ -332,6 +384,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetTank() {
 		if (DisableTank == null) {
 			DisableTank = new JCheckBox("Disable while tanking");
+			DisableTank.setFont(font);
 			DisableTank.setSelected(m_Controller.settingDisableOnTank);
 			DisableTank.addActionListener(__TankChanged, this);
 		}
@@ -340,10 +393,29 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetProximityTogggle() {
 		if (ProximityToggle == null) {
 			ProximityToggle = new JCheckBox("Enable proximity switching");
+			ProximityToggle.setFont(font);
 			ProximityToggle.setSelected(m_Controller.settingProximityEnabled);
 			ProximityToggle.addActionListener(__ProximityToggled, this);
 		}
 		return ProximityToggle;
+	}
+	private function GetCleaner() {
+		if (useCleaner == null) {
+			useCleaner = new JCheckBox("Use Cleaner");
+			useCleaner.setFont(font);
+			useCleaner.setSelected(m_Controller.settingCleaner);
+			useCleaner.addActionListener(__CleanerChanged, this);
+		}
+		return useCleaner;
+	}
+	private function GetWalter() {
+		if (useWalter == null) {
+			useWalter = new JCheckBox("Use Walter");
+			useWalter.setFont(font);
+			useWalter.setSelected(m_Controller.settingWalter);
+			useWalter.addActionListener(__WalterChanged, this);
+		}
+		return useWalter;
 	}
 	private function __DelayChanged(field:JTextField) {
 		var input:String = field.getText();
@@ -413,21 +485,37 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		}
 		return Slot;
 	}
+	private function GetBlacklist() {
+		if (Blacklist == null){
+			Blacklist = new JTextArea(string(m_Controller.settingBlacklist.split(",").join("\n")), 4, 1);
+			Blacklist.setFont(font);
+			Blacklist.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
+			Blacklist.setOpaque(false);
+			Blacklist.setHtml(false);
+			Blacklist.setEditable(true);
+			Blacklist.addEventListener(JTextField.ON_TEXT_CHANGED, __BlacklistChanged, this);
+			Blacklist.setFocusable(false);
+			Blacklist.setEnabled(Active.isSelected());
+		}
+		return Blacklist
+	}
 	private function GetProximityList() {
 		if (ProximityList == null) {
-			ProximityList = new JTextArea(m_Controller.settingPriority.join("\n"), 8, 1);
+			ProximityList = new JTextArea(m_Controller.settingPriority.join("\n"), 11, 1);
+			ProximityList.setFont(font);
 			ProximityList.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
 			ProximityList.setOpaque(false);
+			Blacklist.setHtml(false);
 			ProximityList.setEditable(true);
 			ProximityList.addEventListener(JTextField.ON_TEXT_CHANGED, __ProximityListChanged, this);
 			ProximityList.setFocusable(false);
-
 		}
 		return ProximityList;
 	}
 	private function GetRange() {
 		if (Range == null) {
 			Range = new JTextField(m_Controller.settingRange, 5);
+			Range.setFont(font);
 			Range.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
 			Range.setEditable(true);
 			Range.addEventListener(JTextField.ON_TEXT_CHANGED, __RangeChanged, this);
@@ -439,6 +527,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		if (Rate == null) {
 			Rate = new JTextField(string(m_Controller.settingUpdateRate), 5);
 			Rate.setRestrict("0-9");
+			Rate.setFont(font);
 			Rate.setEditable(true);
 			Rate.addEventListener(JTextField.ON_TEXT_CHANGED, __RateChanged, this);
 			Rate.setFocusable(false);

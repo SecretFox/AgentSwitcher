@@ -14,22 +14,45 @@ class com.fox.AgentSwitcher.gui.Icon {
 	private var m_swfRoot:MovieClip;
 	private var m_Controller:Controller;
 	public var m_Icon:MovieClip;
-	private var Tooltip:TooltipInterface;
+	public var Tooltip:TooltipInterface;
+	private var lockCheck:Number;
 
 	public function Icon(root:MovieClip, cont:Controller) {
 		m_swfRoot = root;
 		m_Controller = cont;
 	}
+
 	public function CreateTopIcon(pos:Point) {
 		if (!m_Icon) {
 			m_Icon = m_swfRoot.createEmptyMovieClip("m_TopIcon", m_swfRoot.getNextHighestDepth());
 			m_Icon._x = pos.x;
 			m_Icon._y = pos.y;
-			var m_Img = m_Icon.attachMovie("src.assets.topbarIcon.png", "m_Img", m_Icon.getNextHighestDepth(), {_x:2, _y:2, _width:17, _height:17});
-			StateChanged(m_Controller.settingPause);
+			var m_Img = m_Icon.attachMovie("src.assets.topbarIcon.png", "m_icon", m_Icon.getNextHighestDepth(), {_x:2, _y:2, _width:17, _height:17});
+			var m_lock = m_Icon.attachMovie("src.assets.LockIcon_Locked.png", "m_lock", m_Icon.getNextHighestDepth(), {_x:5, _y:2, _width:10, _height:17});
+			m_lock._visible = false;
+			StateChanged();
 			GuiEdit(false);
+			
 		}
 	}
+	public function ApplyLock(){
+		clearInterval(lockCheck);
+		lockCheck = setInterval(Delegate.create(this, CheckLock), 1000);
+		CheckLock();
+	}
+	private function CheckLock(){
+		if (m_Controller.m_Proximity.inProximity()){
+			if (!m_Icon.m_lock._visible){
+				m_Icon.m_lock._visible = true;
+				Colors.ApplyColor(m_Icon.m_icon, 0xE80000);
+			}
+		}else{
+			clearInterval(lockCheck);
+			m_Icon.m_lock._visible = false;
+			StateChanged();
+		}
+	}
+	
 	private function Clicked() {
 		if (Key.isDown(Key.SHIFT)){
 			m_Controller.settingPause = !m_Controller.settingPause;
@@ -42,9 +65,17 @@ class com.fox.AgentSwitcher.gui.Icon {
 	private function ClickedAux() {
 		m_Controller.settingDval.SetValue(!m_Controller.settingDval.GetValue());
 	}
-	public function StateChanged(state:Boolean) {
-		if (state) Colors.ApplyColor(m_Icon.m_Img, 0xFFFFFF);//paused
-		else Colors.ApplyColor(m_Icon.m_Img, 0x00C400);
+	public function StateChanged() {
+		if (m_Controller.settingPause){
+			Colors.ApplyColor(m_Icon.m_icon, 0xC40000)
+		}else{
+			if ((m_Controller.settingTargeting || m_Controller.settingProximityEnabled) && !(m_Controller.settingDisableOnTank && m_Controller.m_Tanking)){
+				Colors.ApplyColor(m_Icon.m_icon, 0x00C400);
+			}else{
+				Colors.ApplyColor(m_Icon.m_icon, 0xFFFFFF);
+			}
+		}
+		
 	}
 	private function onRollOut() {
 		Tooltip.Close();
@@ -53,6 +84,11 @@ class com.fox.AgentSwitcher.gui.Icon {
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher</b></font>";
+		if (m_Controller.settingPause){
+			m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher PAUSED(Shift+Click)</b></font>";
+		}else{
+			m_TooltipData.m_Title = "<font size='14'><b>AgentSwitcher</b></font>";
+		}
 		m_TooltipData.m_SubTitle = "<font size='9'>" + m_Controller.ModVersion + " by Starfox</font>";
 		m_TooltipData.m_Color = 0xFF8000;
 		m_TooltipData.m_MaxWidth = 220;

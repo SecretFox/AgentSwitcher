@@ -7,10 +7,10 @@ import com.GameInterface.ProjectUtils;
 import GUI.HUD.AbilitySlot;
 import com.Utils.ID32;
 import com.GameInterface.FeatInterface;
-/**
- * ...
- * @author fox
- */
+/*
+* ...
+* @author fox
+*/
 class com.fox.AgentSwitcher.Utils.Player {
 	private static var m_Player:Character;
 	private static var ROLE_TANK = ProjectUtils.GetUint32TweakValue("GroupFinder_Tank_Buff");
@@ -50,16 +50,13 @@ class com.fox.AgentSwitcher.Utils.Player {
 	//Cutscene/dead etc..
 	public static function IsinPlay():Boolean {
 		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-		m_Player.IsDead() ||
-		m_Player.IsInCinematic() ||
-		_root.fadetoblack.m_BlackScreen._visible) {
+			m_Player.IsDead() ||
+			m_Player.IsInCinematic() ||
+			_root.fadetoblack.m_BlackScreen._visible)
+		{
 			return false
 		}
 		return true
-	}
-	// Probably not the best way to check cooldowns
-	public static function GetSkill(slotID:Number):Number {
-		return _root.abilitybar.m_AbilitySlots[slotID].m_Id;
 	}
 	// Probably not the best way to check cooldowns
 	public static function SlotHasCooldown(slotID:Number):Boolean {

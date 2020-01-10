@@ -49,18 +49,8 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 		ChangeText(TargetSlot);
 		if (m_Controller.settingDval.GetValue()) Hide();
 	}
-	/*
-	function onLoadComplete(clip:MovieClip){
-		clip._height = 50;
-		clip._width = 50;
-	}
-	*/
 	private function DrawDisplay() {
 		m_Display = m_swfRoot.createEmptyMovieClip("AgentDisplay", m_swfRoot.getNextHighestDepth());
-		//if(m_Controller.superSecretKittenSetting){
-		// var img = m_Display.createEmptyMovieClip("Mittens", m_Display.getNextHighestDepth());
-		// clipLoader.addListener(this);
-		// clipLoader.loadClip("AgentMittens\\MittenRoster\\x.png",img );
 		var m_BG = m_Display.createEmptyMovieClip("m_BG", m_Display.getNextHighestDepth());
 		m_Display._x = m_Controller.DisplayPos.x;
 		m_Display._y = m_Controller.DisplayPos.y;
@@ -77,15 +67,10 @@ class com.fox.AgentSwitcher.gui.AgentDisplay {
 		if (slotID == TargetSlot) {
 			var SlotAgent:AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
 			if (SlotAgent) {
-				var name;
-				for (var i in DruidSystem.Druids) {
-					if (!m_Controller.settingDisplayName) {
-						if (DruidSystem.Druids[i][0] == SlotAgent.m_AgentId) {
-							name = DruidSystem.Druids[i][1];
-							break
-						}
-					}
-					name = SlotAgent.m_Name
+				var name = SlotAgent.m_Name;
+				if (!m_Controller.settingDisplayName) {
+					var n = DruidSystem.GetName(SlotAgent.m_AgentId);
+					if (n) name = n;
 				}
 				m_Display.TargetAgent.text = name;
 				Draw.DrawRectangle(m_Display.m_BG, 0, 0, m_Display.TargetAgent._width + 10,  m_Display.TargetAgent._height + 10, 0x000000, 0, [8, 8, 8, 8]);
