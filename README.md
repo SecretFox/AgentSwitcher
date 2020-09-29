@@ -1,15 +1,15 @@
 # AgentSwitcher
-With the release of Occult Defence scenario Funcom released bunches of new agents, druids, which give damage bonus against certain species.  
-However it can be quite hard to tell what species each enemy are, not to mention the time it takes to switch the agent.
-So i created this mod, which automatically switches agent in specified slot to match the enemy.  
+![GitHub All Releases](https://img.shields.io/github/downloads/SecretFox/AgentSwitcher/total?style=for-the-badge)  
+With the release of Occult Defence scenario Funcom released bunches of new agents, druids, which give damage bonus against certain enemies.  
+So, as is the tradition, i created a mod which automatically handles the switching for you.  
 
 Agent used:  
 * Vampires : Rana Kader  
 * Construct : Nuala Magorian  
 * Cybernetic : Fearghas Abernathy  
 * Demon : Laughing Jenny  
-* Aquatic : Brann Mac Diarmada OR Walter Malone
-* Filth : Francis Rowan  OR The Cleaner  
+* Aquatic : Brann Mac Diarmada AND Walter Malone  
+* Filth : Francis Rowan  AND The Cleaner  
 * Human : Lady of Mists  
 * Spirit : Amelia Bindings  
 * Supernatural : Sif Minervudottir  
@@ -18,9 +18,10 @@ Agent used:
 * Others : Default  
 
 When no suitable agent is found, default agent will be used.  
-Default agent is automatically set when switchign builds.  
+Default agent is automatically set when switching builds.  
 
 Left-Click the icon to open QuickSelect menu, which contains your last 3 regular agents, and all your level 50 druids.  
+You can also click on the "AgentDisplay" text, if you have it enabled.  
 Right-click the icon to access mod settings.  
 Shift + Left-Click to Toggle mod on/off.  
 Icon can be moved while in GUI-Edit mode  
@@ -29,16 +30,19 @@ Icon can be moved while in GUI-Edit mode
 
 ### Settings1  
 **Switch on target change** : Switches your agent when you target an enemy  
-**Agent Slot** : Agent slot used for switching (1-3)  
+**Primary Agent Slot** : Agent slot used for switching (1-3)  
+**Secondary Agent Slot** : Agent slot used for switching (1-3), used if there are multiple agents (Aquatic and filth)  
+
 **Enable proximity switching** : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.  
 **Display active agent** : Creates moveable text which displays currently equipped agent  
 **Default on combat end** : Switches back to your default agent x seconds after combat ends  
 **Default delay** : Wait time for "Default on combat end" option  
-________
+________  
 **Print race to chat** : Prints enemy race on system chat channel when targeting them  
 **Print race as Fifo** : Prints enemy race as FadeIn/FadeOut message when targeting them  
-**Disable on quickselect** : Disables target based switching after quickselecting(left-clicking icon) agent  
+**Disable on quickselect** : Disables targeting based switching after quickselecting(left-clicking icon) agent  
 **Disable while tanking** : Disables mod when player has allocated over 50 points to survivability  
+**Disable while tanking** : Disables mod when player has allocated over 50 points to healing  
 **Use agent name on display** : Whether display should show agents name or species name  
 **Use agent name on quickselect** : Whether quickselect should show agents name or damage bonus  
 
@@ -50,18 +54,18 @@ You can also override the agent choice by adding `None, Default, Animal, Aquatic
 ```
 Familiar|Demon  
 mob2|Animal  
-mob3|Construct
+mob3|Construct  
 ```  
-**Proximity Switching list** : See "Proximity Switching" section
+**Proximity Switching list** : See "Proximity Switching" section  
 ________  
 **Range** : When distance is not specified in the proximity list this value will be used  
-**Rate** : How often tracked proximity distance is checked  
+**Rate** : How often enemy distances get checked  
 ________  
 ### Proximity Switching:  
 Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
 **Name/zoneID**  
-	Mob name - Targets (partial) name, case insensitive
+	Mob name - Targets (partial) name, case insensitive  
 	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
 
 **Agent/Build/Outfit**  
@@ -77,10 +81,10 @@ Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Onl
 	
 **Role**  
 	Tank,DPS,Healer or All - If specified then the action will only be performed if player has the right role (according to Anima Allocation).  
-	If not specified assumed to be all
+	If not specified assumed to be all  
 
 Some examples:  
-	`Xibalban Bloodhound` - Priorities Xibalban Bloodhound over adds in Darkness War 2 Fight.  
+	`Xibalban Bloodhound` - Switches to Filth agent when Xibalban Bloodhound(DW2) is close to the player  
 	`The Unutterable Lurker|Default|100` - Switches to default agent when Unutterable Lurker is within 100m of the player.  
 	`Dark House Sorcerer|Animal|onKill` - Switches to Animal agent(Finn Mulligan) after killing Dark House Sorcerer. This is in preparation for Akab Boss.  
 	`7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence instance  
@@ -88,4 +92,4 @@ Some examples:
 	`7740|DarkAgartha|onZone` - Switches to "DarkAgartha" build when entering DarkAgartha  
 	`3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
 	`Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
-	`Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.
+	`Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.  

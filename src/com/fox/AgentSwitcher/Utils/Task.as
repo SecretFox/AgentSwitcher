@@ -18,6 +18,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 	private var SignalDone:Signal;
 	private var timeout:Number;
 	private var m_Player:Character;
+	private var timeout2:Number;
 
 	static function AddTask(type, f, f2) {
 		var task:Task = new Task(f, type, f2)
@@ -27,8 +28,8 @@ class com.fox.AgentSwitcher.Utils.Task {
 	}
 	static function TaskDone(task:Task) {
 		for (var i:Number = 0; i < TaskQueue.length;i++){
-			if (TaskQueue[i] == task) {
-				TaskQueue[i].dispose();
+			if (Task(TaskQueue[i]) == task) {
+				Task(TaskQueue[i]).dispose();
 				TaskQueue.splice(i, 1);
 				break
 			}
@@ -37,26 +38,19 @@ class com.fox.AgentSwitcher.Utils.Task {
 	static function RemoveTasksByType(type:Number) {
 		//Removes existing tasks of this type
 		for (var i in TaskQueue) {
-			if (TaskQueue[i].Type == type) {
-				TaskQueue[i].kill();
+			if (Task(TaskQueue[i]).Type == type) {
+				Task(TaskQueue[i]).kill();
 				TaskQueue.splice(Number(i), 1);
 			}
 		}
 	}
 	static function RemoveAllTasks() {
 		for (var i in TaskQueue) {
-			TaskQueue[i].kill();
+			Task(TaskQueue[i]).kill();
 		}
 		TaskQueue = new Array();
 	}
-	static function HasTaskType(type:Number) {
-		for (var i in TaskQueue) {
-			if (TaskQueue[i].type == type) {
-				return true;
-			}
-		}
-		return false;
-	}
+/* ---------*/
 	public function Task(f, type, f2) {
 		m_Player = Player.GetPlayer();
 		Callback = f;
@@ -69,9 +63,6 @@ class com.fox.AgentSwitcher.Utils.Task {
 		else if (Type == 1) StartTask2();
 		else if (Type == 2) StartTask3();
 	}
-	public function GetType() {
-		return Type
-	}
 	private function kill() {
 		AbortCallback();
 		dispose();
@@ -80,6 +71,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 		clearTimeout(timeout);
+		clearTimeout(timeout2);
 		Callback = undefined;
 		AbortCallback = undefined;
 	}
@@ -87,7 +79,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 //Triggers when player exits combat
 	public function StartTask1() {
 		m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
-		SlotToggleCombat();
+		timeout2 = setTimeout(Delegate.create(this, SlotToggleCombat), 100);
 	}
 	private function SlotToggleCombat(state:Boolean) {
 		if (!Player.IsinPlay()) {

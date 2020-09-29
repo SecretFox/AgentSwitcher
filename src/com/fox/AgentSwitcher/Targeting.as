@@ -3,6 +3,7 @@ import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Proximity;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
+import com.fox.AgentSwitcher.data.mobData;
 import com.fox.Utils.Debugger;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
@@ -16,7 +17,7 @@ class com.fox.AgentSwitcher.Targeting {
 	private var Enabled:Boolean;
 	private var m_Proximity:Proximity;
 	private var LastName:String = "";
-	private var Blacklist:Array;
+	private var Overrides:Array;
 
 	public function Targeting(cont:Controller) {
 		m_Controller = cont;
@@ -25,7 +26,7 @@ class com.fox.AgentSwitcher.Targeting {
 	}
 	
 	public function SetBlacklist(blacklistStr:String) {
-		Blacklist = new Array();
+		Overrides = [];
 		if (!StringUtils.LStrip(blacklistStr)){
 			return
 		}
@@ -35,7 +36,7 @@ class com.fox.AgentSwitcher.Targeting {
 			if (!entry[1]) entry.push("none");
 			entry[0] = StringUtils.LStrip(entry[0]);
 			if (entry[0]){
-				Blacklist.push(entry);
+				Overrides.push(entry);
 			}
 		}
 	}
@@ -52,17 +53,17 @@ class com.fox.AgentSwitcher.Targeting {
 	}
 	
 	// Returns redirect agent if target is "blacklisted"
-	private function IsBlacklisted(name:String) {
-		for (var i = 0; i < Blacklist.length; i++) {
-			if (name.indexOf(Blacklist[i][0]) >= 0) {
-				return Blacklist[i][1];
+	private function IsOverridden(name:String) {
+		for (var i = 0; i < Overrides.length; i++) {
+			if (name.indexOf(Overrides[i][0]) >= 0) {
+				return Overrides[i][1];
 			}
 		}
 	}
 	
 	private function TargetChanged(id:ID32) {
 		if (!id.IsNull()) {
-			var data:Object = DruidSystem.GetRace(id);
+			var data:mobData = DruidSystem.GetRace(id);
 			// Debug prints
 			if (m_Controller.settingDebugChat || m_Controller.settingDebugFifo){
 				var name = data.Name + data.Race;
@@ -80,30 +81,29 @@ class com.fox.AgentSwitcher.Targeting {
 				&& !m_Proximity.inProximity()
 			){
 				var agent;
-				var blacklist = IsBlacklisted(data.Name.toLowerCase()); // agent override
-				if (!blacklist) {
-					agent = DruidSystem.GetSwitchAgent(data.Agent, m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
-				} else if (blacklist.toLowerCase() == "default") {
+				var agent2;
+				var override = IsOverridden(data.Name.toLowerCase()); // agent override
+				if (!override) {
+					agent = DruidSystem.GetSwitchAgent(data.Agent[0], m_Controller.settingRealSlot, m_Controller.settingDefaultAgent);
+					agent2 = DruidSystem.GetSwitchAgent(data.Agent[1], m_Controller.settingRealSlot2, m_Controller.settingDefaultAgent2);
+				} 
+				else if (override.toLowerCase() == "default") {
 					agent = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent, m_Controller.settingRealSlot, 0);
-				} else {
-					for (var i:Number = 0; i < DruidSystem.Druids2.length;i++) {
-						if (DruidSystem.Druids2[i][1].toLowerCase() == blacklist.toLowerCase()) {
-							if (i == DruidSystem.enum_Filth && m_Controller.settingCleaner){
-								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][1], m_Controller.settingRealSlot, 0);
-							}
-							else if ( i == DruidSystem.enum_Aqua && m_Controller.settingWalter){
-								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][1], m_Controller.settingRealSlot, 0);
-							}
-							else{
-								agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids2[i][0][0], m_Controller.settingRealSlot, 0);
-							}
+					agent2 = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent2, m_Controller.settingRealSlot2, 0);
+				} 
+				else if (!isNaN(override)) {
+					agent = Number(override);
+				}
+				else {
+					for (var i:Number = 0; i < DruidSystem.Druids.length;i++) {
+						if (DruidSystem.Druids[i][1].toLowerCase() == override.toLowerCase()) {
+							agent = DruidSystem.GetSwitchAgent(DruidSystem.Druids[i][0][0], m_Controller.settingRealSlot, 0);
+							agent2 = DruidSystem.GetSwitchAgent(DruidSystem.Druids[i][0][1], m_Controller.settingRealSlot2, 0);
 							break
 						}
 					}
 				}
-				if (agent) {
-					DruidSystem.SwitchToAgent(agent, m_Controller.settingRealSlot);
-				}
+				DruidSystem.SwitchToAgents(agent, agent2, m_Controller);
 			}
 		}
 	}

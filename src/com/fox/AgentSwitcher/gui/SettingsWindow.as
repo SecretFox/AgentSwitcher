@@ -16,7 +16,6 @@ import GUI.fox.aswing.border.LineBorder;
 import com.GameInterface.Tooltip.TooltipData;
 import com.GameInterface.Tooltip.TooltipInterface;
 import com.GameInterface.Tooltip.TooltipManager;
-import flash.geom.Point;
 /*
 * ...
 * @author fox
@@ -30,8 +29,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var DebugChat:JCheckBox;
 	private var DebugFifo:JCheckBox;
 	private var slotText:JTextField;
+	private var slot2Text:JTextField;
 	private var blacklisText:JTextField;
 	private var Slot:JTextField;
+	private var Slot2:JTextField;
 
 	private var Default:JCheckBox;
 	private var delayText:JTextField;
@@ -41,6 +42,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var DisplayName:JCheckBox;
 	private var Disable:JCheckBox;
 	private var DisableTank:JCheckBox;
+	private var DisableHealer:JCheckBox;
 	
 	private var useCleaner:JCheckBox;
 	private var useWalter:JCheckBox;
@@ -58,7 +60,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var Tooltip:TooltipInterface;
 	private var font:ASFont;
 
-	public function SettingsWindow(iconPos:Point, cont:Controller) {
+	public function SettingsWindow(cont:Controller) {
 		// Setup
 		super("AgentSwitcher " +cont.ModVersion);
 		setFont(new ASFont("_StandardFont", 14, false));
@@ -66,7 +68,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		m_Controller = cont;
 		setResizable(false);
 		setDragable(false);
-		setLocation(iconPos.x, iconPos.y + 30);
+		setLocation(m_Controller.iconPos.x, m_Controller.iconPos.y + 30);
 		setMinimumWidth(275);
 		var icon:Icon = new Icon();//Empty icon
 		setIcon(icon);
@@ -76,22 +78,33 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER))
 		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.CENTER))
 		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
+		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER))
+		var slot2Panel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
 	//Main Controls
-		slotText = new JTextField("Agent slot:");
+		slotText = new JTextField("Primary Agent slot:");
 		slotText.setFont(font);
 		slotText.setBorder(null);
 		slotText.setEnabled(false);
 		slotText.setEditable(false);
+		
+		slot2Text = new JTextField("Secondary Agent slot:");
+		slot2Text.setFont(font);
+		slot2Text.setBorder(null);
+		slot2Text.setEnabled(false);
+		slot2Text.setEditable(false);
 
 		//Switch on target
 		leftcontent.append(GetActive());
-		//Agent Slot
+		//Agent Slots
 		slotPanel.append(slotText);
 		slotPanel.append(GetSlot());
 		leftcontent.append(slotPanel);
+		
+		slot2Panel.append(slot2Text);
+		slot2Panel.append(GetSlot2());
+		leftcontent.append(slot2Panel);
 		
 		// Proximity switching
 		leftcontent.append(GetProximityTogggle());
@@ -120,14 +133,16 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		leftcontent.append(GetDisable());
 		//Disable on Tank
 		leftcontent.append(GetTank());
+		//Disable on Heal
+		leftcontent.append(GetHealer());
 		
 		// Display options
 		leftcontent.append(GetDisplayName());
 		leftcontent.append(GetQuickName());
 		
 		//Special agent options
-		leftcontent.append(GetCleaner());
-		leftcontent.append(GetWalter());
+		//leftcontent.append(GetCleaner());
+		//leftcontent.append(GetWalter());
 		
 		// Targeting blacklist
 		blacklisText = new JTextField("Targeting Blacklist:");
@@ -190,13 +205,14 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		pack();
 		bringToTopDepth();
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		if (iconPos.y > Stage.height / 2) {
-			setY(iconPos.y - 5 - getHeight());
+		if (m_Controller.iconPos.y > Stage.height / 2) {
+			setY(m_Controller.iconPos.y - 5 - getHeight());
 		}
-		if (iconPos.x > Stage.width / 2) {
-			setX(iconPos.x - 30 - getWidth());
+		if (m_Controller.iconPos.x > Stage.width / 2) {
+			setX(m_Controller.iconPos.x - 30 - getWidth());
 		}
 	}
+	
 	private function OpenProximityTooltip() {
 		var m_TooltipData:TooltipData = new TooltipData();
 		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
@@ -242,7 +258,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		if (m_Controller.settingPriority.toString() != ProximityList.getText().split("\n").toString()) {
 			m_Controller.ReloadProximityList();
 		}
-		var blacklistContent = Blacklist.getText().split("\n").join(",");
+		var blacklistContent = Blacklist.getText().split("\r").join(",");
 		if (m_Controller.settingBlacklist != blacklistContent){
 			m_Controller.settingBlacklist = blacklistContent;
 			m_Controller.m_Targeting.SetBlacklist(blacklistContent);
@@ -281,13 +297,19 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function __TankChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnTank = box.isSelected();
 		m_Controller.m_Tanking = undefined;
-		m_Controller.CheckIfTanking(1);
+		m_Controller.CheckRole(1);
+		if(!box.isSelected()) m_Controller.ApplyPause();
+	}
+	private function __HealerChanged(box:JCheckBox) {
+		m_Controller.settingDisableOnHealer = box.isSelected();
+		m_Controller.m_Healing = undefined;
+		m_Controller.CheckRole(1);
 		if(!box.isSelected()) m_Controller.ApplyPause();
 	}
 	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
 	}
-	public function reDrawProximityList(){
+	public function redrawProximityList(){
 		ProximityList.setText(m_Controller.settingPriority.join("\n"));
 	}
 	private function __ProximityToggled(box:JCheckBox) {
@@ -295,14 +317,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		m_Controller.SettingChanged();
 		Range.setEnabled(m_Controller.settingProximityEnabled);
 		Rate.setEnabled(m_Controller.settingProximityEnabled);
-	}
-	private function __CleanerChanged(box:JCheckBox) {
-		m_Controller.settingCleaner = box.isSelected();
-		m_Controller.ReloadProximityList();
-	}
-	private function __WalterChanged(box:JCheckBox) {
-		m_Controller.settingWalter = box.isSelected();
-		m_Controller.ReloadProximityList();
 	}
 	
 	private function __BlacklistChanged(){
@@ -329,6 +343,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDebugFifo() {
 		if (DebugFifo == null) {
 			DebugFifo = new JCheckBox("Print race as FIFO");
+			DebugFifo.setFont(font);
 			DebugFifo.setSelected(m_Controller.settingDebugFifo);
 			DebugFifo.addActionListener(__DebugFifoChanged, this);
 		}
@@ -390,6 +405,15 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		}
 		return DisableTank;
 	}
+	private function GetHealer() {
+		if (DisableHealer == null) {
+			DisableHealer = new JCheckBox("Disable while healing");
+			DisableHealer.setFont(font);
+			DisableHealer.setSelected(m_Controller.settingDisableOnHealer);
+			DisableHealer.addActionListener(__HealerChanged, this);
+		}
+		return DisableHealer;
+	}
 	private function GetProximityTogggle() {
 		if (ProximityToggle == null) {
 			ProximityToggle = new JCheckBox("Enable proximity switching");
@@ -398,24 +422,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			ProximityToggle.addActionListener(__ProximityToggled, this);
 		}
 		return ProximityToggle;
-	}
-	private function GetCleaner() {
-		if (useCleaner == null) {
-			useCleaner = new JCheckBox("Use Cleaner");
-			useCleaner.setFont(font);
-			useCleaner.setSelected(m_Controller.settingCleaner);
-			useCleaner.addActionListener(__CleanerChanged, this);
-		}
-		return useCleaner;
-	}
-	private function GetWalter() {
-		if (useWalter == null) {
-			useWalter = new JCheckBox("Use Walter");
-			useWalter.setFont(font);
-			useWalter.setSelected(m_Controller.settingWalter);
-			useWalter.addActionListener(__WalterChanged, this);
-		}
-		return useWalter;
 	}
 	private function __DelayChanged(field:JTextField) {
 		var input:String = field.getText();
@@ -426,17 +432,29 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			return
 		}
 		m_Controller.settingDefaultDelay = Number(input);
-
 	}
 	private function __SlotChanged(field:JTextField) {
 		var input:String = field.getText();
 		if (input.length > 1) {
-			input = "9";
+			input = "3";
 			field.setText(input);
-		} else if (!input) {
+		}
+		else if (!input) {
 			return
 		}
 		m_Controller.settingSlot = Number(input);
+		m_Controller.GetDestinationSlot();
+		m_Controller.m_AgentDisplay.SlotChanged();
+	}
+	private function __Slot2Changed(field:JTextField) {
+		var input:String = field.getText();
+		if (input.length > 1) {
+			input = "2";
+			field.setText(input);
+		} else if (!input) {
+			input = "0"
+		}
+		m_Controller.settingSlot2 = Number(input);
 		m_Controller.GetDestinationSlot();
 		m_Controller.m_AgentDisplay.SlotChanged();
 	}
@@ -468,7 +486,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			Delay = new JTextField(string(m_Controller.settingDefaultDelay), 5);
 			Delay.setEditable(true);
 			Delay.setEnabled(m_Controller.settingDefault);
-			Delay.setRestrict("0123456789");
+			Delay.setRestrict("0-9");
 			Delay.addEventListener(JTextField.ON_TEXT_CHANGED, __DelayChanged, this);
 			Delay.setFocusable(false);
 		}
@@ -478,18 +496,28 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetSlot() {
 		if (Slot == null) {
 			Slot = new JTextField(string(m_Controller.settingSlot), 5);
-			Slot.setRestrict("0123456789");
+			Slot.setRestrict("0-9");
 			Slot.setEditable(true);
 			Slot.addEventListener(JTextField.ON_TEXT_CHANGED, __SlotChanged, this);
 			Slot.setFocusable(false);
 		}
 		return Slot;
 	}
+	private function GetSlot2() {
+		if (Slot2 == null) {
+			Slot2 = new JTextField(string(m_Controller.settingSlot2), 5);
+			Slot2.setRestrict("0-9");
+			Slot2.setEditable(true);
+			Slot2.addEventListener(JTextField.ON_TEXT_CHANGED, __Slot2Changed, this);
+			Slot2.setFocusable(false);
+		}
+		return Slot2;
+	}
 	private function GetBlacklist() {
 		if (Blacklist == null){
-			Blacklist = new JTextArea(string(m_Controller.settingBlacklist.split(",").join("\n")), 4, 1);
+			Blacklist = new JTextArea(string(m_Controller.settingBlacklist.split(",").join("\r")), 4, 1);
 			Blacklist.setFont(font);
-			Blacklist.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
+			Blacklist.setRestrict("^,");
 			Blacklist.setOpaque(false);
 			Blacklist.setHtml(false);
 			Blacklist.setEditable(true);

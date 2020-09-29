@@ -13,7 +13,7 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.gui.Icon {
 	private var m_swfRoot:MovieClip;
 	private var m_Controller:Controller;
-	public var m_Icon:MovieClip;
+	public var m_IconClip:MovieClip;
 	public var Tooltip:TooltipInterface;
 	private var lockCheck:Number;
 
@@ -23,32 +23,34 @@ class com.fox.AgentSwitcher.gui.Icon {
 	}
 
 	public function CreateTopIcon(pos:Point) {
-		if (!m_Icon) {
-			m_Icon = m_swfRoot.createEmptyMovieClip("m_TopIcon", m_swfRoot.getNextHighestDepth());
-			m_Icon._x = pos.x;
-			m_Icon._y = pos.y;
-			var m_Img = m_Icon.attachMovie("src.assets.topbarIcon.png", "m_icon", m_Icon.getNextHighestDepth(), {_x:2, _y:2, _width:17, _height:17});
-			var m_lock = m_Icon.attachMovie("src.assets.LockIcon_Locked.png", "m_lock", m_Icon.getNextHighestDepth(), {_x:5, _y:2, _width:10, _height:17});
+		if (!m_IconClip) {
+			m_IconClip = m_swfRoot.createEmptyMovieClip("m_TopIcon", m_swfRoot.getNextHighestDepth());
+			m_IconClip._x = pos.x;
+			m_IconClip._y = pos.y;
+			var m_Img = m_IconClip.attachMovie("src.assets.topbarIcon.png", "m_icon", m_IconClip.getNextHighestDepth(), {_x:2, _y:2, _width:17, _height:17});
+			var m_lock = m_IconClip.attachMovie("src.assets.LockIcon_Locked.png", "m_lock", m_IconClip.getNextHighestDepth(), {_x:5, _y:2, _width:10, _height:17});
 			m_lock._visible = false;
 			StateChanged();
 			GuiEdit(false);
 			
 		}
 	}
+	
 	public function ApplyLock(){
 		clearInterval(lockCheck);
 		lockCheck = setInterval(Delegate.create(this, CheckLock), 1000);
 		CheckLock();
 	}
+	
 	private function CheckLock(){
 		if (m_Controller.m_Proximity.inProximity()){
-			if (!m_Icon.m_lock._visible){
-				m_Icon.m_lock._visible = true;
-				Colors.ApplyColor(m_Icon.m_icon, 0xE80000);
+			if (!m_IconClip.m_lock._visible){
+				m_IconClip.m_lock._visible = true;
+				Colors.ApplyColor(m_IconClip.m_icon, 0xE80000);
 			}
 		}else{
 			clearInterval(lockCheck);
-			m_Icon.m_lock._visible = false;
+			m_IconClip.m_lock._visible = false;
 			StateChanged();
 		}
 	}
@@ -62,24 +64,27 @@ class com.fox.AgentSwitcher.gui.Icon {
 			m_Controller.m_QuickSelect.QuickSelectStateChanged();
 		}
 	}
+	
 	private function ClickedAux() {
 		m_Controller.settingDval.SetValue(!m_Controller.settingDval.GetValue());
 	}
+	
 	public function StateChanged() {
 		if (m_Controller.settingPause){
-			Colors.ApplyColor(m_Icon.m_icon, 0xC40000)
+			Colors.ApplyColor(m_IconClip.m_icon, 0xC40000)
 		}else{
-			if ((m_Controller.settingTargeting || m_Controller.settingProximityEnabled) && !(m_Controller.settingDisableOnTank && m_Controller.m_Tanking)){
-				Colors.ApplyColor(m_Icon.m_icon, 0x00C400);
+			if ((m_Controller.settingTargeting || m_Controller.settingProximityEnabled) && !(m_Controller.settingDisableOnTank && m_Controller.m_Tanking) && !(m_Controller.settingDisableOnHealer && m_Controller.m_Healing)){
+				Colors.ApplyColor(m_IconClip.m_icon, 0x00C400);
 			}else{
-				Colors.ApplyColor(m_Icon.m_icon, 0xFFFFFF);
+				Colors.ApplyColor(m_IconClip.m_icon, 0xFFFFFF);
 			}
 		}
-		
 	}
+	
 	private function onRollOut() {
 		Tooltip.Close();
 	}
+	
 	private function OnRollOver() {
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
@@ -95,31 +100,32 @@ class com.fox.AgentSwitcher.gui.Icon {
 		m_TooltipData.AddDescription("<font size='11'>Left-Click for QuickSelect menu\nRight-Click for settings\nMoveable while in GUIEdit</font>");
 		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
 	}
+	
 	public function GuiEdit(state) {
 		if (!state) {
-			m_Icon.stopDrag()
-			m_Controller.iconPos = Common.getOnScreen(m_Icon);
-			m_Icon._x = m_Controller.iconPos.x;
-			m_Icon._y = m_Controller.iconPos.y;
-			m_Icon.onPress = Delegate.create(this, Clicked);
-			m_Icon.onPressAux = Delegate.create(this, ClickedAux);
-			m_Icon.onRelease = undefined;
-			m_Icon.onReleaseOutside = undefined;
-			m_Icon.onRollOver = Delegate.create(this,OnRollOver);
-			m_Icon.onRollOut = Delegate.create(this,onRollOut);
+			m_IconClip.stopDrag()
+			m_Controller.iconPos = Common.getOnScreen(m_IconClip);
+			m_IconClip._x = m_Controller.iconPos.x;
+			m_IconClip._y = m_Controller.iconPos.y;
+			m_IconClip.onPress = Delegate.create(this, Clicked);
+			m_IconClip.onPressAux = Delegate.create(this, ClickedAux);
+			m_IconClip.onRelease = undefined;
+			m_IconClip.onReleaseOutside = undefined;
+			m_IconClip.onRollOver = Delegate.create(this,OnRollOver);
+			m_IconClip.onRollOut = Delegate.create(this,onRollOut);
 		} else {
-			m_Icon.onPress = Delegate.create(this, function() {
-				this.m_Icon.startDrag();
+			m_IconClip.onPress = Delegate.create(this, function() {
+				this.m_IconClip.startDrag();
 			});
-			m_Icon.onPressAux = undefined;
-			m_Icon.onRelease = Delegate.create(this, function() {
-				this.m_Icon.stopDrag();
+			m_IconClip.onPressAux = undefined;
+			m_IconClip.onRelease = Delegate.create(this, function() {
+				this.m_IconClip.stopDrag();
 			});
-			m_Icon.onReleaseOutside = Delegate.create(this, function() {
-				this.m_Icon.stopDrag();
+			m_IconClip.onReleaseOutside = Delegate.create(this, function() {
+				this.m_IconClip.stopDrag();
 			});
-			m_Icon.onRollOver = undefined;
-			m_Icon.onRollOut = undefined;
+			m_IconClip.onRollOver = undefined;
+			m_IconClip.onRollOut = undefined;
 		}
 	}
 }

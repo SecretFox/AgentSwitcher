@@ -42,6 +42,10 @@ class com.fox.AgentSwitcher.Defaulting {
 			if (AgentID) {
 				DruidSystem.SwitchToAgent(AgentID, m_Controller.settingRealSlot);
 			}
+			AgentID = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent2, m_Controller.settingRealSlot2, 0);
+			if (AgentID) {
+				DruidSystem.SwitchToAgent(AgentID, m_Controller.settingRealSlot2);
+			}
 		}
 	}
 	private function SlotToggleCombat(combatState:Boolean) {

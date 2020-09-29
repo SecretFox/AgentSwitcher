@@ -1,5 +1,4 @@
 import com.fox.AgentSwitcher.Utils.Build;
-import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
@@ -56,7 +55,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 			var time:Date = new Date();
 			Age = time.valueOf();
 			// Trying to get equipped agent while in loading screen will crash the game
-			var f:Function = Delegate.create(this, PreEquipBuild);
+			var f:Function = Delegate.create(this, PrepBuildEquip);
 			Task.AddTask(Task.inPlayTask, f, f2);
 		} else {
 			// Trying to get equipped agent while in loading screen will crash the game
@@ -69,9 +68,9 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		EquipBuild();
 	}
 	// Player in-game,save currently equipped agent if not switching agents, so that it can be re-equipped after build switch
-	private function PreEquipBuild(){
+	private function PrepBuildEquip(){
 		if (!hasSwitchAgent()){
-			var currentAgent = DruidSystem.GetAgentInSlot(Controller.GetInstance().settingRealSlot).m_AgentId;
+			var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
 			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
 				AgentNames.push(string(currentAgent));
 				AgentRoles.push("all");
@@ -105,21 +104,8 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 			for (var i in SwitchedBuilds) SwitchedBuilds[i] = false;
 		}
 	}
+	
 	private function EquipAgent() {
-		for (var i:Number = 0; i < AgentNames.length; i++){
-			if (Player.IsRightRole(AgentRoles[i])){
-				if (AgentNames[i].toLowerCase() == "default"){
-					AgentNames[i] = string(Controller.GetInstance().settingDefaultAgent);
-				}
-				if (AgentNames[i] == "race"){
-					AgentNames[i] = DruidSystem.GetSwitchAgent(TargetData.Agent, Controller.GetInstance().settingRealSlot, Controller.GetInstance().settingDefaultAgent)
-				}
-				var agentID = DruidSystem.GetSwitchAgent(Number(AgentNames[i]), Controller.GetInstance().settingRealSlot, 0);
-				if (agentID) {
-					DruidSystem.SwitchToAgent(agentID, Controller.GetInstance().settingRealSlot);
-				}
-				break
-			}
-		}
+		super.EquipAgent();
 	}
 }

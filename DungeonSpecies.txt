@@ -14,7 +14,6 @@ The Polaris:
 		Weed-Wreathed Pod : Aquatic
 
 
-
 Hell Raised:
 	Bosses:
 		Antimony Ministrix : Demon
@@ -46,18 +45,18 @@ The Darkness War:
 The Ankh:
 	Bosses:
 		Squalid Hekaturgist : Undead
-		Doctor Klein : None
+		Doctor Klein : Filth
 		Dimensional Arachnid : Filth
 		Orochi Dead Ops : Filth
-		The Colossus, Melothat : None (5th boss)
+		The Colossus, Melothat : Undead
 		Doctor Klein : Filth / The Colossus, Melothat : Undead  (last boss)
 	Other:
 		Metamorphosing Orochi Agent : Filth
 		Wretched Receptacle : Undead
-		Research Assistant : None
+		Research Assistant : Filth
 		Disembalmed Atenist : Undead
-		Gate : Unassigned
-		Wretched Receptacle : None
+		Gate : Human??
+		Wretched Receptacle : ?
 		Pit Dweller : Filth
 
 
@@ -76,3 +75,5 @@ Hell Eternal:
 		Infernal Overwatch : Demon
 		Inured : Demon
 		Piston Predator : Demon
+	Wait, It's all Demons?
+	Always has been.

@@ -17,6 +17,7 @@ import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.CharacterBase;
 import com.Utils.Archive;
 import com.Utils.GlobalSignal;
+import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.Utils.Debugger;
 /*
 * ...
@@ -24,7 +25,6 @@ import com.fox.Utils.Debugger;
 */
 class com.fox.AgentSwitcher.Controller extends Settings {
 	public var Loaded:Boolean;
-	private static var m_Controller:Controller;
 	public var m_settings:SettingsWindow;
 	public var m_AgentDisplay:AgentDisplay;
 	public var m_QuickSelect:QuickSelect;
@@ -35,6 +35,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	public var m_Targeting:Targeting;
 	public var m_Player:Player;
 	public var m_Tanking:Boolean;
+	public var m_Healing:Boolean;
 
 	public static function main(swfRoot:MovieClip):Void {
 		var controller = new Controller(swfRoot);
@@ -46,18 +47,14 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 
 	public function Controller(swfRoot:MovieClip) {
 		super(swfRoot);
-		m_Controller = this;
 		m_Player = new Player();
-		m_Icon = new Icon(m_swfRoot, m_Controller);
-		m_AgentDisplay = new AgentDisplay(m_swfRoot, m_Controller);
-		m_QuickSelect = new QuickSelect(m_swfRoot, m_Controller);
-		m_Proximity = new Proximity(m_Controller);
-		m_Default = new Defaulting(m_Controller);
-		m_Targeting = new Targeting(m_Controller);
-	}
-
-	public static function GetInstance():Controller {
-		return m_Controller;
+		m_Icon = new Icon(m_swfRoot, this);
+		m_AgentDisplay = new AgentDisplay(m_swfRoot, this);
+		m_QuickSelect = new QuickSelect(m_swfRoot, this);
+		m_Proximity = new Proximity(this);
+		m_Default = new Defaulting(this);
+		m_Targeting = new Targeting(this);
+		BaseTrigger.m_Controller = this;
 	}
 
 	public function Load():Void {
@@ -72,7 +69,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		AgentSystem.SignalPassiveChanged.Connect(SlotPassiveChanged, this);
 		GlobalSignal.SignalSetGUIEditMode.Connect(ToggleGuiEdits, this);
 		
-		Player.GetPlayer().SignalStatChanged.Connect(CheckIfTanking, this);
+		Player.GetPlayer().SignalStatChanged.Connect(CheckRole, this);
 		dValExport.SignalChanged.Connect(ExportSettings, this);
 		dValImport.SignalChanged.Connect(ImportSettings, this);
 	}
@@ -83,7 +80,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		agentDisplayDval.SignalChanged.Disconnect(m_AgentDisplay.DisplayAgents, m_AgentDisplay);
 		AgentSystem.SignalPassiveChanged.Disconnect(SlotPassiveChanged, this);
 		GlobalSignal.SignalSetGUIEditMode.Disconnect(ToggleGuiEdits, this);
-		Player.GetPlayer().SignalStatChanged.Disconnect(CheckIfTanking, this);
+		Player.GetPlayer().SignalStatChanged.Disconnect(CheckRole, this);
 		Loaded = false;
 	}
 
@@ -95,6 +92,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			m_AgentDisplay.SlotChanged();
 			m_Targeting.SetBlacklist(settingBlacklist);
 			m_Tanking = Player.IsTank();
+			m_Healing = Player.IsHealer();
 			ApplyPause();
 			Loaded = true;
 		}
@@ -104,13 +102,13 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		m_Icon.Tooltip.Close();
 		return SaveConfig();
 	}
-
+	
 	private function OpenSettings(dv:DistributedValue) {
 		if (dv.GetValue()) {
 			m_AgentDisplay.Hide();
 			m_settings.dispose();
 			m_QuickSelect.QuickSelectStateChanged(true);
-			m_settings = new SettingsWindow(iconPos, this);
+			m_settings = new SettingsWindow(this);
 			CharacterBase.SignalCharacterEnteredReticuleMode.Connect(CloseSettings, this);
 		} else {
 			if (agentDisplayDval.GetValue()) m_AgentDisplay.Show();
@@ -139,9 +137,9 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 
 	private function SlotPassiveChanged(slotID:Number) {
-		if (!settingPause && slotID == settingRealSlot) {
-			var SlotAgent:AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
-			if (SlotAgent) {
+		var SlotAgent:AgentSystemAgent = DruidSystem.GetAgentInSlot(slotID);
+		if (!settingPause) {
+			if (slotID == settingRealSlot && SlotAgent) {
 				if (settingDefaultAgent != SlotAgent.m_AgentId && !DruidSystem.IsDruid(SlotAgent.m_AgentId)) {
 					settingDefaultAgent = SlotAgent.m_AgentId;
 					//m_Proximity.GetProximitylistCopy();
@@ -158,39 +156,63 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 					}
 				}
 			}
+			else if (slotID == settingRealSlot2 && SlotAgent) {
+				if (settingDefaultAgent2 != SlotAgent.m_AgentId && !DruidSystem.IsDruid(SlotAgent.m_AgentId)) {
+					settingDefaultAgent2 = SlotAgent.m_AgentId;
+					//m_Proximity.GetProximitylistCopy();
+					var found:Boolean;
+					for (var i in RecentAgents) {
+						if (RecentAgents[i] == SlotAgent.m_AgentId) {
+							found = true;
+							break
+						}
+					}
+					if (!found) {
+						if (RecentAgents.length >= 3) RecentAgents.shift();
+						RecentAgents.push(settingDefaultAgent2);
+					}
+				}
+			}
 		}
 	}
 
-	public function ExportSettings(dv:DistributedValue){
-		if (dv.GetValue()){
+	public function ExportSettings(dv:DistributedValue) {
+		if (dv.GetValue()) {
 			Debugger.PrintText("/option AgentSwitcher_Import \""+settingPriority.join("$")+"\"");
 			dv.SetValue(false);
 		}
 	}
 	
-	public function ImportSettings(dv:DistributedValue){
-		if (dv.GetValue()){
+	public function ImportSettings(dv:DistributedValue) {
+		if (dv.GetValue()) {
 			settingPriority = dv.GetValue().split("$");
 			ReloadProximityList();
-			if (m_Controller.m_settings){
-				m_Controller.m_settings.reDrawProximityList();
+			if (m_settings) {
+				m_settings.redrawProximityList();
 			}
 			dv.SetValue(false);
 		}
 	}
+	
 	public function ReloadProximityList() {
 		if (settingProximityEnabled && !settingPause) {
 			m_Proximity.ReloadProximityList();
 		}
 	}
 	
-	
-	public function CheckIfTanking(StatType:Number) {
+	public function CheckRole(StatType:Number) {
 		if (StatType == 1){
 			var tank:Boolean = Player.IsTank();
-			if (tank != m_Tanking){
+			if (tank != m_Tanking) {
 				m_Tanking = tank;
-				if (settingDisableOnTank){
+				if (settingDisableOnTank) {
+					ApplyPause();
+				}
+			}
+			var heal:Boolean = Player.IsHealer();
+			if (heal != m_Healing) {
+				m_Healing = heal;
+				if (settingDisableOnHealer) {
 					ApplyPause();
 				}
 			}
@@ -198,7 +220,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 
 	public function ApplyPause() {
-		if (settingPause || (m_Tanking && settingDisableOnTank)) {
+		if (settingPause || (m_Tanking && settingDisableOnTank) || (m_Healing && settingDisableOnHealer)) {
 			m_Targeting.SetState(false, false, false);
 			m_Default.SetState(false);
 			m_Proximity.SetState(false);

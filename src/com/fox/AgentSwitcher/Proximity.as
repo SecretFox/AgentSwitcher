@@ -14,13 +14,12 @@ import com.GameInterface.Nametags;
 import com.GameInterface.WaypointInterface;
 import com.Utils.ID32;
 import mx.utils.Delegate;
-/*
+/*6
 * ...
 * @author fox
 */
 class com.fox.AgentSwitcher.Proximity {
 	private var m_Controller:Controller;
-	//private var m_Player:Player;
 	private var Enabled:Boolean;
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
 	private var KillTriggers:Array = [];
@@ -31,7 +30,6 @@ class com.fox.AgentSwitcher.Proximity {
 
 	public function Proximity(cont:Controller) {
 		m_Controller = cont;
-		//m_Player = m_Controller.m_Player;
 		WaypointInterface.SignalPlayfieldChanged.Connect(WipeMobTriggers, this);
 	}
 
@@ -50,6 +48,12 @@ class com.fox.AgentSwitcher.Proximity {
 				Nametags.SignalNametagUpdated.Connect(NametagAdded, this);
 				Nametags.RefreshNametags();
 			}
+			/* Debugging
+			Nametags.SignalNametagAdded.Connect(Delegate.create(this,function(id){
+				var data:mobData = DruidSystem.GetRace(id);
+				UtilsBase.PrintChatText(string(data.Name) + " "  + data.Race);
+			}), this);
+			*/
 		}
 		if (Enabled && !state) {
 			Enabled = false;
@@ -154,28 +158,19 @@ class com.fox.AgentSwitcher.Proximity {
 			if (!entryObj.Name) {
 				continue;
 			}
-
 			//Figure out if "Agent" is actual agent or build name
 			if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race") {
 				entryObj.isBuild = false;
 			} else {
-				for (var x:Number = 0; x < DruidSystem.Druids2.length;x++) {
-					if (DruidSystem.Druids2[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
-						// filth/aqua override
-						if ((DruidSystem.enum_Filth == 4 && m_Controller.settingCleaner) || 
-							(DruidSystem.enum_Aqua == 3 && m_Controller.settingWalter))
-						{
-							entryObj.Agent = string(DruidSystem.Druids2[x][0][1]);
-						}
-						else {
-							entryObj.Agent = string(DruidSystem.Druids2[x][0][0]);
-						}
+				for (var x:Number = 0; x < DruidSystem.Druids.length;x++) {
+					if (DruidSystem.Druids[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
+						entryObj.Agent = DruidSystem.Druids[x][0];
 						entryObj.isBuild = false;
 						break
 					}
 				}
 				if (entryObj.isBuild != false) {
-					if (!isNaN(Number(entryObj.Agent)) && AgentSystem.HasAgent(Number(entryObj.Agent))) {
+					if (AgentSystem.HasAgent(Number(entryObj.Agent))) {
 						entryObj.isBuild = false;
 					}
 				}
@@ -184,22 +179,17 @@ class com.fox.AgentSwitcher.Proximity {
 			// Start onZone triggers
 			if (entryObj.Range.toLowerCase() == "onzone") {
 				StartZoneTrigger(entryObj);
-			}
-			// Remove entries with underleveled agents and add to tracking list
+			} 
+			//remove entries with unleveled agents, and add rest to active triggers
 			else {
-				if (entryObj.isBuild == false) {
-					if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race") {
-						ProximityCopy.push(entryObj);
-					} else if (AgentSystem.HasAgent(Number(entryObj.Agent))) {
-						if (Number(entryObj.Agent) == m_Controller.settingDefaultAgent && AgentSystem.GetAgentById(Number(entryObj.Agent)).m_Level >= 25) {
-							ProximityCopy.push(entryObj);
-						} else if (AgentSystem.GetAgentById(Number(entryObj.Agent)).m_Level == 50) {
-							ProximityCopy.push(entryObj);
-						}
-					}
-				} else {
+				if (entryObj.isBuild != false) {
 					entryObj.isBuild = true;
 					ProximityCopy.push(entryObj);
+				}
+				else {
+					if (DruidSystem.IsMaxedAgent(entryObj.Agent)) {
+						ProximityCopy.push(entryObj);
+					}
 				}
 			}
 		}
@@ -288,8 +278,8 @@ class com.fox.AgentSwitcher.Proximity {
 
 	private function RemoveKillTrigger(trigger:KillTrigger) {
 		for (var i in KillTriggers) {
-			if (KillTriggers[i] == trigger) {
-				KillTriggers[i].kill();
+			if (KillTrigger(KillTriggers[i]) == trigger) {
+				KillTrigger(KillTriggers[i]).kill();
 				KillTriggers.splice(Number(i), 1);
 				break
 			}
@@ -298,8 +288,8 @@ class com.fox.AgentSwitcher.Proximity {
 
 	private function RemoveProximityTrigger(trigger:ProximityTrigger) {
 		for (var i in ProximityTriggers) {
-			if (ProximityTriggers[i] == trigger) {
-				ProximityTriggers[i].kill();
+			if (ProximityTrigger(ProximityTriggers[i]) == trigger) {
+				ProximityTrigger(ProximityTriggers[i]).kill();
 				ProximityTriggers.splice(Number(i), 1);
 				break
 			}
