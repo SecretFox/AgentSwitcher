@@ -1,5 +1,5 @@
 # AgentSwitcher
-![GitHub All Releases](https://img.shields.io/github/downloads/SecretFox/AgentSwitcher/total?style=for-the-badge)  
+[![Downloads](https://img.shields.io/github/downloads/SecretFox/AgentSwitcher/total?style=for-the-badge)](https://github.com/SecretFox/AgentSwitcher/releases)  
 With the release of Occult Defence scenario Funcom released bunches of new agents, druids, which give damage bonus against certain enemies.  
 So, as is the tradition, i created a mod which automatically handles the switching for you.  
 
@@ -20,8 +20,7 @@ Agent used:
 When no suitable agent is found, default agent will be used.  
 Default agent is automatically set when switching builds.  
 
-Left-Click the icon to open QuickSelect menu, which contains your last 3 regular agents, and all your level 50 druids.  
-You can also click on the "AgentDisplay" text, if you have it enabled.  
+Left-Click the icon (or "Agent Display", if enabled) to open QuickSelect menu, which contains your last 3 regular agents, and all your level 50 druids.  
 Right-click the icon to access mod settings.  
 Shift + Left-Click to Toggle mod on/off.  
 Icon can be moved while in GUI-Edit mode  
@@ -33,7 +32,7 @@ Icon can be moved while in GUI-Edit mode
 **Primary Agent Slot** : Agent slot used for switching (1-3)  
 **Secondary Agent Slot** : Agent slot used for switching (1-3), used if there are multiple agents (Aquatic and filth)  
 
-**Enable proximity switching** : Automatically switches agent when specified(see proximity targeting section below for configuration) enemy enters proximity.  
+**Enable proximity switching** : Automatically switches agent depending on area or nearby enemies.    
 **Display active agent** : Creates moveable text which displays currently equipped agent  
 **Default on combat end** : Switches back to your default agent x seconds after combat ends  
 **Default delay** : Wait time for "Default on combat end" option  
@@ -42,7 +41,7 @@ ________
 **Print race as Fifo** : Prints enemy race as FadeIn/FadeOut message when targeting them  
 **Disable on quickselect** : Disables targeting based switching after quickselecting(left-clicking icon) agent  
 **Disable while tanking** : Disables mod when player has allocated over 50 points to survivability  
-**Disable while tanking** : Disables mod when player has allocated over 50 points to healing  
+**Disable while healing** : Disables mod when player has allocated over 50 points to healing  
 **Use agent name on display** : Whether display should show agents name or species name  
 **Use agent name on quickselect** : Whether quickselect should show agents name or damage bonus  
 
@@ -62,11 +61,15 @@ ________
 **Rate** : How often enemy distances get checked  
 ________  
 ### Proximity Switching:  
-Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
+Format \<Name/ZoneID/zoneID;Coordinate\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
-**Name/zoneID**  
+**Name/zoneID/zoneID+Coordinates(/area)**  
 	Mob name - Targets (partial) name, case insensitive  
 	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
+	ZoneID;x,y - Used with onArea trigger, zone and coordinate where an action will occur  
+	ZoneID;x,y,z - Used with onArea trigger, zone and coordinate(with height) where an action will occur  
+	ZoneID;x1,y1,x2,y2 - Used with onArea trigger, zone and area where an action will occur  
+	ZoneID;x1,y1,z1,x2,y2,z2 - Used with onArea trigger, zone and area(with height) where an action will occur   
 
 **Agent/Build/Outfit**  
 	Agent - Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
@@ -78,6 +81,7 @@ Format \<Name/ZoneID\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Onl
 	Number - Switches agent once target is closer than this value.  
 	onKill - Changes agent/build/outfit after the specified mob is killed. Also locks switching until next combat starts.  
 	onZone - Changes agent/build/outfit after zoning to specified zone  
+	onArea - Changes agent/build/outfit when player is on specified zone and area  
 	
 **Role**  
 	Tank,DPS,Healer or All - If specified then the action will only be performed if player has the right role (according to Anima Allocation).  

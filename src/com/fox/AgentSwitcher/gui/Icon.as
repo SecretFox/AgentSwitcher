@@ -32,7 +32,6 @@ class com.fox.AgentSwitcher.gui.Icon {
 			m_lock._visible = false;
 			StateChanged();
 			GuiEdit(false);
-			
 		}
 	}
 	
@@ -52,6 +51,7 @@ class com.fox.AgentSwitcher.gui.Icon {
 			clearInterval(lockCheck);
 			m_IconClip.m_lock._visible = false;
 			StateChanged();
+			m_Controller.m_Default.LockUpdated();
 		}
 	}
 	

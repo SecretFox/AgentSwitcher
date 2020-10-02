@@ -27,13 +27,6 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 			WaypointInterface.SignalPlayfieldChanged.Connect(PlayFieldChanged, this);
 		}
 	}
-	public function AddtoAgents(agent:String, role:String){
-		for (var i in AgentNames){
-			if (AgentNames[i] == agent && AgentRoles[i] == role) return
-		}
-		AgentNames.push(agent);
-		AgentRoles.push(role);
-	}
 	public function kill() {
 		WaypointInterface.SignalPlayfieldChanged.Disconnect(PlayFieldChanged, this);
 	}

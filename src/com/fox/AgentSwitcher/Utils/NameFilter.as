@@ -14,6 +14,7 @@ class com.fox.AgentSwitcher.Utils.NameFilter {
 	// Returns True if character should not be tracked
 	public static function isFiltered(Char:Character):Boolean{
 		if (!Char.IsEnemy() || Char.IsDead()) return true;
+		/* Unneeded with the coordinate system
 		switch(Char.GetName()){
 			case DeadOps[0]:
 				var distance:Vector3 = Vector3.Sub(Char.GetPosition(), DeadOps[1]);
@@ -42,6 +43,7 @@ class com.fox.AgentSwitcher.Utils.NameFilter {
 			default:
 				return false;
 		}
+		*/
 	}
 
 	

@@ -213,6 +213,7 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 	* 	Returns value of defaultAgent otherwise
 	*/
 	public static function GetSwitchAgent(pref:Number, slotID:Number, defaultAgent:Number):Number {
+		if (slotID == -1 ) return 0; // setting agent slot to 0 will change "realslot" to -1, disabling the slot
 		if (isEquipped(pref)) return 0;
 		var currentAgent:AgentSystemAgent = GetAgentInSlot(slotID);
 		// Trying to get agent by invalid agentID crashes the game

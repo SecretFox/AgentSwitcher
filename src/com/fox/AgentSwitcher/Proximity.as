@@ -3,6 +3,7 @@ import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Utils.NameFilter;
 import com.fox.AgentSwitcher.data.ProximityEntry;
+import com.fox.AgentSwitcher.trigger.CoordinateTrigger;
 import com.fox.AgentSwitcher.trigger.KillTrigger;
 import com.fox.AgentSwitcher.trigger.ProximityTrigger;
 import com.fox.AgentSwitcher.trigger.ZoneTrigger;
@@ -24,6 +25,7 @@ class com.fox.AgentSwitcher.Proximity {
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
 	private var KillTriggers:Array = [];
 	private var ProximityTriggers:Array = [];
+	private var CoordinateTriggers:Array = [];
 	private var ZoneTriggers:Array = [];
 	private var retry:Number;
 	public var Lock:Boolean = false;
@@ -61,19 +63,20 @@ class com.fox.AgentSwitcher.Proximity {
 			Nametags.SignalNametagUpdated.Disconnect(NametagAdded, this);
 			WipeMobTriggers();
 			WipeZoneTriggers();
+			WipeCoordinateTriggers();
 		}
 	}
 
 	public function WipeMobTriggers() {
 		for (var trigger in KillTriggers) {
-			KillTriggers[trigger].SignalDestruct.Disconnect(RemoveKillTrigger, this);
-			KillTriggers[trigger].SignalLock.Disconnect(SetLock, this);
-			KillTriggers[trigger].kill();
+			KillTrigger(KillTriggers[trigger]).SignalDestruct.Disconnect(RemoveKillTrigger, this);
+			KillTrigger(KillTriggers[trigger]).SignalLock.Disconnect(SetLock, this);
+			KillTrigger(KillTriggers[trigger]).kill();
 		}
 		for (var trigger in ProximityTriggers) {
-			ProximityTriggers[trigger].SignalDestruct.Disconnect(RemoveProximityTrigger, this);
-			ProximityTriggers[trigger].SignalLock.Disconnect(SetLock, this);
-			ProximityTriggers[trigger].kill();
+			ProximityTrigger(ProximityTriggers[trigger]).SignalDestruct.Disconnect(RemoveProximityTrigger, this);
+			ProximityTrigger(ProximityTriggers[trigger]).SignalLock.Disconnect(SetLock, this);
+			ProximityTrigger(ProximityTriggers[trigger]).kill();
 		}
 		Task.RemoveTasksByType(Task.OutCombatTask);
 		Task.RemoveTasksByType(Task.InCombatTask);
@@ -82,16 +85,24 @@ class com.fox.AgentSwitcher.Proximity {
 		Lock = false;
 	}
 
-	public function WipeZoneTriggers(caller) {
+	public function WipeZoneTriggers() {
 		Task.RemoveTasksByType(Task.inPlayTask);
 		for (var trigger in ZoneTriggers) {
 			ZoneTriggers[trigger].kill();
 		}
 		ZoneTriggers = new Array();
 	}
-
+	
+	public function WipeCoordinateTriggers() {
+		for (var trigger in CoordinateTriggers) {
+			CoordinateTriggers[trigger].kill();
+		}
+		CoordinateTriggers = new Array();
+	}
+	
 	public function ReloadProximityList() {
 		WipeMobTriggers();
+		WipeCoordinateTriggers();
 		GetProximitylistCopy();
 		Nametags.RefreshNametags();
 	}
@@ -100,6 +111,11 @@ class com.fox.AgentSwitcher.Proximity {
 		if (Lock) return true;
 		for (var trigger in ProximityTriggers) {
 			if (ProximityTriggers[trigger].InRange()) {
+				return true;
+			}
+		}
+		for (var trigger in CoordinateTriggers) {
+			if (CoordinateTriggers[trigger].InRange()) {
 				return true;
 			}
 		}
@@ -114,7 +130,7 @@ class com.fox.AgentSwitcher.Proximity {
 		}
 	}
 
-	private function ReleaseLock() {
+	public function ReleaseLock() {
 		Lock = false;
 	}
 
@@ -132,6 +148,9 @@ class com.fox.AgentSwitcher.Proximity {
 		for (var trigger in ProximityTriggers) {
 			ProximityTriggers[trigger].SetRefresh();
 		}
+		for (var trigger in CoordinateTriggers) {
+			CoordinateTriggers[trigger].SetRefresh();
+		}
 	}
 
 	private function GetTrigger(array:Array, id) {
@@ -148,6 +167,7 @@ class com.fox.AgentSwitcher.Proximity {
 	public function GetProximitylistCopy() {
 		ProximityCopy = new Array();
 		for (var i:Number = 0; i < m_Controller.settingPriority.length; i++) {
+			if (string(m_Controller.settingPriority[i]).charAt(0) == "#") continue;
 			var entry:Array = m_Controller.settingPriority[i].split("|");
 			var entryObj:ProximityEntry = new ProximityEntry();
 			entryObj.Name = StringUtils.Strip(entry[0]);
@@ -179,7 +199,10 @@ class com.fox.AgentSwitcher.Proximity {
 			// Start onZone triggers
 			if (entryObj.Range.toLowerCase() == "onzone") {
 				StartZoneTrigger(entryObj);
-			} 
+			}
+			else if (entryObj.Range.toLowerCase() == "onarea") {
+				StartCoordinateTrigger(entryObj);
+			}
 			//remove entries with unleveled agents, and add rest to active triggers
 			else {
 				if (entryObj.isBuild != false) {
@@ -203,6 +226,29 @@ class com.fox.AgentSwitcher.Proximity {
 		if (!trigger) {
 			trigger = new ZoneTrigger(entry.Name);
 			ZoneTriggers.push(trigger);
+		}
+		if (entry.isBuild) {
+			if (Build.HasBuild(entry.Agent)) {
+				trigger.AddToBuilds(entry.Agent, entry.Role);
+			}
+			if (Build.HasOutfit(entry.Agent)) {
+				trigger.AddToOutfits(entry.Agent, entry.Role);
+			}
+		} else {
+			trigger.AgentNames.push(entry.Agent);
+			trigger.AgentRoles.push(entry.Role);
+		}
+		trigger.StartTrigger();
+	}
+	
+	private function StartCoordinateTrigger(entry:ProximityEntry) {
+		if (entry.isBuild != false) {
+			entry.isBuild = true;
+		}
+		var trigger:CoordinateTrigger = GetTrigger(CoordinateTriggers, Number(entry.Name));
+		if (!trigger) {
+			trigger = new CoordinateTrigger(entry.Name);
+			CoordinateTriggers.push(trigger);
 		}
 		if (entry.isBuild) {
 			if (Build.HasBuild(entry.Agent)) {
@@ -291,6 +337,16 @@ class com.fox.AgentSwitcher.Proximity {
 			if (ProximityTrigger(ProximityTriggers[i]) == trigger) {
 				ProximityTrigger(ProximityTriggers[i]).kill();
 				ProximityTriggers.splice(Number(i), 1);
+				break
+			}
+		}
+	}
+	
+	private function RemoveCoordinateTrigger(trigger:CoordinateTrigger) {
+		for (var i in CoordinateTriggers) {
+			if (CoordinateTrigger(CoordinateTriggers[i]) == trigger) {
+				CoordinateTrigger(CoordinateTriggers[i]).kill();
+				CoordinateTriggers.splice(Number(i), 1);
 				break
 			}
 		}

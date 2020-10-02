@@ -1,14 +1,13 @@
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.GameInterface.DistributedValue;
 import com.Utils.Archive;
-import com.Utils.LDBFormat;
 import flash.geom.Point;
 /*
 * ...
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var ModVersion:String = "2.5.0";
+	public var ModVersion:String = "3.0.0";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
@@ -36,6 +35,7 @@ class com.fox.AgentSwitcher.Settings {
 	public var settingRealSlot2:Number;
 	public var dValImport:DistributedValue;
 	public var dValExport:DistributedValue;
+	public var dValDev:DistributedValue;
 
 	private var m_swfRoot:MovieClip;
 	public var DisplayPos:Point;
@@ -51,6 +51,7 @@ class com.fox.AgentSwitcher.Settings {
 		
 		dValImport = DistributedValue.Create("AgentSwitcher_Import");
 		dValExport = DistributedValue.Create("AgentSwitcher_Export");
+		dValDev = DistributedValue.Create("AgentSwitcher_Dev");
 		dValImport.SetValue(false);
 		dValExport.SetValue(false);
 	}
@@ -85,6 +86,7 @@ class com.fox.AgentSwitcher.Settings {
 		agentDisplayDval.SetValue(config.FindEntry("Display", false));
 		settingDisplayName = config.FindEntry("DisplayName", false);
 		settingQuickselectName = config.FindEntry("QuickName", false);
+		dValDev.SetValue(config.FindEntry("DevMode", false));
 
 		if (settingDefaultAgent == 0) {
 			settingDefaultAgent = DruidSystem.GetAgentInSlot(settingRealSlot).m_AgentId | 0;
@@ -100,46 +102,40 @@ class com.fox.AgentSwitcher.Settings {
 			if (settingDefaultAgent2 && !DruidSystem.IsDruid(settingDefaultAgent)) RecentAgents.push(settingDefaultAgent2);
 		}
 		settingPriority = config.FindEntryArray("Priority");
-		if (!config.FindEntry("DefaultsGenerated2")){
-			// Patch values from older versions...
-			if (settingPriority.length > 0)
-			{
-				for (var i in settingPriority){
-					// lurker : Default -> filth
-					if (settingPriority[i] == LDBFormat.LDBGetText(51000, 32030) + "|Default|100") {
-						settingPriority[i] = LDBFormat.LDBGetText(51000, 32030) + "|Filth|100"
-					}
-					
-					// The Colossus : Default -> Undead
-					if (settingPriority[i] == LDBFormat.LDBGetText(51000, 18181) + "|Default|40"){
-						settingPriority[i] = LDBFormat.LDBGetText(51000, 18181) + "|Undead|40"
-					}
-					// Dimensional on kill -> Default -> Undead
-					if (settingPriority[i] == LDBFormat.LDBGetText(51000, 30654) + "|Default|onKill") {
-						settingPriority[i] = LDBFormat.LDBGetText(51000, 30654) + "|Undead|onKill"
-					}
-				}
-			} 
-			// ...or generate new defaults
-			else {
-				settingPriority = [
-					LDBFormat.LDBGetText(51000, 32030) + "|Default|100", // The Unutterable Lurker
-					"",
-					LDBFormat.LDBGetText(51000, 28731) + "|Filth|45", // Xibalban Bloodhound,
-					LDBFormat.LDBGetText(51000, 30582) + "|Animal|onKill", // Dark House Sorcerer,
-					LDBFormat.LDBGetText(51000, 30586) + "|Animal|100", // Ak'ab Hatchling
-					LDBFormat.LDBGetText(51000, 30590) + "|Filth|onKill", // Mayan Battle Mage,
-					LDBFormat.LDBGetText(51000, 28875) + "|Filth|40", // Chilam Psychopomp, override these to filth for Wayeb
-					"",
-					LDBFormat.LDBGetText(51000, 19280) + "|Construct|50", // Prime Maker
-					"",
-					LDBFormat.LDBGetText(51000, 30654) + "|Default|onKill",//Dimensional arcachnid
-					// LDBFormat.LDBGetText(51000, 30667) + "|Filth|onKill",//Research Assistant
-					LDBFormat.LDBGetText(51000, 18181) + "|Default|40", // The Colossus, Melothat
-					LDBFormat.LDBGetText(51000, 18180) + "|Filth|40" // Klein
-					
-				];
-			}
+		if (!config.FindEntry("DefaultsGenerated3") || !settingPriority || settingPriority.length == 0){
+			settingPriority = [
+				"#~~~~ Polaris ~~~~",
+				"5040;0,500,500,0|aquatic|onArea",
+				"",
+				"#~~~~ Hell Raised ~~~~",
+				"5140;0,1000,1000,0|demon|onArea",
+				"",
+				"#~~~~ DW ~~~~",
+				"5170;245,520,160,595|human|onArea",
+				"5170;176,510,113,460|filth|onArea",
+				"5170;131,519,70,608|human|onArea",
+				"5170;60,613,135,694|animal|onArea",
+				"5170;157,701,73,825|human|onArea",
+				"5170;549,460,660,600|filth|onArea",
+				"",
+				"#~~~~ Ankh ~~~~",
+				"5080;362,260,175,341,215,195|undead|onArea",
+				"5080;380,315,55,500,180,165|filth|onArea",
+				"5080;378,296,70,1,198,35|undead|onArea",
+				"",
+				"#~~~~ Hell Eternal ~~~~",
+				"5160;0,1000,465,300|demon|onArea",
+				"5160;490,385,560,300|construct|onArea",
+				"5160;570,200,800,600|demon|onArea",
+				"",
+				"#~~~~ Penthouse ~~~~",
+				"6892;228,280,266,240|human|onArea",
+				"6892;267,350,300,220|filth|onArea",
+				"",
+				"#~~~~ NY ~~~~",
+				"5710;0,1000,1000,0|filth|onArea",
+				"5715;0,1000,1000,0|filth|onArea"
+			];
 		}
 	}
 
@@ -160,7 +156,7 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("Pause", settingPause);
 		config.AddEntry("Display", agentDisplayDval.GetValue());
 		config.AddEntry("Range", settingRange);
-		config.AddEntry("DefaultsGenerated2", true);
+		config.AddEntry("DefaultsGenerated3", true);
 		config.AddEntry("Default", settingDefaultAgent);
 		config.AddEntry("Default2", settingDefaultAgent2);
 		config.AddEntry("iconPos", iconPos);
@@ -169,6 +165,7 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("PriorityEnable", settingProximityEnabled);
 		config.AddEntry("DisplayName", settingDisplayName);
 		config.AddEntry("QuickName", settingQuickselectName);
+		config.AddEntry("DevMode", dValDev.GetValue());
 		for (var i = 0; i < RecentAgents.length; i++ ) {
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}

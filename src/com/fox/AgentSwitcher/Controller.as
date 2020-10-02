@@ -201,7 +201,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 	
 	public function CheckRole(StatType:Number) {
-		if (StatType == 1){
+		if (StatType == _global.Enums.Stat.e_Life){
 			var tank:Boolean = Player.IsTank();
 			if (tank != m_Tanking) {
 				m_Tanking = tank;
@@ -232,7 +232,7 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	}
 
 	public function SettingChanged() {
-		if (!settingPause) {
+		if (!settingPause && !(m_Tanking && settingDisableOnTank) && !(m_Healing && settingDisableOnHealer)) {
 			m_Targeting.SetState(settingTargeting, settingDebugChat, settingDebugFifo);
 			m_Default.SetState(settingDefault);
 			m_Proximity.SetState(settingProximityEnabled);

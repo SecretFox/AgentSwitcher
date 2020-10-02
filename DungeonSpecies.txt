@@ -10,9 +10,8 @@ The Polaris:
 		Haugbui Sentry : Aquatic
 		Sea Burial : Undead
 		Deep-Sea Pod : Aquatic
-		Volatile Host : None
+		Volatile Host : Undead
 		Weed-Wreathed Pod : Aquatic
-
 
 Hell Raised:
 	Bosses:
@@ -26,7 +25,9 @@ Hell Raised:
 		Hellbeast Master : Demon
 		Sister of the Shear : Demon
 		Rakshasa Cur : Demon
-
+	Wait, It's all Demons?
+	Always has been.
+	
 The Darkness War:
 	Bosses:
 		Batab Crusher : Human
@@ -75,5 +76,8 @@ Hell Eternal:
 		Infernal Overwatch : Demon
 		Inured : Demon
 		Piston Predator : Demon
-	Wait, It's all Demons?
-	Always has been.
+Penthouse:
+	Boses:
+		Uta : Human
+	Other:
+		??? : Filth?

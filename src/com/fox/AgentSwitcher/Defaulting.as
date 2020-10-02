@@ -23,7 +23,7 @@ class com.fox.AgentSwitcher.Defaulting {
 			Enabled = true;
 			m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
 			m_Player.SignalOffensiveTargetChanged.Connect(SlotTargetChanged, this);
-			SlotToggleCombat();
+			setTimeout(Delegate.create(this, SlotToggleCombat), 2000);
 		}
 		if (Enabled && !state) {
 			Enabled = false;
@@ -31,6 +31,9 @@ class com.fox.AgentSwitcher.Defaulting {
 			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 			clearTimeout(DefaultTimeout);
 		}
+	}
+	public function LockUpdated() {
+		if(Enabled && !m_Player.IsInCombat()) SlotToggleCombat();
 	}
 	private function Default() {
 		if (m_Player.GetOffensiveTarget().IsNull() 

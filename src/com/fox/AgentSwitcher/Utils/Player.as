@@ -3,6 +3,7 @@ import com.GameInterface.FeatData;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Shortcut;
 import com.GameInterface.Game.ShortcutData;
+import com.GameInterface.MathLib.Vector3;
 import com.GameInterface.ProjectUtils;
 import GUI.HUD.AbilitySlot;
 import com.Utils.ID32;
@@ -22,6 +23,12 @@ class com.fox.AgentSwitcher.Utils.Player {
 	}
 	public static function GetPlayer(id:ID32):Character{
 		return m_Player
+	}
+	public static function GetZone():Number{
+		return m_Player.GetPlayfieldID();
+	}
+	public static function GetPosition():Vector3{
+		return m_Player.GetPosition();
 	}
 	public static function IsTank(): Boolean {
 		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealthRatio, 2) > 50;

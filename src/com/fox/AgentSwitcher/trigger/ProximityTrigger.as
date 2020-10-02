@@ -12,7 +12,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private var Range:Number;
 	private var lockNeeded:Boolean;
 	private var refreshInterval:Number;
-	private var Char:Character;
+	public var Char:Character;
 	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
 
 	public function ProximityTrigger(id:ID32, range:Number) {

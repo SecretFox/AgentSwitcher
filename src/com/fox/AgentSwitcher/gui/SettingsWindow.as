@@ -74,14 +74,14 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		setIcon(icon);
 		//setBorder();
 		setBorder(new LineBorder(null, new ASColor(0xFFFFFF, 100), 1, 2));
-		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5));
-		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER))
-		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.CENTER))
-		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER))
-		var slot2Panel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
-		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER))
+		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5,SoftBoxLayout.CENTER));
+		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER));
+		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.CENTER));
+		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER));
+		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER));
+		var slot2Panel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
+		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
+		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
 	//Main Controls
 		slotText = new JTextField("Primary Agent slot:");
 		slotText.setFont(font);
@@ -178,7 +178,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		scrollbar.addEventListener(ON_RELEASE, __stopDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb, this);
 		rightcontent.append(scrollPane);
-
 		rangeText = new JTextField("Distance");
 		rangeText.setFont(font);
 		rangeText.setBorder(null);
@@ -197,9 +196,11 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		rightcontent.append(ProximitySettingPanel);
 
 		//Show window + Reposition based on icon location
+		content.append(new JSeparator(JSeparator.VERTICAL));
 		content.append(leftcontent);
 		content.append(new JSeparator(JSeparator.VERTICAL));
 		content.append(rightcontent);
+		content.append(new JSeparator(JSeparator.VERTICAL));
 		setContentPane(content);
 		show();
 		pack();
@@ -219,18 +220,20 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		m_TooltipData.m_Color = 0xFFFFFF;
 		m_TooltipData.m_MaxWidth = 600;
 		m_TooltipData.AddDescription(
-			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on distance.\n" +
+			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on player coodinates and zone\n" + 
+			"Switching can also be based on nearby enemies, killed enemies, or entering a zone\n" +
 			"Some examples:\n" +
 			"&lt;Name&gt;\n" +
 			"&lt;Name&gt;|&lt;Agent&gt;\n" +
 			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
-			"&lt;Name/Zone&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
-			" &lt;Name/Zone&gt; : Monsters name or zoneID\n\n" +
-			" &lt;Agent/Oufit/Build&gt; Either agent override, buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
+			"&lt;Name/Zone/Zone+Coordinate&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
+			" &lt;Name/Zone/Coordinate&gt; : Monsters name, zoneID, zoneID+coordinate,or zoneID+area\n\n" +
+			" &lt;Agent/Oufit/Build&gt; Either agent(if using MobName can be omitted), buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
 			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
 			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
-			"Valid triggers are &quot;onKill&quot; and &quot;onZone&quot;. onKill triggers the switch when specified target is killed and onZone triggers when entering new zone\n\n" +
-			"&lt;Role&gt; : Role is only used by builds and outfits. Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then build will only be changed when players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
+			"Valid triggers are &quot;onKill&quot;,&quot;onArea&quot;, and &quot;onZone&quot;. onKill triggers the switch when specified target is killed,onArea when player is near coordinate or inside an area, and onZone triggers when entering new zone\n" +
+			"&lt;onArea&gt; triggers supports any of the following formats; &quot;ZoneID;x,y&quot; &quot;ZoneID;x,y,z&quot; &quot;ZoneID;x1,y1,x2,x2&quot; &quot;ZoneID;x1,y1,z1,x2,y2,z2&quot;\n\n" +
+			"&lt;Role&gt; : Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then the action will only be performed when the players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
 			"----\n" +
 			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry\n" +
 			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
@@ -240,6 +243,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function CloseProximityTooltip() {
 		Tooltip.Close();
 	}
+	//scrollbar is broken
 	private function __startDragThumb() {
 		scrollPane.getVerticalScrollBar().getUI()["__startDragThumb"]();
 	}
@@ -440,7 +444,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			field.setText(input);
 		}
 		else if (!input) {
-			return
+			input = "0"
 		}
 		m_Controller.settingSlot = Number(input);
 		m_Controller.GetDestinationSlot();
@@ -531,9 +535,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		if (ProximityList == null) {
 			ProximityList = new JTextArea(m_Controller.settingPriority.join("\n"), 11, 1);
 			ProximityList.setFont(font);
+			ProximityList.setPreferredWidth(375);
 			ProximityList.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
 			ProximityList.setOpaque(false);
-			Blacklist.setHtml(false);
+			ProximityList.setHtml(false);
 			ProximityList.setEditable(true);
 			ProximityList.addEventListener(JTextField.ON_TEXT_CHANGED, __ProximityListChanged, this);
 			ProximityList.setFocusable(false);
