@@ -127,8 +127,7 @@ class com.fox.AgentSwitcher.gui.QuickSelect {
 		DruidSystem.SwitchToAgents(agent, agent2, m_Controller);
 		if (m_Controller.settingDisableOnSwitch && !ignoreSettings) {
 			m_Controller.settingTargeting = false;
-			m_Controller.SettingChanged();
-			//m_Controller.m_Icon.StateChanged(false);
+			m_Controller.ApplySettings();
 		}
 		button.CloseTooltip();
 		QuickSelectStateChanged(true);

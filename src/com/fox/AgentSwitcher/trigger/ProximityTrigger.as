@@ -10,7 +10,6 @@ import mx.utils.Delegate;
 */
 class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private var Range:Number;
-	private var lockNeeded:Boolean;
 	private var refreshInterval:Number;
 	public var Char:Character;
 	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
@@ -57,12 +56,6 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 			if (hasSwitchAgent()){
 				lockNeeded = true;
 				m_Controller.m_Icon.ApplyLock();
-			}else{
-				var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
-				if (currentAgent && DruidSystem.IsDruid(currentAgent)){
-					AgentNames.push(string(currentAgent));
-					AgentRoles.push("all");
-				}
 			}
 			
 			var f2:Function = Delegate.create(this, kill);
@@ -99,7 +92,7 @@ class com.fox.AgentSwitcher.trigger.ProximityTrigger extends BaseTrigger {
 	private function EquipBuild() {
 		var f2:Function = Delegate.create(this, OnBuildEquip);
 		var found = super.EquipBuild(f2);
-		if (!found && AgentNames.length>0) EquipAgent(); // If no build start agent switch
+		if (!found && AgentNames.length> 0 ) EquipAgent(); // If no build start agent switch
 	}
 	
 	private function EquipAgent() {

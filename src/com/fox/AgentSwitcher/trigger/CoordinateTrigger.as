@@ -1,22 +1,19 @@
 import com.GameInterface.MathLib.Vector3;
-import com.GameInterface.UtilsBase;
-//import com.GameInterface.UtilsBase;
 import com.GameInterface.WaypointInterface;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
-import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Task;
-import com.GameInterface.Game.Character;
+import com.fox.Utils.Debugger;
 import mx.utils.Delegate;
 /*
 * ...
 * @author fox
 */
 class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
+	static var currentZone:Number;
+	static var currentOrder:Number;
 	private var Range:Number;
-	private var lockNeeded:Boolean;
 	private var refreshInterval:Number;
-	private var Char:Character;
 	private var TargetCoodinates:Array;
 	private var TargetZone:Number;
 	private var Triggered:Boolean;
@@ -24,14 +21,17 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	private var SwitchNeeded:Boolean;
 	private var SimpleCoords:Boolean;
 	private var BuildOutfitCopies:Array;
+	private var buildOrder:Number;
 	
 	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
 
 	public function CoordinateTrigger(data) {
 		super();
+		ID = data;
 		var vars = data.split(";");
 		TargetZone = Number(vars[0]);
 		TargetCoodinates = ParseCoordinates(vars[1]);
+		buildOrder = vars[2];
 	}
 	
 	private function ParseCoordinates(data) {
@@ -52,19 +52,23 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 				new Vector3(Number(coords[3]), Number(coords[5]), Number(coords[4]))
 			]
 		}
+		
 	}
 	
 	private function CheckZone(id) {
+		if (id != currentZone){
+			currentOrder = -1;
+			currentZone = id;
+		}
+		clearInterval(refreshInterval);
 		if ( id == TargetZone) {
 			refreshInterval = setInterval(Delegate.create(this, CheckArea), m_Controller.settingUpdateRate);
-		} else {
-			clearInterval(refreshInterval);
 		}
 	}
 	
 	public function StartTrigger() {
+		BuildOutfitCopies = [BuildNames.concat(), BuildRoles.concat(), OutfitNames.concat(), OutfitRoles.concat()]; //shallow copies of builds/outfits
 		if (!Started){
-			BuildOutfitCopies = [BuildNames.concat(), BuildRoles.concat(), OutfitNames.concat(), OutfitRoles.concat()]; //shallow copies of builds/outfits
 			Started = true;
 			SwitchNeeded = true;
 			WaypointInterface.SignalPlayfieldChanged.Connect(CheckZone, this);
@@ -90,6 +94,9 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	}
 	
 	private function InArea() {
+		if (Player.GetPlayer().IsGhosting()){
+			return
+		}
 		var position:Vector3 = Player.GetPosition();
 		if (SimpleCoords){
 			if (
@@ -114,26 +121,24 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	private function CheckArea() {
 		var inside:Boolean = InArea();
 		if (inside && SwitchNeeded) {
-			if(m_Controller.dValDev.GetValue()) UtilsBase.PrintChatText("Inside area");
+			if(m_Controller.dValDev.GetValue()) Debugger.PrintText("Inside area");
 			SwitchNeeded = false;
 			//clearInterval(refreshInterval);
 			if (hasSwitchAgent()){
 				lockNeeded = true;
 				m_Controller.m_Icon.ApplyLock();
-			} else{
-				var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
-				if (currentAgent && DruidSystem.IsDruid(currentAgent)){
-					AgentNames.push(string(currentAgent));
-					AgentRoles.push("all");
-				}
 			}
 			var f2:Function = Delegate.create(this, kill);
 			if (BuildNames.length > 0 || OutfitNames.length > 0) {
-				var time:Date = new Date();
-				Age = time.valueOf();
-				var f:Function = Delegate.create(this, EquipBuild);
-				Task.AddTask(Task.inPlayTask, f, f2);
-			} else {
+				if (buildOrder == undefined || buildOrder >= currentOrder){
+					if (buildOrder != undefined) currentOrder = buildOrder;
+					var time:Date = new Date();
+					Age = time.valueOf();
+					var f:Function = Delegate.create(this, EquipBuild);
+					Task.AddTask(Task.inPlayTask, f, f2);
+				}
+			} 
+			else {
 				//Task.RemoveTasksByType(Task.OutCombatTask); // Remove queued tasks
 				var f:Function = Delegate.create(this, EquipAgent);
 				Task.AddTask(Task.OutCombatTask, f, f2);
@@ -145,14 +150,14 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 		else if (!inside && m_Controller.dValDev.GetValue()) {
 			if (SimpleCoords)
 			{
-				UtilsBase.PrintChatText("Not in area\n" +
+				 Debugger.PrintText("Not in area\n" +
 					"    Target " + TargetCoodinates[0]+ ", " + 
 					"" + TargetCoodinates[1] + ", " + 
 					"" + TargetCoodinates[2]+ "\n" + 
 					"    Current " + Math.floor(Player.GetPosition().x) + ", " + Math.floor(Player.GetPosition().z) + "," + Math.floor(Player.GetPosition().y)
 				);
 			} else {
-				UtilsBase.PrintChatText("Not in area\n" +
+				 Debugger.PrintText("Not in area\n" +
 					"    Target " + TargetCoodinates[0].x +"-" + TargetCoodinates[1].x + ", " + 
 					"" + TargetCoodinates[0].z +"-" + TargetCoodinates[1].z + ", " + 
 					"" + TargetCoodinates[0].y +"-" + TargetCoodinates[1].y + "\n" + 
@@ -163,7 +168,7 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	}
 	
 	public function InRange() {
-		if (lockNeeded && InZone() && InArea() && !Char.IsDead()) {
+		if (lockNeeded && InZone() && InArea() && !Player.GetPlayer().IsGhosting()) {
 			return true
 		}
 	}
@@ -185,7 +190,7 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	private function EquipBuild() {
 		var f2:Function = Delegate.create(this, OnBuildEquip);
 		var found = super.EquipBuild(f2);
-		if (!found && AgentNames.length>0) EquipAgent(); // If no build start agent switch
+		if (!found && AgentNames.length > 0 ) EquipAgent(); // If no build start agent switch
 	}
 	
 	private function EquipAgent() {
