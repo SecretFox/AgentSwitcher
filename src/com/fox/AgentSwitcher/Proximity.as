@@ -1,7 +1,9 @@
+import com.Utils.SignalGroup;
 import com.Utils.StringUtils;
 import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Utils.NameFilter;
+import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.data.ProximityEntry;
 import com.fox.AgentSwitcher.trigger.CoordinateTrigger;
 import com.fox.AgentSwitcher.trigger.KillTrigger;
@@ -22,6 +24,7 @@ import mx.utils.Delegate;
 class com.fox.AgentSwitcher.Proximity {
 	private var m_Controller:Controller;
 	private var Enabled:Boolean;
+	private var m_SignalGroup:SignalGroup;
 	private var ProximityCopy:Array; // Copy of proximity array with underleveled agents removed
 	private var KillTriggers:Array = [];
 	private var ProximityTriggers:Array = [];
@@ -33,37 +36,30 @@ class com.fox.AgentSwitcher.Proximity {
 	public function Proximity(cont:Controller) {
 		m_Controller = cont;
 		WaypointInterface.SignalPlayfieldChanged.Connect(WipeMobTriggers, this);
+		m_SignalGroup = new SignalGroup();
 	}
 
-	public function SetState(state:Boolean, ran:Boolean) {
+	public function SetState(state:Boolean, ran:Boolean, roleChanged:Boolean) {
 		clearTimeout(retry);
 		if (!Enabled && state) {
 			// wait boo for little bit longer
 			if (!Build.BooIsLoaded() && !ran) {
-				retry = setTimeout(Delegate.create(this, SetState), 1000, state, true);
+				retry = setTimeout(Delegate.create(this, SetState), 1000, state, true, roleChanged);
 				return
 			}
 			Enabled = true;
 			GetProximitylistCopy();
-			if (ProximityCopy.length > 0) {
-				Nametags.SignalNametagAdded.Connect(NametagAdded, this);
-				Nametags.SignalNametagUpdated.Connect(NametagAdded, this);
-				Nametags.RefreshNametags();
-			}
-			/* Debugging
-			Nametags.SignalNametagAdded.Connect(Delegate.create(this,function(id){
-				var data:mobData = DruidSystem.GetRace(id);
-				UtilsBase.PrintChatText(string(data.Name) + " "  + data.Race);
-			}), this);
-			*/
 		}
-		if (Enabled && !state) {
+		else if (Enabled && !state) {
 			Enabled = false;
-			Nametags.SignalNametagAdded.Disconnect(NametagAdded, this);
-			Nametags.SignalNametagUpdated.Disconnect(NametagAdded, this);
+			m_SignalGroup.DisconnectAll();
 			WipeMobTriggers();
 			WipeZoneTriggers();
 			WipeCoordinateTriggers();
+		}
+		if (Enabled && roleChanged) {
+			//UtilsBase.PrintChatText("role changed,reload");
+			ReloadProximityList();
 		}
 	}
 
@@ -101,10 +97,12 @@ class com.fox.AgentSwitcher.Proximity {
 	}
 	
 	public function ReloadProximityList() {
-		WipeMobTriggers();
-		WipeCoordinateTriggers();
-		GetProximitylistCopy();
-		Nametags.RefreshNametags();
+		if (Enabled && !m_Controller.settingPause) {
+			WipeZoneTriggers();
+			WipeMobTriggers();
+			WipeCoordinateTriggers();
+			GetProximitylistCopy();
+		}
 	}
 
 	public function inProximity() {
@@ -134,25 +132,6 @@ class com.fox.AgentSwitcher.Proximity {
 		Lock = false;
 	}
 
-	// Updates refresh rates for proximity based triggers
-	public function RangeChanged(old:String) {
-		if (Enabled && !m_Controller.settingPause) {
-			WipeMobTriggers();
-			GetProximitylistCopy();
-			Nametags.RefreshNametags();
-		}
-	}
-
-	// Updates refresh rates for proximity based triggers
-	public function UpdateRateChanged() {
-		for (var trigger in ProximityTriggers) {
-			ProximityTriggers[trigger].SetRefresh();
-		}
-		for (var trigger in CoordinateTriggers) {
-			CoordinateTriggers[trigger].SetRefresh();
-		}
-	}
-
 	private function GetTrigger(array:Array, id) {
 		for (var i:Number = 0; i < array.length ; i++ ) {
 			if (array[i].ID == id) {
@@ -167,21 +146,27 @@ class com.fox.AgentSwitcher.Proximity {
 	public function GetProximitylistCopy() {
 		ProximityCopy = new Array();
 		for (var i:Number = 0; i < m_Controller.settingPriority.length; i++) {
-			if (string(m_Controller.settingPriority[i]).charAt(0) == "#") continue;
 			var entry:Array = m_Controller.settingPriority[i].split("|");
 			var entryObj:ProximityEntry = new ProximityEntry();
 			entryObj.Name = StringUtils.Strip(entry[0]);
+			// if there's only one entry then it can't be area trigger
 			entryObj.Agent = StringUtils.Strip(entry[1]) || "race";
 			entryObj.Range = StringUtils.Strip(entry[2].toLowerCase()) || m_Controller.settingRange.toLowerCase();
-			entryObj.Role = StringUtils.Strip(entry[3].toLowerCase()) || "all";
-			// skip empty lines
-			if (!entryObj.Name) {
+			entryObj.Role = StringUtils.Strip(entry[3].toLowerCase()) || m_Controller.settingRole.toLowerCase() || "all";
+			// skip empty lines, lines that start with #, and wrong roles
+			if (
+				!entryObj.Name ||
+				entryObj.Name.charAt(0) == "#" ||
+				(!Player.IsRightRole(entryObj.Role) && entryObj.Range.toLowerCase() != "onzone")
+			) {
+				//UtilsBase.PrintChatText("discarding " + entry.toString());
 				continue;
 			}
 			//Figure out if "Agent" is actual agent or build name
-			if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race") {
+			if (entryObj.Agent.toLowerCase() == "default" || entryObj.Agent == "race" ) {
 				entryObj.isBuild = false;
-			} else {
+			} 
+			else {
 				for (var x:Number = 0; x < DruidSystem.Druids.length;x++) {
 					if (DruidSystem.Druids[x][1].toLowerCase() == entryObj.Agent.toLowerCase()) {
 						entryObj.Agent = DruidSystem.Druids[x][0];
@@ -195,7 +180,6 @@ class com.fox.AgentSwitcher.Proximity {
 					}
 				}
 			}
-
 			// Start onZone triggers
 			if (entryObj.Range.toLowerCase() == "onzone") {
 				StartZoneTrigger(entryObj);
@@ -216,6 +200,17 @@ class com.fox.AgentSwitcher.Proximity {
 				}
 			}
 		}
+		if (ProximityCopy.length > 0) {
+			//UtilsBase.PrintChatText(ProximityCopy.length + " proximity signals to connect");
+			m_SignalGroup.DisconnectAll();
+			Nametags.SignalNametagAdded.Connect(m_SignalGroup, NametagAdded, this);
+			Nametags.SignalNametagUpdated.Connect(m_SignalGroup, NametagAdded, this);
+			Nametags.RefreshNametags();
+		}else{
+			//UtilsBase.PrintChatText("no proximity signals to connect");
+			//UtilsBase.PrintChatText(CoordinateTriggers.length +" coord triggers");
+			//UtilsBase.PrintChatText(ZoneTriggers.length +" zone triggers");
+		}
 	}
 
 	private function StartZoneTrigger(entry:ProximityEntry) {
@@ -235,8 +230,7 @@ class com.fox.AgentSwitcher.Proximity {
 				trigger.AddToOutfits(entry.Agent, entry.Role);
 			}
 		} else {
-			trigger.AgentNames.push(entry.Agent);
-			trigger.AgentRoles.push(entry.Role);
+			trigger.AddToAgents(entry.Agent, entry.Role);
 		}
 		trigger.StartTrigger();
 	}
@@ -245,7 +239,7 @@ class com.fox.AgentSwitcher.Proximity {
 		if (entry.isBuild != false) {
 			entry.isBuild = true;
 		}
-		var trigger:CoordinateTrigger = GetTrigger(CoordinateTriggers, Number(entry.Name));
+		var trigger:CoordinateTrigger = GetTrigger(CoordinateTriggers, entry.Name);
 		if (!trigger) {
 			trigger = new CoordinateTrigger(entry.Name);
 			CoordinateTriggers.push(trigger);
@@ -258,8 +252,7 @@ class com.fox.AgentSwitcher.Proximity {
 				trigger.AddToOutfits(entry.Agent, entry.Role);
 			}
 		} else {
-			trigger.AgentNames.push(entry.Agent);
-			trigger.AgentRoles.push(entry.Role);
+			trigger.AddToAgents(entry.Agent, entry.Role);
 		}
 		trigger.StartTrigger();
 	}

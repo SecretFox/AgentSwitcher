@@ -30,4 +30,4 @@ Animal:
   agent : Finn Mulligan
 Vampire:
   Vampire, Supersoldier
-  agent: None
+  agent: Rana

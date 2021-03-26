@@ -1,6 +1,7 @@
 import com.fox.AgentSwitcher.Defaulting;
 import com.fox.AgentSwitcher.Proximity;
 import com.fox.AgentSwitcher.Targeting;
+import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Settings;
 import com.fox.AgentSwitcher.Utils.Player;
@@ -24,12 +25,13 @@ import com.fox.Utils.Debugger;
 * @author fox
 */
 class com.fox.AgentSwitcher.Controller extends Settings {
-	public var Loaded:Boolean;
+	private static var m_Cont:Controller;
+	private var m_settingsRoot:MovieClip;
+	private var Loaded:Boolean;
 	public var m_settings:SettingsWindow;
 	public var m_AgentDisplay:AgentDisplay;
 	public var m_QuickSelect:QuickSelect;
 	public var m_Icon:Icon;
-	private var m_settingsRoot:MovieClip;
 	public var m_Default:Defaulting;
 	public var m_Proximity:Proximity;
 	public var m_Targeting:Targeting;
@@ -54,7 +56,11 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 		m_Proximity = new Proximity(this);
 		m_Default = new Defaulting(this);
 		m_Targeting = new Targeting(this);
-		BaseTrigger.m_Controller = this;
+		BaseTrigger.m_Controller = m_Cont = this;
+	}
+	
+	public static function GetController():Controller{
+		return m_Cont;
 	}
 
 	public function Load():Void {
@@ -87,13 +93,15 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 	public function Activate(config:Archive) {
 		if (!Loaded){
 			LoadConfig(config);
-			//SettingChanged();
+			Build.HookBooBuilds();
 			m_Icon.CreateTopIcon(iconPos);
 			m_AgentDisplay.SlotChanged();
 			m_Targeting.SetBlacklist(settingBlacklist);
 			m_Tanking = Player.IsTank();
 			m_Healing = Player.IsHealer();
-			ApplyPause();
+			SlotPassiveChanged(settingRealSlot);
+			SlotPassiveChanged(settingRealSlot2);
+			ApplySettings();
 			Loaded = true;
 		}
 	}
@@ -205,38 +213,40 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 			var tank:Boolean = Player.IsTank();
 			if (tank != m_Tanking) {
 				m_Tanking = tank;
-				if (settingDisableOnTank) {
-					ApplyPause();
-				}
+				ApplySettings(true);
 			}
 			var heal:Boolean = Player.IsHealer();
 			if (heal != m_Healing) {
 				m_Healing = heal;
-				if (settingDisableOnHealer) {
-					ApplyPause();
-				}
+				ApplySettings(true);
 			}
 		}
 	}
+	
+	public function ShouldPause() {
+		return (settingDisableOnHealer && m_Healing) || (settingDisableOnTank && m_Tanking)
+	}
 
-	public function ApplyPause() {
-		if (settingPause || (m_Tanking && settingDisableOnTank) || (m_Healing && settingDisableOnHealer)) {
+	public function ApplySettings(roleChanged) {
+		// Ctrl+clicked icon
+		if (settingPause){
 			m_Targeting.SetState(false, false, false);
 			m_Default.SetState(false);
 			m_Proximity.SetState(false);
-		} else {
-			SettingChanged();
-			SlotPassiveChanged(settingRealSlot);
 		}
-		m_Icon.StateChanged();
-	}
-
-	public function SettingChanged() {
-		if (!settingPause && !(m_Tanking && settingDisableOnTank) && !(m_Healing && settingDisableOnHealer)) {
+		// Tanking or healing with the setting enabled
+		else if (ShouldPause()) {
+			m_Targeting.SetState(false, false, false);
+			m_Default.SetState(false);
+			m_Proximity.SetState(settingProximityEnabled, false, roleChanged);
+		}
+		// No pause states,but modules could be disabled
+		else {
 			m_Targeting.SetState(settingTargeting, settingDebugChat, settingDebugFifo);
 			m_Default.SetState(settingDefault);
-			m_Proximity.SetState(settingProximityEnabled);
-			m_Icon.StateChanged();
+			m_Proximity.SetState(settingProximityEnabled, false, roleChanged);
 		}
+		
+		m_Icon.StateChanged();
 	}
 }

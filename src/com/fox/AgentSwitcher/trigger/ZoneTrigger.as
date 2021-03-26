@@ -1,6 +1,5 @@
 import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
-import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.WaypointInterface;
@@ -62,13 +61,6 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	}
 	// Player in-game,save currently equipped agent if not switching agents, so that it can be re-equipped after build switch
 	private function PrepBuildEquip(){
-		if (!hasSwitchAgent()){
-			var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
-			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
-				AgentNames.push(string(currentAgent));
-				AgentRoles.push("all");
-			}
-		}
 		//also switch outfits
 		for (var i:Number = 0; i < OutfitNames.length; i++){
 			if (Player.IsRightRole(OutfitRoles[i])){

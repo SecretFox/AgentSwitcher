@@ -5,6 +5,7 @@ import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
 import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.data.mobData;
+import mx.utils.Delegate;
 /*
 * ...
 * @author fox
@@ -26,6 +27,8 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 	
 	public var OutfitRoles:Array;
 	public var OutfitNames:Array;
+	
+	public var lockNeeded:Boolean;
 	
 	// {Name:name, Race:race, Stat:stat, Agent:agent} from druidhelper
 	private var TargetData:mobData;
@@ -74,6 +77,24 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 		AgentRoles.push(role);
 	}
 	
+	public function SaveAgents(){
+		if (!lockNeeded){
+			var results:Array = [];
+			var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
+			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
+				results.push(string(currentAgent));
+			}
+			currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot2).m_AgentId;
+			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
+				results.push(string(currentAgent));
+			}
+			if (results.length > 0) {
+				AgentNames.push(results);
+				AgentRoles.push("all");
+			}
+		}
+	}
+	
 	private function EquipBuild(callback:Function) {
 		var found = false;
 		if (BuildNames.length > 0){
@@ -82,7 +103,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 					found = true;
 					var build = BuildNames.splice(i, 1)[0];
 					BuildRoles.splice(i, 1);
-					Build.AddToQueue(build, Age, undefined, callback, false);
+					Build.AddToQueue(build, Age, undefined, callback, false, Delegate.create(this, SaveAgents));
 					break
 				}
 			}

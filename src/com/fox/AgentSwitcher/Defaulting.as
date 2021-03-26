@@ -19,10 +19,12 @@ class com.fox.AgentSwitcher.Defaulting {
 		m_Player = Player.GetPlayer();
 	}
 	public function SetState(state) {
-		if (!Enabled && state) {
-			Enabled = true;
-			m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
-			m_Player.SignalOffensiveTargetChanged.Connect(SlotTargetChanged, this);
+		if (state) {
+			if(!Enabled) {
+				Enabled = true;
+				m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
+				m_Player.SignalOffensiveTargetChanged.Connect(SlotTargetChanged, this);
+			}
 			setTimeout(Delegate.create(this, SlotToggleCombat), 2000);
 		}
 		if (Enabled && !state) {

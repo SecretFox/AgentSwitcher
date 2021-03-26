@@ -1,4 +1,6 @@
 import GUI.fox.aswing.ASFont;
+import GUI.fox.aswing.ASWingConstants;
+import GUI.fox.aswing.FlowLayout;
 import com.fox.AgentSwitcher.Controller;
 import GUI.fox.aswing.ASColor;
 import GUI.fox.aswing.Component;
@@ -21,7 +23,8 @@ import com.GameInterface.Tooltip.TooltipManager;
 * @author fox
 */
 class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
-
+	static var ScrollPosition:Number;
+	
 	private var m_Controller:Controller;
 
 	private var Active:JCheckBox;
@@ -43,6 +46,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var Disable:JCheckBox;
 	private var DisableTank:JCheckBox;
 	private var DisableHealer:JCheckBox;
+	private var PauseProximity:JCheckBox;
 	
 	private var useCleaner:JCheckBox;
 	private var useWalter:JCheckBox;
@@ -53,16 +57,15 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var ProximityList:JTextArea;
 	private var scrollPane:JScrollPane;
 	private var scrollPane2:JScrollPane;
-	private var rangeText:JTextField;
 	private var Range:JTextField;
-	private var rateText:JTextField;
 	private var Rate:JTextField;
+	private var Role:JTextField;
 	private var Tooltip:TooltipInterface;
 	private var font:ASFont;
 
 	public function SettingsWindow(cont:Controller) {
-		// Setup
-		super("AgentSwitcher " +cont.ModVersion);
+	// Setup
+		super("AgentSwitcher " + cont.ModVersion);
 		setFont(new ASFont("_StandardFont", 14, false));
 		font = new ASFont("_StandardFont", 13);
 		m_Controller = cont;
@@ -72,46 +75,58 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		setMinimumWidth(275);
 		var icon:Icon = new Icon();//Empty icon
 		setIcon(icon);
-		//setBorder();
+	//Panels
 		setBorder(new LineBorder(null, new ASColor(0xFFFFFF, 100), 1, 2));
-		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5,SoftBoxLayout.CENTER));
-		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0, SoftBoxLayout.CENTER));
-		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 2, SoftBoxLayout.CENTER));
-		var blacklistPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER));
-		var slotPanel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0, SoftBoxLayout.CENTER));
-		var slot2Panel:JPanel =  new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
-		var delayPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
-		var ProximitySettingPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS,0,SoftBoxLayout.CENTER));
+		var content:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 5));
+		var leftcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0));
+		var rightcontent:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 0));
+		var blacklistPanel:JPanel = new JPanel(new SoftBoxLayout(SoftBoxLayout.X_AXIS, 0));
+		var slotPanel:JPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 1, 1));
+		var slot2Panel:JPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 1, 1));
+		var delayPanel:JPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0));
+		var ProximityHeader:JPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
+		var proximityOptions:JPanel  = new JPanel(new SoftBoxLayout(SoftBoxLayout.Y_AXIS, 5, 0));
+		var proximityOptionHeader:JPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		var proximityOptionInputs:JPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		
 	//Main Controls
+		//Switch on target
+		leftcontent.append(GetActive());
+		//Print target on chat
+		leftcontent.append(GetDebugChat());
+		//Print target on fifo
+		leftcontent.append(GetDebugFifo());
+
+	//Pause Settings
+		leftcontent.append(GetDisable());
+		leftcontent.append(GetTank());
+		leftcontent.append(GetHealer());
+		leftcontent.append(new JSeparator());
+	//Agent Slots
 		slotText = new JTextField("Primary Agent slot:");
 		slotText.setFont(font);
 		slotText.setBorder(null);
 		slotText.setEnabled(false);
 		slotText.setEditable(false);
+		slotPanel.append(slotText);
+		slotPanel.append(GetSlot());
+		leftcontent.append(slotPanel);
 		
 		slot2Text = new JTextField("Secondary Agent slot:");
 		slot2Text.setFont(font);
 		slot2Text.setBorder(null);
 		slot2Text.setEnabled(false);
 		slot2Text.setEditable(false);
-
-		//Switch on target
-		leftcontent.append(GetActive());
-		//Agent Slots
-		slotPanel.append(slotText);
-		slotPanel.append(GetSlot());
-		leftcontent.append(slotPanel);
-		
 		slot2Panel.append(slot2Text);
 		slot2Panel.append(GetSlot2());
 		leftcontent.append(slot2Panel);
-		
-		// Proximity switching
-		leftcontent.append(GetProximityTogggle());
-		// Agent Display
+		leftcontent.append(new JSeparator());
+	// Display
 		leftcontent.append(GetDisplay());
-		
-		//Delay field
+		leftcontent.append(GetDisplayName());
+		leftcontent.append(GetQuickName());
+		leftcontent.append(new JSeparator());
+	//Defaulting
 		leftcontent.append(GetDefault());
 		delayText = new JTextField("Default delay");
 		delayText.setFont(font);
@@ -122,31 +137,12 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		delayPanel.append(GetDelay());
 		leftcontent.append(delayPanel);
 		
-	//Misc Settings
-		leftcontent.append(new JSeparator());
 		
-		//Print target on chat
-		leftcontent.append(GetDebugChat());
-		//Print target on fifo
-		leftcontent.append(GetDebugFifo());
-		//Disable on switch
-		leftcontent.append(GetDisable());
-		//Disable on Tank
-		leftcontent.append(GetTank());
-		//Disable on Heal
-		leftcontent.append(GetHealer());
-		
-		// Display options
-		leftcontent.append(GetDisplayName());
-		leftcontent.append(GetQuickName());
-		
-		//Special agent options
-		//leftcontent.append(GetCleaner());
-		//leftcontent.append(GetWalter());
-		
-		// Targeting blacklist
-		blacklisText = new JTextField("Targeting Blacklist:");
+	// Targeting blacklist
+		blacklisText = new JTextField("Targeting Blacklist:(?)");
 		blacklisText.setFont(font);
+		blacklisText.addEventListener(Component.ON_ROLLOVER, OpenBlacklistTooltip, this);
+		blacklisText.addEventListener(Component.ON_ROLLOUT, CloseToolTips, this);
 		blacklisText.setBorder(null);
 		blacklisText.setEnabled(false);
 		blacklisText.setEditable(false);
@@ -161,41 +157,60 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		rightcontent.append(scrollPane2);
 		rightcontent.append(new JSeparator());
 	//Proximity settings
-		var tf3:JTextField = new JTextField("Proximity Switching(?)");
-		tf3.setFont(font);
-		tf3.addEventListener(Component.ON_ROLLOVER,OpenProximityTooltip,this);
-		tf3.addEventListener(Component.ON_ROLLOUT,CloseProximityTooltip,this);
-		tf3.setBorder(null);
-		tf3.setEnabled(false);
-		tf3.setEditable(false);
-		rightcontent.append(tf3);
-
+		
+		ProximityHeader.append(GetProximityTogggle());
+		var rateText:JTextField = new JTextField("Update rate");
+		rateText.setFont(font);
+		rateText.setBorder(null);
+		rateText.setEnabled(false);
+		rateText.setEditable(false);
+		var inputs:JPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0));
+		inputs.append(rateText);
+		inputs.append(GetRate());
+		ProximityHeader.append(inputs);
+		rightcontent.append(ProximityHeader);
+		
 		scrollPane = new JScrollPane(GetProximityList(),JScrollPane.SCROLLBAR_ALWAYS);
 		scrollPane.setBorder(new LineBorder());
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.SCROLLBAR_AS_NEEDED);
+		//scrollPane.addAdjustmentListener(__onScroll, this);
 		var scrollbar:JScrollBar = scrollPane.getVerticalScrollBar();
 		scrollbar.addEventListener(ON_PRESS, __startDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASE, __stopDragThumb, this);
 		scrollbar.addEventListener(ON_RELEASEOUTSIDE, __stopDragThumb, this);
 		rightcontent.append(scrollPane);
-		rangeText = new JTextField("Distance");
+		
+		var defaults = new JTextField("Default values(?)");
+		defaults.setFont(font);
+		defaults.setBorder(null);
+		defaults.addEventListener(Component.ON_ROLLOVER, OpenDefaultTooltip, this);
+		defaults.addEventListener(Component.ON_ROLLOUT, CloseToolTips, this);
+		defaults.setEnabled(false);
+		defaults.setEditable(false);
+		
+		proximityOptionHeader.append(defaults);
+		
+		var rangeText = new JTextField("Distance");
 		rangeText.setFont(font);
 		rangeText.setBorder(null);
 		rangeText.setEnabled(false);
 		rangeText.setEditable(false);
-		ProximitySettingPanel.append(rangeText);
-		ProximitySettingPanel.append(GetRange());
+		proximityOptionInputs.append(rangeText);
+		proximityOptionInputs.append(GetRange());
 
-		rateText = new JTextField("Update rate(ms)");
-		rateText.setFont(font);
-		rateText.setBorder(null);
-		rateText.setEnabled(false);
-		rateText.setEditable(false);
-		ProximitySettingPanel.append(rateText);
-		ProximitySettingPanel.append(GetRate());
-		rightcontent.append(ProximitySettingPanel);
+		var roleText = new JTextField("Role");
+		roleText.setFont(font);
+		roleText.setBorder(null);
+		roleText.setEnabled(false);
+		roleText.setEditable(false);
+		proximityOptionInputs.append(roleText);
+		proximityOptionInputs.append(GetRole());
 
-		//Show window + Reposition based on icon location
+		proximityOptions.append(proximityOptionHeader);
+		proximityOptions.append(proximityOptionInputs);
+		rightcontent.append(proximityOptions);
+		
+	//Show window + Reposition based on icon location
 		content.append(new JSeparator(JSeparator.VERTICAL));
 		content.append(leftcontent);
 		content.append(new JSeparator(JSeparator.VERTICAL));
@@ -212,37 +227,9 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		if (m_Controller.iconPos.x > Stage.width / 2) {
 			setX(m_Controller.iconPos.x - 30 - getWidth());
 		}
+		if (ScrollPosition) scrollbar.setValue(ScrollPosition);
 	}
-	
-	private function OpenProximityTooltip() {
-		var m_TooltipData:TooltipData = new TooltipData();
-		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
-		m_TooltipData.m_Color = 0xFFFFFF;
-		m_TooltipData.m_MaxWidth = 600;
-		m_TooltipData.AddDescription(
-			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on player coodinates and zone\n" + 
-			"Switching can also be based on nearby enemies, killed enemies, or entering a zone\n" +
-			"Some examples:\n" +
-			"&lt;Name&gt;\n" +
-			"&lt;Name&gt;|&lt;Agent&gt;\n" +
-			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
-			"&lt;Name/Zone/Zone+Coordinate&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
-			" &lt;Name/Zone/Coordinate&gt; : Monsters name, zoneID, zoneID+coordinate,or zoneID+area\n\n" +
-			" &lt;Agent/Oufit/Build&gt; Either agent(if using MobName can be omitted), buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
-			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
-			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
-			"Valid triggers are &quot;onKill&quot;,&quot;onArea&quot;, and &quot;onZone&quot;. onKill triggers the switch when specified target is killed,onArea when player is near coordinate or inside an area, and onZone triggers when entering new zone\n" +
-			"&lt;onArea&gt; triggers supports any of the following formats; &quot;ZoneID;x,y&quot; &quot;ZoneID;x,y,z&quot; &quot;ZoneID;x1,y1,x2,x2&quot; &quot;ZoneID;x1,y1,z1,x2,y2,z2&quot;\n\n" +
-			"&lt;Role&gt; : Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then the action will only be performed when the players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
-			"----\n" +
-			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry\n" +
-			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
-		);
-		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, -1, m_TooltipData);
-	}
-	private function CloseProximityTooltip() {
-		Tooltip.Close();
-	}
+	private function __onScroll(){}
 	//scrollbar is broken
 	private function __startDragThumb() {
 		scrollPane.getVerticalScrollBar().getUI()["__startDragThumb"]();
@@ -259,6 +246,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	public function tryToClose():Void {
 		Tooltip.Close();
 		// Reload proximity list if changed
+		ScrollPosition = scrollPane.getVerticalScrollBar().getValue();
 		if (m_Controller.settingPriority.toString() != ProximityList.getText().split("\n").toString()) {
 			m_Controller.ReloadProximityList();
 		}
@@ -271,20 +259,20 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function __ActiveChanged(box:JCheckBox) {
 		m_Controller.settingTargeting = box.isSelected();
-		m_Controller.SettingChanged();
+		m_Controller.ApplySettings();
 		Blacklist.setEnabled(box.isSelected());
 	}
 	private function __DebugChatChanged(box:JCheckBox) {
 		m_Controller.settingDebugChat = box.isSelected();
-		m_Controller.SettingChanged();
+		m_Controller.ApplySettings();
 	}
 	private function __DebugFifoChanged(box:JCheckBox) {
 		m_Controller.settingDebugFifo = box.isSelected();
-		m_Controller.SettingChanged();
+		m_Controller.ApplySettings();
 	}
 	private function __DefaultChanged(box:JCheckBox) {
 		m_Controller.settingDefault = box.isSelected();
-		m_Controller.SettingChanged();
+		m_Controller.ApplySettings();
 		Delay.setEnabled(m_Controller.settingDefault);
 	}
 	private function __DisplayChanged(box:JCheckBox) {
@@ -300,15 +288,13 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function __TankChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnTank = box.isSelected();
-		m_Controller.m_Tanking = undefined;
-		m_Controller.CheckRole(1);
-		if(!box.isSelected()) m_Controller.ApplyPause();
+		PauseProximity.setEnabled(m_Controller.settingDisableOnHealer || m_Controller.settingDisableOnTank);
+		m_Controller.ApplySettings(true);
 	}
 	private function __HealerChanged(box:JCheckBox) {
 		m_Controller.settingDisableOnHealer = box.isSelected();
-		m_Controller.m_Healing = undefined;
-		m_Controller.CheckRole(1);
-		if(!box.isSelected()) m_Controller.ApplyPause();
+		PauseProximity.setEnabled(m_Controller.settingDisableOnHealer || m_Controller.settingDisableOnTank);
+		m_Controller.ApplySettings(true);
 	}
 	private function __QuickSelectChanged(box:JCheckBox) {
 		m_Controller.settingQuickselectName = box.isSelected();
@@ -318,9 +304,11 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function __ProximityToggled(box:JCheckBox) {
 		m_Controller.settingProximityEnabled = box.isSelected();
-		m_Controller.SettingChanged();
-		Range.setEnabled(m_Controller.settingProximityEnabled);
-		Rate.setEnabled(m_Controller.settingProximityEnabled);
+		m_Controller.ApplySettings();
+		ProximityList.setEnabled(ProximityToggle.isSelected());
+		Range.setEnabled(ProximityToggle.isSelected());
+		Rate.setEnabled(ProximityToggle.isSelected());
+		Role.setEnabled(ProximityToggle.isSelected());
 	}
 	
 	private function __BlacklistChanged(){
@@ -356,6 +344,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function GetDefault() {
 		if (Default == null) {
 			Default = new JCheckBox("Default on combat end");
+			Default.setHorizontalAlignment(ASWingConstants.RIGHT);
 			Default.setFont(font);
 			Default.setSelected(m_Controller.settingDefault);
 			Default.addActionListener(__DefaultChanged, this);
@@ -390,7 +379,6 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		}
 		return QuickName;
 	}
-
 	private function GetDisable() {
 		if (Disable == null) {
 			Disable = new JCheckBox("Disable on quickselect");
@@ -402,8 +390,10 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetTank() {
 		if (DisableTank == null) {
-			DisableTank = new JCheckBox("Disable while tanking");
+			DisableTank = new JCheckBox("Pause while tanking(?)");
 			DisableTank.setFont(font);
+			DisableTank.addEventListener(Component.ON_ROLLOVER, OpenTankingTooltip, this);
+			DisableTank.addEventListener(Component.ON_ROLLOUT, CloseToolTips, this);
 			DisableTank.setSelected(m_Controller.settingDisableOnTank);
 			DisableTank.addActionListener(__TankChanged, this);
 		}
@@ -411,19 +401,85 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	}
 	private function GetHealer() {
 		if (DisableHealer == null) {
-			DisableHealer = new JCheckBox("Disable while healing");
+			DisableHealer = new JCheckBox("Pause while healing(?)");
 			DisableHealer.setFont(font);
+			DisableHealer.addEventListener(Component.ON_ROLLOVER, OpenHealingTooltip, this);
+			DisableHealer.addEventListener(Component.ON_ROLLOUT, CloseToolTips, this);
 			DisableHealer.setSelected(m_Controller.settingDisableOnHealer);
 			DisableHealer.addActionListener(__HealerChanged, this);
 		}
 		return DisableHealer;
 	}
+	private function OpenBlacklistTooltip(){
+		Tooltip.Close();
+		var m_TooltipData:TooltipData = new TooltipData();
+		m_TooltipData.AddDescription("Targeting based switching will ignore these mobs, one mob per line");
+		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
+	}
+	private function OpenDefaultTooltip(){
+		Tooltip.Close();
+		var m_TooltipData:TooltipData = new TooltipData();
+		m_TooltipData.AddDescription("These values will be used if one of the parameters is left unspecified in the above list");
+		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
+	}
+	private function OpenHealingTooltip(){
+		Tooltip.Close();
+		var m_TooltipData:TooltipData = new TooltipData();
+		m_TooltipData.AddDescription("Pauses targeting based switching while healing");
+		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
+	}
+	private function OpenTankingTooltip(){
+		Tooltip.Close();
+		var m_TooltipData:TooltipData = new TooltipData();
+		m_TooltipData.AddDescription("Pauses targeting based switching while tanking");
+		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
+	}
+	
+	private function OpenProximityTooltip() {
+		Tooltip.Close();
+		var m_TooltipData:TooltipData = new TooltipData();
+		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
+		m_TooltipData.m_Color = 0xFFFFFF;
+		m_TooltipData.m_MaxWidth = 600;
+		m_TooltipData.AddDescription(
+			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on player coodinates and zone\n" + 
+			"Switching can also be based on nearby enemies, killed enemies, or entering a zone\n" +
+			"Some examples:\n" +
+			"&lt;Name&gt;\n" +
+			"&lt;Name&gt;|&lt;Agent&gt;\n" +
+			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
+			"&lt;Name/Zone/Zone+Coordinate&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
+			" &lt;Name/Zone/Coordinate&gt; : Monsters name, zoneID, zoneID+coordinate,or zoneID+area\n\n" +
+			" &lt;Agent/Oufit/Build&gt; Either agent(if using MobName can be omitted), buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
+			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
+			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
+			"Valid triggers are &quot;onKill&quot;,&quot;onArea&quot;, and &quot;onZone&quot;. onKill triggers the switch when specified target is killed,onArea when player is near coordinate or inside an area, and onZone triggers when entering new zone\n" +
+			"&lt;onArea&gt; triggers supports any of the following formats; &quot;ZoneID;x,y&quot; &quot;ZoneID;x,y,z&quot; &quot;ZoneID;x1,y1,x2,x2&quot; &quot;ZoneID;x1,y1,z1,x2,y2,z2&quot;\n\n" +
+			"&lt;Role&gt; : Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then the action will only be performed when the players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
+			"----\n" +
+			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry\n" +
+			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
+		);
+		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
+	}
+	
+	private function CloseToolTips() {
+		Tooltip.Close();
+	}
+	
 	private function GetProximityTogggle() {
+		//var stupidAllignment:JPanel
 		if (ProximityToggle == null) {
-			ProximityToggle = new JCheckBox("Enable proximity switching");
+			//stupidAllignment = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			ProximityToggle = new JCheckBox("Enable proximity switching(?)");
 			ProximityToggle.setFont(font);
+			ProximityToggle.setHorizontalAlignment(ASWingConstants.LEFT);
+			ProximityToggle.addEventListener(Component.ON_ROLLOVER, OpenProximityTooltip, this);
+			ProximityToggle.addEventListener(Component.ON_ROLLOUT, CloseToolTips, this);
+			ProximityList.setEnabled(ProximityToggle.isSelected());
 			ProximityToggle.setSelected(m_Controller.settingProximityEnabled);
 			ProximityToggle.addActionListener(__ProximityToggled, this);
+			//stupidAllignment.append(ProximityToggle);
 		}
 		return ProximityToggle;
 	}
@@ -475,14 +531,22 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		if (input) {
 			var old = m_Controller.settingRange;
 			m_Controller.settingRange = input;
-			m_Controller.m_Proximity.RangeChanged(old);
+			m_Controller.m_Proximity.ReloadProximityList();
 		}
 	}
 	private function __RateChanged(field:JTextField) {
 		var input:String = field.getText();
 		if (input) {
 			m_Controller.settingUpdateRate = Number(input);
-			m_Controller.m_Proximity.UpdateRateChanged();
+			m_Controller.m_Proximity.ReloadProximityList();
+		}
+	}
+	private function __RoleChanged(field:JTextField) {
+		var input:String = field.getText();
+		if (input) {
+			var old = m_Controller.settingRole;
+			m_Controller.settingRole = input;
+			m_Controller.m_Proximity.ReloadProximityList();
 		}
 	}
 	private function GetDelay() {
@@ -566,5 +630,16 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			Rate.setFocusable(false);
 		}
 		return Rate;
+	}
+	private function GetRole() {
+		if (Role == null) {
+			Role = new JTextField(m_Controller.settingRole, 5);
+			Role.setFont(font);
+			Role.setRestrict("^\\^");// This is stupid, setting to null didn't work, so this allows all characters except ^
+			Role.setEditable(true);
+			Role.addEventListener(JTextField.ON_TEXT_CHANGED, __RoleChanged, this);
+			Role.setFocusable(false);
+		}
+		return Role;
 	}
 }

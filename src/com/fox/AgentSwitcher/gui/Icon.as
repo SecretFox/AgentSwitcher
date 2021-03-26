@@ -47,7 +47,8 @@ class com.fox.AgentSwitcher.gui.Icon {
 				m_IconClip.m_lock._visible = true;
 				Colors.ApplyColor(m_IconClip.m_icon, 0xE80000);
 			}
-		}else{
+		}
+		else{
 			clearInterval(lockCheck);
 			m_IconClip.m_lock._visible = false;
 			StateChanged();
@@ -58,7 +59,7 @@ class com.fox.AgentSwitcher.gui.Icon {
 	private function Clicked() {
 		if (Key.isDown(Key.SHIFT)){
 			m_Controller.settingPause = !m_Controller.settingPause;
-			m_Controller.ApplyPause();
+			m_Controller.ApplySettings();
 			StateChanged(m_Controller.settingPause);
 		} else{
 			m_Controller.m_QuickSelect.QuickSelectStateChanged();
@@ -72,11 +73,14 @@ class com.fox.AgentSwitcher.gui.Icon {
 	public function StateChanged() {
 		if (m_Controller.settingPause){
 			Colors.ApplyColor(m_IconClip.m_icon, 0xC40000)
-		}else{
-			if ((m_Controller.settingTargeting || m_Controller.settingProximityEnabled) && !(m_Controller.settingDisableOnTank && m_Controller.m_Tanking) && !(m_Controller.settingDisableOnHealer && m_Controller.m_Healing)){
-				Colors.ApplyColor(m_IconClip.m_icon, 0x00C400);
-			}else{
-				Colors.ApplyColor(m_IconClip.m_icon, 0xFFFFFF);
+		}
+		else {
+			if (
+				(m_Controller.settingTargeting || m_Controller.settingProximityEnabled || m_Controller.settingDefault) && !m_Controller.ShouldPause()){
+				if(!m_IconClip.m_lock._visible) Colors.ApplyColor(m_IconClip.m_icon, 0x00C400);
+			}
+			else{
+				if(!m_IconClip.m_lock._visible) Colors.ApplyColor(m_IconClip.m_icon, 0xFFFFFF);
 			}
 		}
 	}
