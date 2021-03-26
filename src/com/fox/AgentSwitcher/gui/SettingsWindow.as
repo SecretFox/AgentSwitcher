@@ -438,28 +438,34 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private function OpenProximityTooltip() {
 		Tooltip.Close();
 		var m_TooltipData:TooltipData = new TooltipData();
-		m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
+		//m_TooltipData.m_Title = "<font size='14'><b>Proximity Switching</b></font>";
 		m_TooltipData.m_Color = 0xFFFFFF;
 		m_TooltipData.m_MaxWidth = 600;
+		m_TooltipData.AddDescription("<font size='14'>When Proximity switching is enabled agent will be automatically switched based on player coodinates and zone\nSwitching can also be based on nearby enemies, killed enemies, or entering a zone</font>\n");
+		m_TooltipData.AddDescription("<font size='14'><u>Some examples:</u></font>")
 		m_TooltipData.AddDescription(
-			"<font size='12'>When Proximity switching is enabled agent will be automatically switched based on player coodinates and zone\n" + 
-			"Switching can also be based on nearby enemies, killed enemies, or entering a zone\n" +
-			"Some examples:\n" +
+			"<font size='12'>" + 
 			"&lt;Name&gt;\n" +
 			"&lt;Name&gt;|&lt;Agent&gt;\n" +
 			"&lt;Name&gt;|&lt;Agent&gt;|&lt;Distance&gt;\n" +
-			"&lt;Name/Zone/Zone+Coordinate&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n\n" +
-			" &lt;Name/Zone/Coordinate&gt; : Monsters name, zoneID, zoneID+coordinate,or zoneID+area\n\n" +
-			" &lt;Agent/Oufit/Build&gt; Either agent(if using MobName can be omitted), buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
-			"Valid agent overrides are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
+			"&lt;Name/Zone/Zone+Coordinate&gt;|&lt;Agent/Build/Outfit&gt;|&lt;Distance/Trigger&gt;|&lt;Role&gt;\n" +
+			"</font>"
+		);
+		m_TooltipData.AddDescription("<font size='14'><u>Explanations</font></u>");
+		m_TooltipData.AddDescription(
+			"<font size='12'>" + 
+			" &lt;Name/Zone/Zone+Coordinate&gt; : Monsters name, zoneID, or coordinates\nCoordinate supports any of the following formats; &quot;ZoneID;x,y&quot; &quot;ZoneID;x,y,z&quot; &quot;ZoneID;x1,y1,x2,y2&quot; &quot;ZoneID;x1,y1,z1,x2,y2,z2&quot;\n\n" +
+			" &lt;Agent/Oufit/Build&gt; Either agent (can be blank if using mob name), buildname, or outfit name. Builds support BooBuilds and Gearmanager. Outfits only works with BooBuilds\n" +
+			"Valid agents are : Construct, Cybernetic, Demon, Aquatic, Filth, Human, Spirit, Supernatural, Undead, Animal, Default\n\n" +
 			"&lt;Distance/Trigger&gt; either range or trigger, if not specified default range from settings will be used.\n"+
-			"Valid triggers are &quot;onKill&quot;,&quot;onArea&quot;, and &quot;onZone&quot;. onKill triggers the switch when specified target is killed,onArea when player is near coordinate or inside an area, and onZone triggers when entering new zone\n" +
-			"&lt;onArea&gt; triggers supports any of the following formats; &quot;ZoneID;x,y&quot; &quot;ZoneID;x,y,z&quot; &quot;ZoneID;x1,y1,x2,x2&quot; &quot;ZoneID;x1,y1,z1,x2,y2,z2&quot;\n\n" +
+			"Valid triggers are &quot;onKill&quot;,&quot;onArea&quot;, and &quot;onZone&quot;. onKill triggers the switch when specified target is killed,onArea when player is near coordinate or inside an area, and onZone triggers when entering new zone\n\n" +
 			"&lt;Role&gt; : Valid values are &quot;All&quot;, &quot;Tank&quot;, &quot;DPS&quot;, and &quot;Healer&quot;. If specified then the action will only be performed when the players role matches the value. If not specified defaults to All. Build will not be switched while player has ongoing cooldown\n"+
 			"----\n" +
 			"Distance field under the list sets the default range,in case Distance wasn't specified in the list entry\n" +
-			"Update Rate controls how often distance will be checked, too often may cause lag.</font>"
+			"Update Rate controls how often distance will be checked, too often may cause lag." + 
+			"</font>"
 		);
+		
 		Tooltip = TooltipManager.GetInstance().ShowTooltip(undefined, TooltipInterface.e_OrientationVertical, 0.4, m_TooltipData);
 	}
 	
