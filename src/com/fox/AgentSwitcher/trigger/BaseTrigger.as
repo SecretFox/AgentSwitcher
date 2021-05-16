@@ -3,7 +3,6 @@ import com.Utils.Signal;
 import com.fox.AgentSwitcher.Controller;
 import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Utils.DruidSystem;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.data.mobData;
 import mx.utils.Delegate;
 /*
@@ -49,7 +48,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 	
 	private function hasSwitchAgent(){
 		for (var i:Number = 0; i < AgentRoles.length; i++){
-			if (Player.IsRightRole(AgentRoles[i])) return true;
+			if (m_Controller.m_Player.IsRightRole(AgentRoles[i])) return true;
 		}
 	}
 	
@@ -78,15 +77,18 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 	}
 	
 	public function SaveAgents(){
-		if (!lockNeeded){
+		if (!lockNeeded && (m_Controller.AlwaysRestoreAgents || m_Controller.m_Proximity.inProximity())){
+			var names:Array = [];
 			var results:Array = [];
 			var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
 			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
 				results.push(string(currentAgent));
+				names.push(DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_Name);
 			}
 			currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot2).m_AgentId;
 			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
 				results.push(string(currentAgent));
+				names.push(DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot2).m_Name);
 			}
 			if (results.length > 0) {
 				AgentNames.push(results);
@@ -99,7 +101,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 		var found = false;
 		if (BuildNames.length > 0){
 			for (var i:Number = 0; i < BuildNames.length; i++){
-				if (Player.IsRightRole(BuildRoles[i])){
+				if (m_Controller.m_Player.IsRightRole(BuildRoles[i])){
 					found = true;
 					var build = BuildNames.splice(i, 1)[0];
 					BuildRoles.splice(i, 1);
@@ -110,7 +112,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 		}
 		if (OutfitNames.length > 0){
 			for (var i:Number = 0; i < OutfitNames.length; i++){
-				if (Player.IsRightRole(OutfitRoles[i])){
+				if (m_Controller.m_Player.IsRightRole(OutfitRoles[i])){
 					var build = OutfitNames.splice(i, 1)[0];
 					OutfitRoles.splice(i, 1);
 					Build.AddToQueue(build, Age, undefined, undefined, true);
@@ -122,7 +124,7 @@ class com.fox.AgentSwitcher.trigger.BaseTrigger {
 	
 	private function EquipAgent() {
 		for (var i:Number = 0; i < AgentNames.length; i++){
-			if (Player.IsRightRole(AgentRoles[i])){
+			if (m_Controller.m_Player.IsRightRole(AgentRoles[i])){
 				// default
 				if (AgentNames[i].toLowerCase() == "default"){
 					var agentID = DruidSystem.GetSwitchAgent(m_Controller.settingDefaultAgent, m_Controller.settingDefaultAgent, 0);

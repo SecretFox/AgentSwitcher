@@ -3,7 +3,6 @@ import com.GameInterface.FeatData;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Shortcut;
 import com.GameInterface.Game.ShortcutData;
-import com.GameInterface.MathLib.Vector3;
 import com.GameInterface.ProjectUtils;
 import GUI.HUD.AbilitySlot;
 import com.Utils.ID32;
@@ -12,34 +11,24 @@ import com.GameInterface.FeatInterface;
 * ...
 * @author fox
 */
-class com.fox.AgentSwitcher.Utils.Player {
-	private static var m_Player:Character;
+class com.fox.AgentSwitcher.Utils.Player extends Character {
 	private static var ROLE_TANK = ProjectUtils.GetUint32TweakValue("GroupFinder_Tank_Buff");
 	private static var ROLE_HEALER = ProjectUtils.GetUint32TweakValue("GroupFinder_Healer_Buff");
 	private static var ROLE_DPS = ProjectUtils.GetUint32TweakValue("GroupFinder_DamageDealer_Buff");
-	
-	public function Player(id:ID32){
-		m_Player = Character.GetClientCharacter();
+    
+	public function Player(charID:ID32) {
+        super(charID);
+    }
+	public function IsTank(): Boolean {
+		return GetStat(_global.Enums.Stat.e_TriangleHealthRatio, 2) > 50;
 	}
-	public static function GetPlayer(id:ID32):Character{
-		return m_Player
-	}
-	public static function GetZone():Number{
-		return m_Player.GetPlayfieldID();
-	}
-	public static function GetPosition():Vector3{
-		return m_Player.GetPosition();
-	}
-	public static function IsTank(): Boolean {
-		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealthRatio, 2) > 50;
-	}
-	public static function IsDps(): Boolean {
+	public function IsDps(): Boolean {
 		return !IsTank() && !IsHealer();
 	}
-	public static function IsHealer(): Boolean {
-		return m_Player.GetStat(_global.Enums.Stat.e_TriangleHealingRatio, 2) > 50;
+	public function IsHealer(): Boolean {
+		return GetStat(_global.Enums.Stat.e_TriangleHealingRatio, 2) > 50;
 	}
-	public static function IsRightRole(role:String) {
+	public function IsRightRole(role:String) {
 		if (role == "all") return true;
 		else {
 			if (role == "tank" && IsTank()) {
@@ -51,14 +40,13 @@ class com.fox.AgentSwitcher.Utils.Player {
 			if (role == "healer" && IsHealer()) {
 				return true;
 			}
-			//if (!TankBuff && !DpsBuff && !HealerBuff) return true;
 		}
 	}
 	//Cutscene/dead etc..
-	public static function IsinPlay():Boolean {
+	public function IsinPlay():Boolean {
 		if (AccountManagement.GetInstance().GetLoginState() != _global.Enums.LoginState.e_LoginStateInPlay ||
-			m_Player.IsDead() ||
-			m_Player.IsInCinematic() ||
+			IsDead() ||	
+			IsInCinematic() ||
 			_root.fadetoblack.m_BlackScreen._visible)
 		{
 			return false

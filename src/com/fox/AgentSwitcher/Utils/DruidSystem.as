@@ -1,5 +1,4 @@
 import com.fox.AgentSwitcher.Controller;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.GameInterface.AgentSystem;
 import com.GameInterface.AgentSystemAgent;
 import com.GameInterface.Game.Character;
@@ -259,7 +258,7 @@ class com.fox.AgentSwitcher.Utils.DruidSystem {
 	}
 	
 	public static function SwitchToAgent(agentID:Number, slot:Number) {
-		if (!Player.IsinPlay()) { //just in case
+		if (!Controller.GetController().m_Player.IsinPlay()) { //just in case
 			setTimeout(SwitchToAgent, 500, agentID, slot);
 		}
 		else if (AgentSystem.HasAgent(agentID)) { //just in case

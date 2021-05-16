@@ -1,6 +1,5 @@
 import com.GameInterface.MathLib.Vector3;
 import com.GameInterface.WaypointInterface;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.fox.Utils.Debugger;
@@ -21,7 +20,7 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	private var SwitchNeeded:Boolean;
 	private var SimpleCoords:Boolean;
 	private var BuildOutfitCopies:Array;
-	private var buildOrder:Number;
+	private var buildOrder:String;
 	
 	//private var namePattern:String; // Name pattern that was used to start the trigger. may be full mob name or partial match
 
@@ -67,18 +66,18 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	}
 	
 	public function StartTrigger() {
-		BuildOutfitCopies = [BuildNames.concat(), BuildRoles.concat(), OutfitNames.concat(), OutfitRoles.concat()]; //shallow copies of builds/outfits
+		BuildOutfitCopies = [BuildNames.concat(), BuildRoles.concat(), OutfitNames.concat(), OutfitRoles.concat(), AgentNames.concat(), AgentRoles.concat()]; //shallow copies of builds/outfits/agents, these need to be restored after switch has fully completed
 		if (!Started){
 			Started = true;
 			SwitchNeeded = true;
 			WaypointInterface.SignalPlayfieldChanged.Connect(CheckZone, this);
-			CheckZone(Player.GetZone());
+			CheckZone(m_Controller.m_Player.GetPlayfieldID());
 		}
 	}
 	
 	public function SetRefresh() {
 		clearInterval(refreshInterval);
-		CheckZone(Player.GetZone());
+		CheckZone(m_Controller.m_Player.GetPlayfieldID());
 	}
 	
 	public function kill() {
@@ -90,14 +89,14 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 	}
 	
 	private function InZone() {
-		return Player.GetZone() == TargetZone;
+		return m_Controller.m_Player.GetPlayfieldID() == TargetZone;
 	}
 	
 	private function InArea() {
-		if (Player.GetPlayer().IsGhosting()){
+		if (m_Controller.m_Player.IsGhosting()){
 			return
 		}
-		var position:Vector3 = Player.GetPosition();
+		var position:Vector3 = m_Controller.m_Player.GetPosition();
 		if (SimpleCoords){
 			if (
 				Math.abs(position.x - TargetCoodinates[0]) < 10 &&
@@ -117,6 +116,21 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 		}
 	}
 	
+	private function ShouldSwitch() {
+		if (buildOrder == undefined) return true;
+		if (buildOrder.charAt(0) == "#") {
+			var order = Number(buildOrder.slice(1));
+			if (order > currentOrder) {
+				currentOrder = order;
+				return true;
+			}
+		} else {
+			if (buildOrder >= Number(currentOrder)) {
+				currentOrder = Number(buildOrder);
+				return true;
+			}
+		}
+	}
 	
 	private function CheckArea() {
 		var inside:Boolean = InArea();
@@ -130,8 +144,7 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 			}
 			var f2:Function = Delegate.create(this, kill);
 			if (BuildNames.length > 0 || OutfitNames.length > 0) {
-				if (buildOrder == undefined || buildOrder >= currentOrder){
-					if (buildOrder != undefined) currentOrder = buildOrder;
+				if (ShouldSwitch()){
 					var time:Date = new Date();
 					Age = time.valueOf();
 					var f:Function = Delegate.create(this, EquipBuild);
@@ -154,21 +167,21 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 					"    Target " + TargetCoodinates[0]+ ", " + 
 					"" + TargetCoodinates[1] + ", " + 
 					"" + TargetCoodinates[2]+ "\n" + 
-					"    Current " + Math.floor(Player.GetPosition().x) + ", " + Math.floor(Player.GetPosition().z) + "," + Math.floor(Player.GetPosition().y)
+					"    Current " + Math.floor(m_Controller.m_Player.GetPosition().x) + ", " + Math.floor(m_Controller.m_Player.GetPosition().z) + "," + Math.floor(m_Controller.m_Player.GetPosition().y)
 				);
 			} else {
 				 Debugger.PrintText("Not in area\n" +
 					"    Target " + TargetCoodinates[0].x +"-" + TargetCoodinates[1].x + ", " + 
 					"" + TargetCoodinates[0].z +"-" + TargetCoodinates[1].z + ", " + 
 					"" + TargetCoodinates[0].y +"-" + TargetCoodinates[1].y + "\n" + 
-					"    Current " + Math.floor(Player.GetPosition().x) + ", " + Math.floor(Player.GetPosition().z) + "," + Math.floor(Player.GetPosition().y)
+					"    Current " + Math.floor(m_Controller.m_Player.GetPosition().x) + ", " + Math.floor(m_Controller.m_Player.GetPosition().z) + "," + Math.floor(m_Controller.m_Player.GetPosition().y)
 				);
 			}
 		}
 	}
 	
 	public function InRange() {
-		if (lockNeeded && InZone() && InArea() && !Player.GetPlayer().IsGhosting()) {
+		if (lockNeeded && InZone() && InArea() && !m_Controller.m_Player.IsGhosting()) {
 			return true
 		}
 	}
@@ -185,6 +198,8 @@ class com.fox.AgentSwitcher.trigger.CoordinateTrigger extends BaseTrigger {
 		BuildRoles = BuildOutfitCopies[1].concat();
 		OutfitNames = BuildOutfitCopies[2].concat();
 		OutfitRoles = BuildOutfitCopies[3].concat();
+		AgentNames = BuildOutfitCopies[4].concat();
+		AgentRoles = BuildOutfitCopies[5].concat();
 	}
 	
 	private function EquipBuild() {

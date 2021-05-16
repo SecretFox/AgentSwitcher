@@ -1,6 +1,5 @@
 import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.Utils.Task;
 import com.GameInterface.WaypointInterface;
 import mx.utils.Delegate;
@@ -63,7 +62,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 	private function PrepBuildEquip(){
 		//also switch outfits
 		for (var i:Number = 0; i < OutfitNames.length; i++){
-			if (Player.IsRightRole(OutfitRoles[i])){
+			if (m_Controller.m_Player.IsRightRole(OutfitRoles[i])){
 				Build.AddToQueue(OutfitNames[i], Age, undefined, undefined, true);
 				break
 			}
@@ -75,7 +74,7 @@ class com.fox.AgentSwitcher.trigger.ZoneTrigger extends BaseTrigger {
 		var f2:Function = Delegate.create(this, OnBuildEquip);
 		hasBuild = false;
 		for (var i:Number = 0; i < BuildNames.length; i++){
-			if (Player.IsRightRole(BuildRoles[i]) && !SwitchedBuilds[i]){
+			if (m_Controller.m_Player.IsRightRole(BuildRoles[i]) && !SwitchedBuilds[i]){
 				SwitchedBuilds[i] = true;
 				Build.AddToQueue(BuildNames[i], Age, undefined, f2);
 				hasBuild = true;

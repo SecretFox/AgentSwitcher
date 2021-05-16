@@ -1,5 +1,4 @@
-import com.GameInterface.Game.Character;
-import com.fox.AgentSwitcher.Utils.Player;
+import com.fox.AgentSwitcher.Controller;
 import com.Utils.Signal;
 import mx.utils.Delegate;
 /*
@@ -11,13 +10,13 @@ class com.fox.AgentSwitcher.Utils.Task {
 	static var OutCombatTask:Number = 0;
 	static var InCombatTask:Number = 1;
 	static var inPlayTask:Number = 2;
+	static var m_Controller:Controller;
 
 	public var Type:Number;
 	private var Callback:Function;
 	private var AbortCallback:Function;
 	private var SignalDone:Signal;
 	private var timeout:Number;
-	private var m_Player:Character;
 	private var timeout2:Number;
 
 	static function AddTask(type, f, f2) {
@@ -52,7 +51,6 @@ class com.fox.AgentSwitcher.Utils.Task {
 	}
 /* ---------*/
 	public function Task(f, type, f2) {
-		m_Player = Player.GetPlayer();
 		Callback = f;
 		AbortCallback = f2;
 		Type = type;
@@ -68,8 +66,8 @@ class com.fox.AgentSwitcher.Utils.Task {
 		dispose();
 	}
 	private function dispose() {
-		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
-		m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
+		m_Controller.m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
+		m_Controller.m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 		clearTimeout(timeout);
 		clearTimeout(timeout2);
 		Callback = undefined;
@@ -78,17 +76,17 @@ class com.fox.AgentSwitcher.Utils.Task {
 //Tasktype 1
 //Triggers when player exits combat
 	public function StartTask1() {
-		m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
+		m_Controller.m_Player.SignalToggleCombat.Connect(SlotToggleCombat, this);
 		timeout2 = setTimeout(Delegate.create(this, SlotToggleCombat), 100);
 	}
 	private function SlotToggleCombat(state:Boolean) {
-		if (!Player.IsinPlay()) {
+		if (!m_Controller.m_Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat), 200);
 			return
 		}
-		if (!m_Player.IsInCombat()) {
-			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
+		if (!m_Controller.m_Player.IsInCombat()) {
+			m_Controller.m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat, this);
 			Callback();
 			SignalDone.Emit(this);
 		}
@@ -96,20 +94,20 @@ class com.fox.AgentSwitcher.Utils.Task {
 //Tasktype 2
 //Triggers when player starts combat (!=threatened!)
 	public function StartTask2() {
-		m_Player.SignalToggleCombat.Connect(SlotToggleCombat2, this);
-		if (m_Player.IsThreatened()) SlotToggleCombat2(true);
+		m_Controller.m_Player.SignalToggleCombat.Connect(SlotToggleCombat2, this);
+		if (m_Controller.m_Player.IsThreatened()) SlotToggleCombat2(true);
 	}
 	private function SlotToggleCombat2(state:Boolean) {
-		if (!Player.IsinPlay()) {
+		if (!m_Controller.m_Player.IsinPlay()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this,SlotToggleCombat2), 200);
 			return
 		}
-		if (m_Player.IsInCombat()) {
-			m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
+		if (m_Controller.m_Player.IsInCombat()) {
+			m_Controller.m_Player.SignalToggleCombat.Disconnect(SlotToggleCombat2, this);
 			Callback();
 			SignalDone.Emit(this);
-		} else if (m_Player.IsThreatened()) {
+		} else if (m_Controller.m_Player.IsThreatened()) {
 			clearTimeout(timeout);
 			timeout = setTimeout(Delegate.create(this, SlotToggleCombat2), 200);
 		}
@@ -117,7 +115,7 @@ class com.fox.AgentSwitcher.Utils.Task {
 //Tasktype 3
 //Triggers when player is in play (not in cutscene/zoning/dead) 
 	public function StartTask3() {
-		if (Player.IsinPlay()){
+		if (m_Controller.m_Player.IsinPlay()){
 			Callback();
 			SignalDone.Emit(this);
 		}else{

@@ -15,9 +15,9 @@ class com.fox.AgentSwitcher.Utils.Build {
 	private static var CANT_UNEQUIP:String = LDBFormat.LDBGetText(100, 32580734);
 	private static var EquipTimeout:Number;
 	private static var BuildQueue:Array = new Array();
-	private static var BookHook:Boolean;
 	private static var QueuedEquip:Boolean;
 	private static var Agents:Array = [];
+	public static var m_Controller:Controller;
 
 	public var BuildName:String;
 	public var Age:Number;
@@ -33,11 +33,12 @@ class com.fox.AgentSwitcher.Utils.Build {
 	public var quickbuild;
 	
 	public static function HookBooBuilds(ran){
-		if (!BooIsLoaded() && !ran){
+		var Loaded:Boolean = BooIsLoaded();
+		if (!Loaded && !ran){
 			setTimeout(HookBooBuilds, 1000, true);
 			return;
 		}
-		if (BooIsLoaded()){
+		if (Loaded){
 			for (var y in _root["boobuilds\\boobuilds"].appBuilds.m_builds){
 				if (!_root["boobuilds\\boobuilds"].appBuilds.m_builds[y].Hook){
 					var f = function () {
@@ -59,18 +60,21 @@ class com.fox.AgentSwitcher.Utils.Build {
 				_root["boobuilds\\boobuilds"].appBuilds.m_quickBuilds[y].Apply = f;
 			}
 			*/
-			BookHook = true;
 		}
 	}
 	
+	// Saves equipped agents if necessary when manually swapping builds
 	public static function BooStartBuildApply(name){
-		if (!QueuedEquip && !Controller.GetController().settingPause){
+		if (!QueuedEquip &&
+			!m_Controller.settingPause &&
+			(m_Controller.AlwaysRestoreAgents || m_Controller.m_Proximity.inProximity())
+		){
 			var temp = [];
-			var currentAgent = DruidSystem.GetAgentInSlot(Controller.GetController().settingRealSlot).m_AgentId;
+			var currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot).m_AgentId;
 			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
 				temp.push(string(currentAgent));
 			}
-			currentAgent = DruidSystem.GetAgentInSlot(Controller.GetController().settingRealSlot2).m_AgentId;
+			currentAgent = DruidSystem.GetAgentInSlot(m_Controller.settingRealSlot2).m_AgentId;
 			if (currentAgent && DruidSystem.IsDruid(currentAgent)){
 				temp.push(string(currentAgent));
 			}
@@ -86,25 +90,26 @@ class com.fox.AgentSwitcher.Utils.Build {
 			setTimeout(WaitForLoad, 500);
 			return;
 		}
-		StartAgentSwitcBack()
+		StartAgentSwitchBack();
 	}
 	
-	private static function StartAgentSwitcBack(){
+	private static function StartAgentSwitchBack(){
 		if (Agents.length > 0 && 
-			Player.IsinPlay() &&
-			!Player.GetPlayer().IsInCombat() &&
-			(!Controller.GetController().settingDisableOnTank || !Controller.GetController().m_Tanking) &&
-			(!Controller.GetController().settingDisableOnHealer || !Controller.GetController().m_Healing)
+			m_Controller.m_Player.IsinPlay() &&
+			!m_Controller.m_Player.IsInCombat() &&
+			(!m_Controller.settingDisableOnTank || !m_Controller.m_Tanking) &&
+			(!m_Controller.settingDisableOnHealer || !m_Controller.m_Healing)
 		){
-			var agent = DruidSystem.GetSwitchAgent(Agents[0],  Controller.GetController().settingRealSlot,  Controller.GetController().settingDefaultAgent)
-			var agent2 = DruidSystem.GetSwitchAgent(Agents[1],  Controller.GetController().settingRealSlot2,  Controller.GetController().settingDefaultAgent2)
-			DruidSystem.SwitchToAgents(agent, agent2, Controller.GetController());
+			var agent = DruidSystem.GetSwitchAgent(Agents[0],  m_Controller.settingRealSlot,  m_Controller.settingDefaultAgent)
+			var agent2 = DruidSystem.GetSwitchAgent(Agents[1],  m_Controller.settingRealSlot2,  m_Controller.settingDefaultAgent2)
+			DruidSystem.SwitchToAgents(agent, agent2, m_Controller);
 		}
 		else{
 			Agents = [];
 		}
 	}
 	
+	// returns true if at least one of the three has content
 	public static function BooIsLoaded():Boolean{
 		if (!_root["boobuilds\\boobuilds"]) return false;
 		var locs = [
@@ -160,19 +165,20 @@ class com.fox.AgentSwitcher.Utils.Build {
 	}
 	private static function Equip(){
 		if (!BuildQueue.length) return
-		if (Player.GetPlayer().IsInCombat() ||
-			!Player.IsinPlay() ||
-			Player.GetPlayer().GetCommandProgress()) // casting
+		if (
+			m_Controller.m_Player.IsInCombat() ||
+			!m_Controller.m_Player.IsinPlay() ||
+			m_Controller.m_Player.GetCommandProgress() // casting
+		)
 		{
 			setTimeout(Equip, 500);
 			return
 		}
-		
 		var oldest:Build;
 		for (var i in BuildQueue){
 			var build:Build = BuildQueue[i];
-			if(build.Switching) return
-			if ((build.Age < oldest.Age || !oldest.Age)){
+			if (build.Switching) return
+			if (build.Age < oldest.Age || !oldest.Age) {
 				oldest = build;
 			}
 		}
@@ -243,10 +249,10 @@ class com.fox.AgentSwitcher.Utils.Build {
 	private function EquipBuild() {
 		clearTimeout(DisconnecTimeout);
 		clearInterval(CheckInterval);
-		if (Player.GetPlayer().IsInCombat() ||
+		if (m_Controller.m_Player.IsInCombat() ||
 			Player.HasCooldown(BuildName) ||
-			!Player.IsinPlay() ||
-			Player.GetPlayer().GetCommandProgress())
+			!m_Controller.m_Player.IsinPlay() ||
+			m_Controller.m_Player.GetCommandProgress())
 		{
 			setTimeout(Delegate.create(this, EquipBuild), 500);
 			return

@@ -7,7 +7,7 @@ import flash.geom.Point;
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var ModVersion:String = "3.3.0";
+	public var ModVersion:String = "3.4.3";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
@@ -38,6 +38,7 @@ class com.fox.AgentSwitcher.Settings {
 	public var dValImport:DistributedValue;
 	public var dValExport:DistributedValue;
 	public var dValDev:DistributedValue;
+	public var AlwaysRestoreAgents:Boolean;
 
 	private var m_swfRoot:MovieClip;
 	public var DisplayPos:Point;
@@ -90,7 +91,7 @@ class com.fox.AgentSwitcher.Settings {
 		agentDisplayDval.SetValue(config.FindEntry("Display", false));
 		settingDisplayName = config.FindEntry("DisplayName", false);
 		settingQuickselectName = config.FindEntry("QuickName", false);
-		
+		AlwaysRestoreAgents = config.FindEntry("AlwaysRestoreAgents", false);
 		
 		dValDev.SetValue(config.FindEntry("DevMode", false));
 
@@ -176,6 +177,8 @@ class com.fox.AgentSwitcher.Settings {
 		config.AddEntry("DisplayName", settingDisplayName);
 		config.AddEntry("QuickName", settingQuickselectName);
 		config.AddEntry("DevMode", dValDev.GetValue());
+		config.AddEntry("AlwaysRestoreAgents", AlwaysRestoreAgents);
+		
 		for (var i = 0; i < RecentAgents.length; i++ ) {
 			config.AddEntry("RecentAgents", RecentAgents[i]);
 		}

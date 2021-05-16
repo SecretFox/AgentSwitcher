@@ -2,8 +2,6 @@ import com.Utils.SignalGroup;
 import com.Utils.StringUtils;
 import com.fox.AgentSwitcher.Utils.Build;
 import com.fox.AgentSwitcher.Controller;
-import com.fox.AgentSwitcher.Utils.NameFilter;
-import com.fox.AgentSwitcher.Utils.Player;
 import com.fox.AgentSwitcher.data.ProximityEntry;
 import com.fox.AgentSwitcher.trigger.CoordinateTrigger;
 import com.fox.AgentSwitcher.trigger.KillTrigger;
@@ -41,12 +39,12 @@ class com.fox.AgentSwitcher.Proximity {
 
 	public function SetState(state:Boolean, ran:Boolean, roleChanged:Boolean) {
 		clearTimeout(retry);
+		if (!Build.BooIsLoaded() && !ran) {
+			retry = setTimeout(Delegate.create(this, SetState), 1000, state, true, roleChanged);
+			return
+		}
 		if (!Enabled && state) {
 			// wait boo for little bit longer
-			if (!Build.BooIsLoaded() && !ran) {
-				retry = setTimeout(Delegate.create(this, SetState), 1000, state, true, roleChanged);
-				return
-			}
 			Enabled = true;
 			GetProximitylistCopy();
 		}
@@ -57,7 +55,7 @@ class com.fox.AgentSwitcher.Proximity {
 			WipeZoneTriggers();
 			WipeCoordinateTriggers();
 		}
-		if (Enabled && roleChanged) {
+		else if (Enabled && roleChanged) {
 			//UtilsBase.PrintChatText("role changed,reload");
 			ReloadProximityList();
 		}
@@ -157,7 +155,7 @@ class com.fox.AgentSwitcher.Proximity {
 			if (
 				!entryObj.Name ||
 				entryObj.Name.charAt(0) == "#" ||
-				(!Player.IsRightRole(entryObj.Role) && entryObj.Range.toLowerCase() != "onzone")
+				(!m_Controller.m_Player.IsRightRole(entryObj.Role) && entryObj.Range.toLowerCase() != "onzone")
 			) {
 				//UtilsBase.PrintChatText("discarding " + entry.toString());
 				continue;
@@ -300,7 +298,7 @@ class com.fox.AgentSwitcher.Proximity {
 
 	private function NametagAdded(id:ID32) {
 		var char:Character = new Character(id);
-		if (!NameFilter.isFiltered(char)){
+		if (char.IsEnemy() && !char.IsDead()) {
 			var charName = char.GetName().toLowerCase();
 			for (var i:Number = 0; i < ProximityCopy.length; i++) {
 				var entry:ProximityEntry = ProximityCopy[i];

@@ -48,8 +48,8 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var DisableHealer:JCheckBox;
 	private var PauseProximity:JCheckBox;
 	
-	private var useCleaner:JCheckBox;
-	private var useWalter:JCheckBox;
+	//private var useCleaner:JCheckBox;
+	//private var useWalter:JCheckBox;
 
 	private var QuickName:JCheckBox;
 
@@ -60,6 +60,7 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 	private var Range:JTextField;
 	private var Rate:JTextField;
 	private var Role:JTextField;
+	private var RestoreAgents:JCheckBox;
 	private var Tooltip:TooltipInterface;
 	private var font:ASFont;
 
@@ -208,7 +209,9 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 
 		proximityOptions.append(proximityOptionHeader);
 		proximityOptions.append(proximityOptionInputs);
+		proximityOptions.append(GetRestoreAgents());
 		rightcontent.append(proximityOptions);
+		
 		
 	//Show window + Reposition based on icon location
 		content.append(new JSeparator(JSeparator.VERTICAL));
@@ -310,7 +313,9 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 		Rate.setEnabled(ProximityToggle.isSelected());
 		Role.setEnabled(ProximityToggle.isSelected());
 	}
-	
+	private function __RestoreChanged(box:JCheckBox) {
+		m_Controller.AlwaysRestoreAgents = box.isSelected();
+	}
 	private function __BlacklistChanged(){
 		//empty on purpose
 	}
@@ -398,6 +403,16 @@ class com.fox.AgentSwitcher.gui.SettingsWindow extends JFrame  {
 			DisableTank.addActionListener(__TankChanged, this);
 		}
 		return DisableTank;
+	}
+	private function GetRestoreAgents() {
+		if (RestoreAgents == null) {
+			RestoreAgents = new JCheckBox("Always restore agents after build switch");
+			RestoreAgents.setHorizontalAlignment(ASWingConstants.LEFT);
+			RestoreAgents.setFont(font);
+			RestoreAgents.setSelected(m_Controller.AlwaysRestoreAgents);
+			RestoreAgents.addActionListener(__RestoreChanged, this);
+		}
+		return RestoreAgents;
 	}
 	private function GetHealer() {
 		if (DisableHealer == null) {

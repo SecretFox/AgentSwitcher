@@ -64,36 +64,40 @@ ________
 Format \<Name/ZoneID/zoneID;Coordinate\>|\<Agent/Build/Outfit\>|\<Distance/Trigger\>|\<Role\>. Only name is required.  
 
 **Name/zoneID/zoneID+Coordinates(/area)**  
-	Mob name - Targets (partial) name, case insensitive  
-	ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
-	ZoneID;x,y - Used with onArea trigger, zone and coordinate where an action will occur  
-	ZoneID;x,y,z - Used with onArea trigger, zone and coordinate(with height) where an action will occur  
-	ZoneID;x1,y1,x2,y2 - Used with onArea trigger, zone and area where an action will occur  
-	ZoneID;x1,y1,z1,x2,y2,z2 - Used with onArea trigger, zone and area(with height) where an action will occur   
+> Mob name - Targets (partial) name, case insensitive  
+> ZoneID - Used with onZone trigger, you can find ID after coodinates when pressing Shift + F9  
+> ZoneID;x,y - Used with onArea trigger, zone and coordinate where an action will occur  
+> ZoneID;x,y,z - Used with onArea trigger, zone and coordinate(with height) where an action will occur  
+> ZoneID;x1,y1,x2,y2 - Used with onArea trigger, zone and area where an action will occur  
+> ZoneID;x1,y1,z1,x2,y2,z2 - Used with onArea trigger, zone and area(with height) where an action will occur  
+> ZoneID;x,y;order - Additionally you can add "order" number after the coordinates (using any coordinate format from above).  
+> > If specified the trigger will only activate if current builds "order" is lower(or not defined) than the triggers.  
+> > You can also prefix the order number with "#" to make the coordinate trigger single fire trigger, meaning that it won't reactivate until you re-enter the zone
 
-**Agent/Build/Outfit**  
-	Agent - Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
-			Valid values: None, Default, Animal, Aquatic, Construct, Cybernetic, Demon, Filth, Human, Spirit, Supernatural, Undead, Vampire or agents numerical ID  
-	Build - Build name to switch to, supports boobuilds and default GearManager  
-	Outfit - Outfit to switch to, supports outfits from boobuilds  
+**Agent/Build/Outfit** 
+> Build - Build name, supports boobuilds and default GearManager  
+> Outfit - Outfit name, supports outfits from boobuilds  
+> Agent - Overrides agent choice, if left unspecified then agent best suited for the mob type will be used.  
+> > Valid values: None, Default, Animal, Aquatic, Construct, Cybernetic, Demon, Filth, Human, Spirit, Supernatural, Undead, Vampire or agents numerical ID   
 
 **Distance/Trigger**  
-	Number - Switches agent once target is closer than this value.  
-	onKill - Changes agent/build/outfit after the specified mob is killed. Also locks switching until next combat starts.  
-	onZone - Changes agent/build/outfit after zoning to specified zone  
-	onArea - Changes agent/build/outfit when player is on specified zone and area  
+> Number - Switches agent once target is closer than this value.  
+> onKill - Changes agent/build/outfit after the specified mob is killed. Also locks switching until next combat starts.  
+> onZone - Changes agent/build/outfit after zoning to specified zone  
+> onArea - Changes agent/build/outfit when player is on specified zone and area  
 	
 **Role**  
-	Tank,DPS,Healer or All - If specified then the action will only be performed if player has the right role (according to Anima Allocation).  
-	If not specified assumed to be all  
+> Tank,DPS,Healer or All - If specified then the action will only be performed if player has the right role (according to Anima Allocation).  
+> If not specified assumed to be all  
 
-Some examples:  
-	`Xibalban Bloodhound` - Switches to Filth agent when Xibalban Bloodhound(DW2) is close to the player  
-	`The Unutterable Lurker|Default|100` - Switches to default agent when Unutterable Lurker is within 100m of the player.  
-	`Dark House Sorcerer|Animal|onKill` - Switches to Animal agent(Finn Mulligan) after killing Dark House Sorcerer. This is in preparation for Akab Boss.  
-	`7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence instance  
-	`5060|Single|onZone` - Switches to "Single" build when entering Agartha instance  
-	`7740|DarkAgartha|onZone` - Switches to "DarkAgartha" build when entering DarkAgartha  
-	`3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
-	`Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
-	`Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.  
+Here are some examples:  
+> `Xibalban Bloodhound` - Switches to Filth agent when Xibalban Bloodhound(DW2) is close to the player  
+> `The Unutterable Lurker|Default|100` - Switches to default agent when Unutterable Lurker is within 100m of the player.  
+> `Dark House Sorcerer|Animal|onKill` - Switches to Animal agent(Finn Mulligan) after killing Dark House Sorcerer. 
+> `7670|Occult|onZone` - Switches to "Occult" build when entering Occult Defence instance  
+> `5060|Single|onZone` - Switches to "Single" build when entering Agartha instance  
+> `7740|DarkAgartha|onZone` - Switches to "DarkAgartha" build when entering DarkAgartha  
+> `3140|Winter|onZone` - Switches to "Winter" outfit when entering Carpathian Fangs  
+> `Machine Tyrant|CleanseTank|40|tank` - Switches to "CleanseTank" build if player is tanking and Machine Tyrant is closer than 40m to player.  
+> `Machine Tyrant|Tank|onKill|tank` - Switches to "Tank" build if player kills Machine Tyrant as a tank.  
+> `5040;54,242;#1|PolarisDps|onArea|DPS` - Switches to "PolarisDps" build when player enters the first anima well in polaris
