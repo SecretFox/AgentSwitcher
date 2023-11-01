@@ -7,7 +7,7 @@ import flash.geom.Point;
 * @author fox
 */
 class com.fox.AgentSwitcher.Settings {
-	public var ModVersion:String = "3.4.3";
+	public var ModVersion:String = "3.4.4";
 	
 	public var settingDval:DistributedValue;
 	public var agentDisplayDval:DistributedValue;
