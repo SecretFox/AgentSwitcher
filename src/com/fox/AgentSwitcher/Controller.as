@@ -21,6 +21,7 @@ import com.Utils.Archive;
 import com.Utils.GlobalSignal;
 import com.fox.AgentSwitcher.trigger.BaseTrigger;
 import com.fox.Utils.Debugger;
+
 /*
 * ...
 * @author fox
@@ -93,6 +94,9 @@ class com.fox.AgentSwitcher.Controller extends Settings {
 
 	public function Activate(config:Archive) {
 		if (!Loaded){
+			m_Proximity.WipeCoordinateTriggers();
+			m_Proximity.WipeMobTriggers();
+			m_Proximity.WipeZoneTriggers();
 			LoadConfig(config);
 			Build.HookBooBuilds();
 			m_Icon.CreateTopIcon(iconPos);
